@@ -69,7 +69,7 @@ func (w *WeatherData) GetByName(location string) {
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println("Error reading data", err)
+		fmt.Println(err)
 	}
 
 	err = json.Unmarshal(result, &w)
@@ -87,7 +87,7 @@ func (w *WeatherData) GetByCoordinates(location *Coordinates) {
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println("Error reading data", err)
+		fmt.Println(err)
 	}
 
 	err = json.Unmarshal(result, &w)
@@ -96,6 +96,22 @@ func (w *WeatherData) GetByCoordinates(location *Coordinates) {
 	}
 }
 
-func (w *WeatherData) GetByID() {}
+func (w *WeatherData) GetByID(id int) {
+	response, err := http.Get(fmt.Sprintf(idUrl, id))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer response.Body.Close()
+
+	result, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = json.Unmarshal(result, &w)
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
 
 func (w *WeatherData) GetByArea() {}
