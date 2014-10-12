@@ -78,7 +78,23 @@ func (w *WeatherData) GetByName(location string) {
 	}
 }
 
-func (w *WeatherData) GetByCoordinates(location string) {}
+func (w *WeatherData) GetByCoordinates(location *Coordinates) {
+	response, err := http.Get(fmt.Sprintf(coordUrl, location.Latitude, location.Longitude))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer response.Body.Close()
+
+	result, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println("Error reading data", err)
+	}
+
+	err = json.Unmarshal(result, &w)
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
 
 func (w *WeatherData) GetByID() {}
 
