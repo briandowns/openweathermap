@@ -8,11 +8,6 @@ import (
 	"net/http"
 )
 
-const (
-	cityUrl string = "http://api.openweathermap.org/data/2.5/weather?q=%s"
-	coordUrl string = "http://api.openweathermap.org/data/2.5/weather?lat=%s&long=%s"
-)
-
 type Coordinates struct {
 	Longitude float64 `json:"lon"`
 	Latitude  float64 `json:"lat"`
@@ -32,6 +27,9 @@ type Wind struct {
 	Deg   int     `json:"deg"`
 }
 
+type Weather struct {
+}
+
 type Main struct {
 	Temp     float64 `json:"temp"`
 	TempMin  float64 `json:"temp_min"`
@@ -45,20 +43,20 @@ type Clouds struct {
 }
 
 type WeatherData struct {
-	GeoPos Coordinates `json:"coord"`
-	Sys    Sys         `json:"sys"`
-	Base   string      `json:"base"`
-	Weather Weather `json:"weather"`
-	Main   Main        `json:"main"`
-	Wind   Wind        `json:"wind"`
-	Clouds Clouds      `json:"clouds"`
-	Dt     int         `json:"dt"`
-	Id     int         `json:"id"`
-	Name   string      `json:"name"`
-	Cod    int         `json:"cod"`
+	GeoPos  Coordinates `json:"coord"`
+	Sys     Sys         `json:"sys"`
+	Base    string      `json:"base"`
+	Weather Weather     `json:"weather"`
+	Main    Main        `json:"main"`
+	Wind    Wind        `json:"wind"`
+	Clouds  Clouds      `json:"clouds"`
+	Dt      int         `json:"dt"`
+	Id      int         `json:"id"`
+	Name    string      `json:"name"`
+	Cod     int         `json:"cod"`
 }
 
-func (w *WeatherData) City(location string) {
+func (w *WeatherData) GetByName(location string) {
 	response, err := http.Get(fmt.Sprintf(cityUrl, location))
 	if err != nil {
 		log.Fatalln(err)
@@ -69,10 +67,15 @@ func (w *WeatherData) City(location string) {
 	if err != nil {
 		fmt.Println("Error reading data", err)
 	}
-	fmt.Println(string(result)) // Temporarily used for testing
+
 	err = json.Unmarshal(result, &w)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(w)
 }
+
+func (w *WeatherData) GetByCoordinates(location string) {}
+
+func (w *WeatherData) GetByID() {}
+
+func (w *WeatherData) GetByArea() {}
