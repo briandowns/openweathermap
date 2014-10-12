@@ -1,4 +1,4 @@
-package go-openweathermap
+package openweathermap
 
 import (
 	"encoding/json"
