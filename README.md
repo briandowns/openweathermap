@@ -16,7 +16,7 @@ godoc -http=:6060
 ## Installation
 
 ```bash
-go get github.com/briandowns/go-openweathermap
+go get github.com/briandowns/openweathermap
 ```
 
 ## Examples
