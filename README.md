@@ -1,4 +1,4 @@
-# GoPasswordUtilities
+# OpenWeatherMap Go SDK
 
 [![GoDoc](https://godoc.org/github.com/briandowns/go-openweathermap?status.svg)](https://godoc.org/github.com/briandowns/go-openweathermap) [![Build Status](https://travis-ci.org/briandowns/go-openweathermap.svg?branch=master)](https://travis-ci.org/briandowns/go-openweathermap)
 
