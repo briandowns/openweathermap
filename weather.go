@@ -28,6 +28,10 @@ type Wind struct {
 }
 
 type Weather struct {
+	Id          int    `json:"id"`
+	Main        string `json:"main"`
+	Description string `json:"description"`
+	Icon        string `json:"icon"`
 }
 
 type Main struct {
@@ -46,7 +50,7 @@ type WeatherData struct {
 	GeoPos  Coordinates `json:"coord"`
 	Sys     Sys         `json:"sys"`
 	Base    string      `json:"base"`
-	Weather Weather     `json:"weather"`
+	Weather []Weather   `json:"weather"`
 	Main    Main        `json:"main"`
 	Wind    Wind        `json:"wind"`
 	Clouds  Clouds      `json:"clouds"`
