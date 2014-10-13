@@ -36,7 +36,10 @@ func main() {
 
 ```Go
 func main() {
-    w := New()
+    w, err := New("imperial")
+    if err != nil {
+        log.Fatalln(err)
+    }
     w.GetByName("Phoenix,AZ")
     fmt.Println(w)
 }

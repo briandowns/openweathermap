@@ -2,6 +2,7 @@ package openweathermap
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -70,14 +71,14 @@ type WeatherData struct {
 	Units   string
 }
 
-func New(unit string) *WeatherData {
+func New(unit string) (*WeatherData, error) {
 	unitChoice := strings.ToLower(unit)
 	for _, i := range dataUnits {
 		if strings.Contains(unitChoice, i) {
-			return &WeatherData{Units: unitChoice}
+			return &WeatherData{Units: unitChoice}, nil
 		}
 	}
-	return &WeatherData{}
+	return &WeatherData{}, errors.New("ERROR: unit of measure not available")
 }
 
 func (w *WeatherData) GetByName(location string) {
