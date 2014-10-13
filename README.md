@@ -4,14 +4,13 @@
 
 For more detail about the library and its features, reference your local godoc once installed.
 
-```bash
-godoc -http=:6060
-```
-
 ## Features 
 
 - Conditions by City
-
+- Conditions by City,St (State)
+- Conditions by City,Co (Country)
+- Conditions by City ID
+- Conditions by Longitude and Latitude
 
 ## Installation
 
@@ -21,4 +20,47 @@ go get github.com/briandowns/openweathermap
 
 ## Examples
 
-None yet...
+```Go
+package main
+
+import github.com/briandowns/openweathermap
+
+func main() {
+    w := New()
+    w.GetByName("Phoenix")
+    fmt.Println(w)
+}
+```
+```bash
+```
+
+```Go
+func main() {
+    w := New()
+    w.GetByName("Phoenix,AZ")
+    fmt.Println(w)
+}
+```
+
+```Go
+func main() {
+    w := New()
+    c := &Coordinates{
+    		Longitude: -112.07,
+    		Latitude: 33.45,
+    }
+    w.GetByLocation(c)
+    fmt.Println(w)
+}
+```
+
+```bash
+```
+func main() {
+    w := New()
+    w.GetByID(2172797)
+    fmt.Println(w)
+}
+```
+```bash
+```
