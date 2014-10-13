@@ -10,9 +10,9 @@ import (
 	"strings"
 )
 
-// New returns a new WeatherData pointer with the supplied
+// NewCurrent returns a new WeatherData pointer with the supplied
 // arguments.
-func New(unit string) (*CurrentWeatherData, error) {
+func NewCurrent(unit string) (*CurrentWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
 	for _, i := range dataUnits {
 		if strings.Contains(unitChoice, i) {

@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-// New returns a new HistoricalWeatherData pointer with the supplied
+// NewHistorical returns a new HistoricalWeatherData pointer with the supplied
 // arguments.
-func New(unit string) (*HistoricalWeatherData, error) {
+func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
 	for _, i := range dataUnits {
 		if strings.Contains(unitChoice, i) {
