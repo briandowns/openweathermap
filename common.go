@@ -46,7 +46,7 @@ type Clouds struct {
 	All int `json:"all"`
 }
 
-type WeatherData struct {
+type CurrentWeatherData struct {
 	GeoPos  Coordinates `json:"coord"`
 	Sys     Sys         `json:"sys"`
 	Base    string      `json:"base"`
@@ -59,4 +59,21 @@ type WeatherData struct {
 	Name    string      `json:"name"`
 	Cod     int         `json:"cod"`
 	Units   string
+}
+
+type WeatherHistory struct {
+	Main    Main        `json:"main"`
+	Wind    Wind        `json:"wind"`
+	Clouds  Clouds      `json:"clouds"`
+	Weather []Weather   `json:"weather"`
+	Dt      int         `json:"dt"`
+}
+
+type HistoricalWeatherData struct {
+	Message string `json:"message"`
+	Cod     int         `json:"cod"`
+	CityData int `json:"city_data"`
+	CalcTime float64 `json:"calctime"`
+	Cnt int `json:"cnt"`
+	List []WeatherHistory `json:"list"`
 }
