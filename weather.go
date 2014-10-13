@@ -6,10 +6,15 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 const (
 	baseUrl string = "http://api.openweathermap.org/data/2.5/weather?%s"
+)
+
+var (
+	dataUnits = [3]string{"metric", "imperial", "internal"}
 )
 
 type Coordinates struct {
@@ -62,6 +67,16 @@ type WeatherData struct {
 	Id      int         `json:"id"`
 	Name    string      `json:"name"`
 	Cod     int         `json:"cod"`
+}
+
+func New(unit string) *WeatherData {
+	unitChoice := strings.ToLower(unit)
+	for _, i := range dataUnits {
+		if strings.Contains(unitChoice, i) {
+			return &WeatherData{Units: unitChoice}
+		}
+	}
+	return &WeatherData{}
 }
 
 func (w *WeatherData) GetByName(location string) {
