@@ -41,6 +41,8 @@ func main() {
     fmt.Println(w)
 }
 ```
+```bash
+```
 
 ```Go
 func main() {
@@ -53,9 +55,10 @@ func main() {
     fmt.Println(w)
 }
 ```
-
 ```bash
 ```
+
+```Go
 func main() {
     w := New()
     w.GetByID(2172797)
