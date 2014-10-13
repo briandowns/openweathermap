@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+// New returns a new WeatherData pointer with the supplied
+// arguments.
 func New(unit string) (*WeatherData, error) {
 	unitChoice := strings.ToLower(unit)
 	for _, i := range dataUnits {
@@ -20,7 +22,9 @@ func New(unit string) (*WeatherData, error) {
 	return nil, errors.New("ERROR: unit of measure not available")
 }
 
-func (w *WeatherData) GetByName(location string) {
+// CurrentByName will provide the current weather with the
+// provided location name.
+func (w *WeatherData) CurrentByName(location string) {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "q=%s&units=%s"), location, w.Units))
 	if err != nil {
 		log.Fatalln(err)
@@ -38,7 +42,9 @@ func (w *WeatherData) GetByName(location string) {
 	}
 }
 
-func (w *WeatherData) GetByCoordinates(location *Coordinates) {
+// CurrentByCoordinates will provide the current weather with the
+// provided location coordinates.
+func (w *WeatherData) CurrentByCoordinates(location *Coordinates) {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, w.Units))
 	if err != nil {
 		log.Fatalln(err)
@@ -56,7 +62,9 @@ func (w *WeatherData) GetByCoordinates(location *Coordinates) {
 	}
 }
 
-func (w *WeatherData) GetByID(id int) {
+// CurrentByID will provide the current weather with the
+// provided location ID.
+func (w *WeatherData) CurrentByID(id int) {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "id=%d&units=%s"), id, w.Units))
 	if err != nil {
 		log.Fatalln(err)

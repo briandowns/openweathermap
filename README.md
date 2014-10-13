@@ -6,13 +6,13 @@ For more detail about the library and its features, reference your local godoc o
 
 ## Features 
 
-### Current Weather 
+### Current Weather Conditions
 
-- Conditions by City
-- Conditions by City,St (State)
-- Conditions by City,Co (Country)
-- Conditions by City ID
-- Conditions by Longitude and Latitude
+- By City
+- By City,St (State)
+- By City,Co (Country)
+- By City ID
+- By Longitude and Latitude
 
 ## Installation
 
