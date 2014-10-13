@@ -67,6 +67,7 @@ type WeatherData struct {
 	Id      int         `json:"id"`
 	Name    string      `json:"name"`
 	Cod     int         `json:"cod"`
+	Units   string
 }
 
 func New(unit string) *WeatherData {
