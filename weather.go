@@ -64,10 +64,6 @@ type WeatherData struct {
 	Cod     int         `json:"cod"`
 }
 
-const (
-	baseUrl  string = "http://api.openweathermap.org/data/2.5/weather?%s"
-)
-
 func (w *WeatherData) GetByName(location string) {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "q=%s"), location))
 	if err != nil {
