@@ -26,8 +26,26 @@ package main
 import github.com/briandowns/openweathermap
 
 func main() {
-    w := New()
+    w, err := New("imperial")
+    if err != nil {
+        log.Fatalln(err)
+    }
+    
     w.GetByName("Phoenix")
+    fmt.Println(w)
+}
+```
+```bash
+```
+
+```Go
+func main() {
+    w, err := New("metric")
+    if err != nil {
+        log.Fatalln(err)
+    }
+    
+    w.GetByName("Phoenix,AZ")
     fmt.Println(w)
 }
 ```
@@ -40,20 +58,12 @@ func main() {
     if err != nil {
         log.Fatalln(err)
     }
-    w.GetByName("Phoenix,AZ")
-    fmt.Println(w)
-}
-```
-```bash
-```
-
-```Go
-func main() {
-    w := New()
+    
     c := &Coordinates{
     		Longitude: -112.07,
     		Latitude: 33.45,
     }
+    
     w.GetByLocation(c)
     fmt.Println(w)
 }
@@ -63,7 +73,11 @@ func main() {
 
 ```Go
 func main() {
-    w := New()
+    w, err := New("metric")
+    if err != nil {
+        log.Fatalln(err)
+    }
+    
     w.GetByID(2172797)
     fmt.Println(w)
 }
