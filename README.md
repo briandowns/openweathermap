@@ -59,12 +59,12 @@ func main() {
         log.Fatalln(err)
     }
     
-    c := &Coordinates{
-    		Longitude: -112.07,
-    		Latitude: 33.45,
-    }
-    
-    w.GetByLocation(c)
+    w.GetByCoordinates(
+    		&Coordinates{
+    			Longitude: -112.07,
+    			Latitude: 33.45,
+    		},
+    )
     fmt.Println(w)
 }
 ```
