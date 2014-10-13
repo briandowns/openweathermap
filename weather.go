@@ -78,7 +78,7 @@ func New(unit string) (*WeatherData, error) {
 			return &WeatherData{Units: unitChoice}, nil
 		}
 	}
-	return &WeatherData{}, errors.New("ERROR: unit of measure not available")
+	return nil, errors.New("ERROR: unit of measure not available")
 }
 
 func (w *WeatherData) GetByName(location string) {
