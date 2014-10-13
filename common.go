@@ -92,6 +92,7 @@ type HistoricalWeatherData struct {
 	CalcTime float64          `json:"calctime"`
 	Cnt      int              `json:"cnt"`
 	List     []WeatherHistory `json:"list"`
+	Units    string
 }
 
 // HistoricalParameters struct holds the (optional) fields to be
