@@ -62,18 +62,18 @@ type CurrentWeatherData struct {
 }
 
 type WeatherHistory struct {
-	Main    Main        `json:"main"`
-	Wind    Wind        `json:"wind"`
-	Clouds  Clouds      `json:"clouds"`
-	Weather []Weather   `json:"weather"`
-	Dt      int         `json:"dt"`
+	Main    Main      `json:"main"`
+	Wind    Wind      `json:"wind"`
+	Clouds  Clouds    `json:"clouds"`
+	Weather []Weather `json:"weather"`
+	Dt      int       `json:"dt"`
 }
 
 type HistoricalWeatherData struct {
-	Message string `json:"message"`
-	Cod     int         `json:"cod"`
-	CityData int `json:"city_data"`
-	CalcTime float64 `json:"calctime"`
-	Cnt int `json:"cnt"`
-	List []WeatherHistory `json:"list"`
+	Message  string           `json:"message"`
+	Cod      int              `json:"cod"`
+	CityData int              `json:"city_data"`
+	CalcTime float64          `json:"calctime"`
+	Cnt      int              `json:"cnt"`
+	List     []WeatherHistory `json:"list"`
 }
