@@ -82,7 +82,7 @@ func New(unit string) (*WeatherData, error) {
 }
 
 func (w *WeatherData) GetByName(location string) {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "q=%s"), location))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "q=%s&units=%s"), location, w.Units))
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -100,9 +100,7 @@ func (w *WeatherData) GetByName(location string) {
 }
 
 func (w *WeatherData) GetByCoordinates(location *Coordinates) {
-	response, err := http.Get(fmt.Sprintf(
-		fmt.Sprintf(
-			baseUrl, "lat=%f&lon=%f"), location.Latitude, location.Longitude))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, w.Units))
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -120,7 +118,7 @@ func (w *WeatherData) GetByCoordinates(location *Coordinates) {
 }
 
 func (w *WeatherData) GetByID(id int) {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "id=%d"), id))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "id=%d&units=%s"), id, w.Units))
 	if err != nil {
 		log.Fatalln(err)
 	}
