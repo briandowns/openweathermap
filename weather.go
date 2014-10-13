@@ -8,6 +8,10 @@ import (
 	"net/http"
 )
 
+const (
+	baseUrl string = "http://api.openweathermap.org/data/2.5/weather?%s"
+)
+
 type Coordinates struct {
 	Longitude float64 `json:"lon"`
 	Latitude  float64 `json:"lat"`
@@ -60,8 +64,12 @@ type WeatherData struct {
 	Cod     int         `json:"cod"`
 }
 
+const (
+	baseUrl  string = "http://api.openweathermap.org/data/2.5/weather?%s"
+)
+
 func (w *WeatherData) GetByName(location string) {
-	response, err := http.Get(fmt.Sprintf(cityUrl, location))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "q=%s"), location))
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -79,7 +87,9 @@ func (w *WeatherData) GetByName(location string) {
 }
 
 func (w *WeatherData) GetByCoordinates(location *Coordinates) {
-	response, err := http.Get(fmt.Sprintf(coordUrl, location.Latitude, location.Longitude))
+	response, err := http.Get(fmt.Sprintf(
+		fmt.Sprintf(
+			baseUrl, "lat=%f&lon=%f"), location.Latitude, location.Longitude))
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -97,7 +107,7 @@ func (w *WeatherData) GetByCoordinates(location *Coordinates) {
 }
 
 func (w *WeatherData) GetByID(id int) {
-	response, err := http.Get(fmt.Sprintf(idUrl, id))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseUrl, "id=%d"), id))
 	if err != nil {
 		log.Fatalln(err)
 	}
