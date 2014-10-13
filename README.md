@@ -6,6 +6,8 @@ For more detail about the library and its features, reference your local godoc o
 
 ## Features 
 
+### Current Weather 
+
 - Conditions by City
 - Conditions by City,St (State)
 - Conditions by City,Co (Country)

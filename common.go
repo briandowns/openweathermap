@@ -77,3 +77,9 @@ type HistoricalWeatherData struct {
 	Cnt      int              `json:"cnt"`
 	List     []WeatherHistory `json:"list"`
 }
+
+type HistoricalParameters struct {
+	Start int64
+	End   int64
+	Cnt   int
+}
