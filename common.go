@@ -1,12 +1,20 @@
 package openweathermap
 
 const (
-	baseUrl string = "http://api.openweathermap.org/data/2.5/weather?%s"
+	baseUrl    string = "http://api.openweathermap.org/data/2.5/weather?%s"
+	iconUrl    string = "http://openweathermap.org/img/w/%s"
+	stationUrl string = "http://api.openweathermap.org/data/2.5/station?id=%d"
 )
 
 var (
 	dataUnits = [3]string{"metric", "imperial", "internal"}
 )
+
+// APIError returned on failed API calls.
+type APIError struct {
+	Message string `json:"message"`
+	COD     string `json:"cod"`
+}
 
 // Coordinates struct holds longitude and latitude data
 // in returned JSON or as parameter data for requests

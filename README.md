@@ -14,6 +14,17 @@ For more detail about the library and its features, reference your local godoc o
 - By City ID
 - By Longitude and Latitude
 
+### Access to Condition Codes and Icons
+
+- Thunderstorms
+- Drizzle
+- Rain
+- Snow
+- Atmosphere
+- Clouds
+- Extreme
+- Additional
+
 ## Installation
 
 ```bash
