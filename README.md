@@ -36,7 +36,11 @@ go get github.com/briandowns/openweathermap
 ```Go
 package main
 
-import github.com/briandowns/openweathermap
+import (
+    "log"
+    "fmt"
+    "github.com/briandowns/openweathermap"
+)
 
 func main() {
     w, err := openweathermap.New("imperial")
