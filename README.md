@@ -48,7 +48,7 @@ func main() {
         log.Fatalln(err)
     }
     
-    w.GetByName("Phoenix")
+    w.CurrentByName("Phoenix")
     fmt.Println(w)
 }
 ```
@@ -62,7 +62,7 @@ func main() {
         log.Fatalln(err)
     }
     
-    w.GetByName("Phoenix,AZ")
+    w.CurrentByName("Phoenix,AZ")
     fmt.Println(w)
 }
 ```
@@ -76,7 +76,7 @@ func main() {
         log.Fatalln(err)
     }
     
-    w.GetByCoordinates(
+    w.CurrentByCoordinates(
     		&Coordinates{
     			Longitude: -112.07,
     			Latitude: 33.45,
@@ -95,7 +95,7 @@ func main() {
         log.Fatalln(err)
     }
     
-    w.GetByID(2172797)
+    w.CurrentByID(2172797)
     fmt.Println(w)
 }
 ```
