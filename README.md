@@ -39,7 +39,7 @@ package main
 import github.com/briandowns/openweathermap
 
 func main() {
-    w, err := New("imperial")
+    w, err := openweathermap.New("imperial")
     if err != nil {
         log.Fatalln(err)
     }
@@ -53,7 +53,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := New("metric")
+    w, err := openweathermap.New("metric")
     if err != nil {
         log.Fatalln(err)
     }
@@ -67,7 +67,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := New("imperial")
+    w, err := openweathermap.New("imperial")
     if err != nil {
         log.Fatalln(err)
     }
@@ -86,7 +86,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := New("metric")
+    w, err := openweathermap.New("metric")
     if err != nil {
         log.Fatalln(err)
     }
