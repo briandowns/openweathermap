@@ -6,6 +6,7 @@ import (
 )
 
 type ForecastWeatherData struct {
+	Units   string
 }
 
 // NewHistorical returns a new HistoricalWeatherData pointer with the supplied
