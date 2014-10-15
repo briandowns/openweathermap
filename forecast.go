@@ -40,11 +40,11 @@ type ForecastWeaatherList struct {
 }
 
 type ForecastWeatherData struct {
-	COD     string  `json:"cod"`
-	Message float64 `json:"message"`
-	City    City    `json:"city"`
-	Cnt     int     `json:"cnt"`
-	List    `json:"list"`
+	COD     string                 `json:"cod"`
+	Message float64                `json:"message"`
+	City    City                   `json:"city"`
+	Cnt     int                    `json:"cnt"`
+	List    []ForecastWeaatherList `json:"list"`
 	Units   string
 }
 
