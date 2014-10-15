@@ -136,12 +136,12 @@ var CloudConditions = []*ConditionData{
 
 var ExtremeConditions = []*ConditionData{
 	&ConditionData{ID: 900, Meaning: "tornado", Icon: ""},
-	&ConditionData{ID: 900, Meaning: "tropical storm", Icon: ""},
-	&ConditionData{ID: 900, Meaning: "hurricane", Icon: ""},
-	&ConditionData{ID: 900, Meaning: "cold", Icon: ""},
-	&ConditionData{ID: 900, Meaning: "hot", Icon: ""},
-	&ConditionData{ID: 900, Meaning: "windy", Icon: ""},
-	&ConditionData{ID: 900, Meaning: "hail", Icon: ""},
+	&ConditionData{ID: 901, Meaning: "tropical storm", Icon: ""},
+	&ConditionData{ID: 902, Meaning: "hurricane", Icon: ""},
+	&ConditionData{ID: 903, Meaning: "cold", Icon: ""},
+	&ConditionData{ID: 904, Meaning: "hot", Icon: ""},
+	&ConditionData{ID: 905, Meaning: "windy", Icon: ""},
+	&ConditionData{ID: 906, Meaning: "hail", Icon: ""},
 }
 
 var AdditionalConditions = []*ConditionData{
