@@ -27,7 +27,7 @@ type City struct {
 	Sys        ForecastSys `json:"sys"`
 }
 
-type ForecastWeaatherList struct {
+type ForecastWeatherList struct {
 	Dt       int         `json:"dt"`
 	Temp     Temperature `json:"temp"`
 	Pressure float64     `json:"pressure"`
@@ -40,11 +40,11 @@ type ForecastWeaatherList struct {
 }
 
 type ForecastWeatherData struct {
-	COD     string                 `json:"cod"`
-	Message float64                `json:"message"`
-	City    City                   `json:"city"`
-	Cnt     int                    `json:"cnt"`
-	List    []ForecastWeaatherList `json:"list"`
+	COD     string                `json:"cod"`
+	Message float64               `json:"message"`
+	City    City                  `json:"city"`
+	Cnt     int                   `json:"cnt"`
+	List    []ForecastWeatherList `json:"list"`
 	Units   string
 }
 
