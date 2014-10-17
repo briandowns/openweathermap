@@ -1,7 +1,12 @@
 package openweathermap
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"strings"
 )
 
@@ -58,4 +63,24 @@ func NewForecast(unit string) (*ForecastWeatherData, error) {
 		}
 	}
 	return nil, errors.New("ERROR: unit of measure not available")
+}
+
+// DailyByName will provide a forecast for the location given for the
+// number of days given.
+func (f *ForecastWeatherData) DailyByName(location string, days int) {
+	response, err := http.Get(fmt.Sprintf(forecastBase, location, f.Units, days))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer response.Body.Close()
+
+	result, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = json.Unmarshal(result, &f)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
