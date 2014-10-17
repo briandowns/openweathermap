@@ -84,3 +84,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) {
 		log.Fatalln(err)
 	}
 }
+
+func (f *ForecastWeatherData) DailyByName() {}
+
+func (f *ForecastWeatherData) DailyByCoordinates() {}
