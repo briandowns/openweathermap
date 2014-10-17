@@ -14,6 +14,14 @@ For more detail about the library and its features, reference your local godoc o
 - By City ID
 - By Longitude and Latitude
 
+## Forecast
+
+- Daily Forecast by x number of days with the same parameters from above. Mostly still in the works...
+
+## Historical Conditions
+
+- Historical conditions still in the works...
+
 ### Access to Condition Codes and Icons
 
 - Thunderstorms
