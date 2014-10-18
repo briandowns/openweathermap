@@ -51,7 +51,7 @@ import (
 )
 
 func main() {
-    w, err := openweathermap.New("imperial")
+    w, err := openweathermap.NewCurrent("imperial")
     if err != nil {
         log.Fatalln(err)
     }
@@ -65,7 +65,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := openweathermap.New("metric")
+    w, err := openweathermap.NewCurrent("metric")
     if err != nil {
         log.Fatalln(err)
     }
@@ -79,7 +79,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := openweathermap.New("imperial")
+    w, err := openweathermap.NewCurrent("imperial")
     if err != nil {
         log.Fatalln(err)
     }
@@ -98,7 +98,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := openweathermap.New("metric")
+    w, err := openweathermap.NewCurrent("metric")
     if err != nil {
         log.Fatalln(err)
     }

@@ -85,6 +85,10 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) {
 	}
 }
 
-func (f *ForecastWeatherData) DailyByName() {}
+// DailyByID will provide a forecast for the location ID give for the
+// number of days given.
+func (f *ForecastWeatherData) DailyByID() {}
 
+// DailyByCoordinates will provide a forecast for the coordinates ID give for the
+// number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates() {}
