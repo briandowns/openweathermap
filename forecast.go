@@ -85,10 +85,26 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) {
 	}
 }
 
-// DailyByID will provide a forecast for the location ID give for the
-// number of days given.
-func (f *ForecastWeatherData) DailyByID() {}
-
 // DailyByCoordinates will provide a forecast for the coordinates ID give for the
 // number of days given.
-func (f *ForecastWeatherData) DailyByCoordinates() {}
+func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates) {}
+
+// DailyByID will provide a forecast for the location ID give for the
+// number of days given.
+func (f *ForecastWeatherData) DailyByID(id int, days int) {
+	response, err := http.Get(fmt.Sprintf(forecastBase, id, f.Units, days))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer response.Body.Close()
+
+	result, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = json.Unmarshal(result, &f)
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
