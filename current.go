@@ -99,4 +99,6 @@ func (w *CurrentWeatherData) CurrentByID(id int) {
 	}
 }
 
-func (w *CurrentWeatherData) GetByArea() {}
+// CurrentByArea will provide the current weather for the
+// provided area.
+func (w *CurrentWeatherData) CurrentByArea() {}
