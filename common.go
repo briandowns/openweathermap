@@ -1,10 +1,10 @@
 package openweathermap
 
 const (
-	baseUrl      string = "http://api.openweathermap.org/data/2.5/weather?%s"
-	iconUrl      string = "http://openweathermap.org/img/w/%s"
-	stationUrl   string = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecastBase string = "http://api.openweathermap.org/data/2.5/forecast/daily?q=%s&mode=json&units=%s&cnt=%d"
+	baseUrl    string = "http://api.openweathermap.org/data/2.5/weather?%s"
+	iconUrl    string = "http://openweathermap.org/img/w/%s"
+	stationUrl string = "http://api.openweathermap.org/data/2.5/station?id=%d"
+	forecastBase string = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
 )
 
 var (
