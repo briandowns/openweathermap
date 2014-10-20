@@ -11,6 +11,13 @@ var (
 	dataUnits = [3]string{"metric", "imperial", "internal"}
 )
 
+// Config will hold default settings to be passed into the
+// "New..." function.
+type Config struct {
+	Mode  string // JSON or XML
+	Units string // Imperial, metric, or internal
+}
+
 // APIError returned on failed API calls.
 type APIError struct {
 	Message string `json:"message"`
