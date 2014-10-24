@@ -4,7 +4,7 @@
 
 For more detail about the library and its features, reference your local godoc once installed.
 
-## Features 
+## Features
 
 ### Current Weather Conditions
 
@@ -16,7 +16,7 @@ For more detail about the library and its features, reference your local godoc o
 
 ## Forecast
 
-- Daily Forecast by x number of days with the same parameters from above. Mostly still in the works...
+- Daily Forecast for given number of days with the same parameters from above. Mostly still in the works...
 
 ## Historical Conditions
 
@@ -55,7 +55,7 @@ func main() {
     if err != nil {
         log.Fatalln(err)
     }
-    
+
     w.CurrentByName("Phoenix")
     fmt.Println(w)
 }
@@ -69,7 +69,7 @@ func main() {
     if err != nil {
         log.Fatalln(err)
     }
-    
+
     w.CurrentByName("Phoenix,AZ")
     fmt.Println(w)
 }
@@ -83,7 +83,7 @@ func main() {
     if err != nil {
         log.Fatalln(err)
     }
-    
+
     w.CurrentByCoordinates(
     		&Coordinates{
     			Longitude: -112.07,
@@ -102,7 +102,7 @@ func main() {
     if err != nil {
         log.Fatalln(err)
     }
-    
+
     w.CurrentByID(2172797)
     fmt.Println(w)
 }
