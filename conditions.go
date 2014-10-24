@@ -25,7 +25,7 @@ type ConditionData struct {
 }
 
 // RetrieveIcon will get the specified icon from the API.
-func RetrieveIcon(destination string, iconFile string) (int64, error) {
+func RetrieveIcon(destination, iconFile string) (int64, error) {
 	fullFilePath := fmt.Sprintf("%s/%s", destination, iconFile)
 
 	if _, err := os.Stat(fullFilePath); err != nil {
