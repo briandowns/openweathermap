@@ -157,4 +157,3 @@ var AdditionalConditions = []*ConditionData{
 	&ConditionData{ID: 960, Meaning: "storm", Icon1: ""},
 	&ConditionData{ID: 961, Meaning: "violent storm", Icon1: ""},
 	&ConditionData{ID: 962, Meaning: "hurricane", Icon1: ""},
-}
