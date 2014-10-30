@@ -4,10 +4,11 @@
 
 ### Reporting an Issue
 
-* Please add the issue [here](https://github.com/briandowns/openweathermap/issues) and utilize the appropriate label prior to any pull requests.
+* Please add the issue [here](https://github.com/briandowns/openweathermap/issues) and utilize the appropriate label prior.
 
-## Fixing Problems / Adding Features
+## Fixing Problems and/or Adding Features
 
-* After submitting the issue, feel free to fork and fix the issue(s).  If at all possible, provide a test for the submitted code.
+* Feel free to fork and fix the issue(s).  If at all possible, provide a test for the submitted code.  Features and bugs won't be merged unless there's an associated issue logged.
 
 * Once the pull request is submitted, it'll be tested and merged.
+
