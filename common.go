@@ -46,7 +46,7 @@ type Wind struct {
 	Deg   int     `json:"deg"`
 }
 
-// Weather struct holds high-level basic info on the returned
+// Weather struct holds high-level, basic info on the returned
 // data.
 type Weather struct {
 	Id          int    `json:"id"`
