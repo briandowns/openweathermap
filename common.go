@@ -71,9 +71,9 @@ type Clouds struct {
 
 // ValidDataUnit makes sure the string passed in is an accepted
 // unit of measure to be used for the return data.
-func ValidDataUnit(h *HistoricalWeatherData) bool {
+func ValidDataUnit(u string) bool {
 	for _, m := range dataUnits {
-		if h.Units == m {
+		if u == m {
 			return true
 		}
 	}
