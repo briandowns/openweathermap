@@ -11,17 +11,17 @@ func TestRetrieveIcon(t *testing.T) {
 	iconFile := "01d.png"
 	s, err := RetrieveIcon(tmpDir, iconFile)
 	if err != nil {
-		t.Error("Unable to retrieve icon file")
+		t.Error(err)
 	}
 	f, err := os.Stat(fmt.Sprintf("%s/%s", tmpDir, iconFile))
 	if err != nil {
-		t.Error("Test file does not exist")
+		t.Error(err)
 	}
 	if f.Size() != s {
 		t.Error("Size of downloaded file does not match actual size of file")
 	}
 	err = os.Remove(fmt.Sprintf("%s/%s", tmpDir, iconFile))
 	if err != nil {
-		t.Error("Unable to delete test file")
+		t.Error(err)
 	}
 }
