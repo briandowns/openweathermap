@@ -68,3 +68,14 @@ type Main struct {
 type Clouds struct {
 	All int `json:"all"`
 }
+
+// ValidDataUnit makes sure the string passed in is an accepted
+// unit of measure to be used for the return data.
+func ValidDataUnit(h *HistoricalWeatherData) bool {
+	for _, m := range dataUnits {
+		if h.Units == m {
+			return true
+		}
+	}
+	return false
+}
