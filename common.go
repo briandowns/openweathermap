@@ -25,8 +25,10 @@ var (
 // Config will hold default settings to be passed into the
 // "New..." function.
 type Config struct {
-	Mode  string // JSON or XML
-	Units string // Imperial, metric, or internal
+	// User choice of JSON or XML
+	Mode string
+	// Imperial, metric, or internal
+	Units string
 }
 
 // APIError returned on failed API calls.
@@ -43,8 +45,8 @@ type Coordinates struct {
 	Latitude  float64 `json:"lat"`
 }
 
-// Sys struct contains general information about the request and the
-// surrounding area for where the request was made.
+// Sys struct contains general information about the request
+// and the surrounding area for where the request was made.
 type Sys struct {
 	Type    int     `json:"type"`
 	Id      int     `json:"id"`

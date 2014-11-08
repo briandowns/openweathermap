@@ -85,8 +85,8 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) {
 	}
 }
 
-// DailyByCoordinates will provide a forecast for the coordinates ID give for the
-// number of days given.
+// DailyByCoordinates will provide a forecast for the coordinates ID give
+// for the number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Units, days))
 	if err != nil {

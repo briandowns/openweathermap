@@ -49,8 +49,8 @@ type HistoricalWeatherData struct {
 	Units    string
 }
 
-// NewHistorical returns a new HistoricalWeatherData pointer with the supplied
-// arguments.
+// NewHistorical returns a new HistoricalWeatherData pointer with
+//the supplied arguments.
 func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
 	for _, i := range dataUnits {
