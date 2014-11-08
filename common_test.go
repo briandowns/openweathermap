@@ -12,7 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// openweathermap is a library for use to collect data using the
-// http://openweathermap.org API.  Though XML is available via the
-// API, JSON is the only format supported at this time.
 package openweathermap
+
+import (
+	"testing"
+)
+
+// TestValidDataUnit tests whether or not ValidDataUnit provides
+// the correct assertion on provided data unit.
+func TestValidDataUnit(t *testing.T) {
+	if !ValidDataUnit("imperial") {
+		t.Error("False positive on data unit")
+	}
+	if ValidDataUnit("anything") {
+		t.Error("Invalid data unit")
+	}
+}
