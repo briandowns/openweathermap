@@ -35,7 +35,7 @@ type CurrentWeatherData struct {
 	Wind    Wind        `json:"wind"`
 	Clouds  Clouds      `json:"clouds"`
 	Dt      int         `json:"dt"`
-	Id      int         `json:"id"`
+	ID      int         `json:"id"`
 	Name    string      `json:"name"`
 	Cod     int         `json:"cod"`
 	Units   string

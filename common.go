@@ -15,11 +15,11 @@
 package openweathermap
 
 var (
-	baseUrl      string = "http://api.openweathermap.org/data/2.5/weather?%s"
-	iconUrl      string = "http://openweathermap.org/img/w/%s"
-	stationUrl   string = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecastBase string = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
-	dataUnits           = [3]string{"metric", "imperial", "internal"}
+	baseURL      = "http://api.openweathermap.org/data/2.5/weather?%s"
+	iconURL      = "http://openweathermap.org/img/w/%s"
+	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
+	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
+	dataUnits    = [3]string{"metric", "imperial", "internal"}
 )
 
 // Config will hold default settings to be passed into the
@@ -49,7 +49,7 @@ type Coordinates struct {
 // and the surrounding area for where the request was made.
 type Sys struct {
 	Type    int     `json:"type"`
-	Id      int     `json:"id"`
+	ID      int     `json:"id"`
 	Message float64 `json:"message"`
 	Country string  `json:"country"`
 	Sunrise int     `json:"sunrise"`
@@ -65,7 +65,7 @@ type Wind struct {
 // Weather struct holds high-level, basic info on the returned
 // data.
 type Weather struct {
-	Id          int    `json:"id"`
+	ID          int    `json:"id"`
 	Main        string `json:"main"`
 	Description string `json:"description"`
 	Icon        string `json:"icon"`

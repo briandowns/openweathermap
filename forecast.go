@@ -10,10 +10,12 @@ import (
 	"strings"
 )
 
+// ForecastSys area population
 type ForecastSys struct {
 	Population int `json:"population"`
 }
 
+// Temperature holds returned termperate sure stats
 type Temperature struct {
 	Day   float64 `json:"day"`
 	Min   float64 `json:"min"`
@@ -23,6 +25,7 @@ type Temperature struct {
 	Morn  float64 `json:"morn"`
 }
 
+// City data
 type City struct {
 	ID         int         `json:"id"`
 	Name       string      `json:"name"`
@@ -32,6 +35,7 @@ type City struct {
 	Sys        ForecastSys `json:"sys"`
 }
 
+// ForecastWeatherList holds specific query  data
 type ForecastWeatherList struct {
 	Dt       int         `json:"dt"`
 	Temp     Temperature `json:"temp"`
@@ -44,6 +48,7 @@ type ForecastWeatherList struct {
 	Rain     int         `json:"rain"`
 }
 
+// ForecastWeatherData will hold returned data from queries
 type ForecastWeatherData struct {
 	COD     string                `json:"cod"`
 	Message float64               `json:"message"`
@@ -53,8 +58,8 @@ type ForecastWeatherData struct {
 	Units   string
 }
 
-// NewHistorical returns a new HistoricalWeatherData pointer with the supplied
-// arguments.
+// NewForecast returns a new HistoricalWeatherData pointer with
+// the supplied arguments.
 func NewForecast(unit string) (*ForecastWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
 	for _, i := range dataUnits {
