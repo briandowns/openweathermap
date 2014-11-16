@@ -20,7 +20,9 @@ import (
 )
 
 func TestNewCurrent(t *testing.T) {
+	t.Parallel()
 	for _, u := range dataUnits {
+		t.Logf("Data unit: %s", u)
 		if ValidDataUnit(u) {
 			c, err := NewCurrent(u)
 			if err != nil {
@@ -38,17 +40,30 @@ func TestNewCurrent(t *testing.T) {
 func TestCurrentByName(t *testing.T) {
 	c, err := NewCurrent("imperial")
 	if err != nil {
-		t.Error("")
+		t.Error("Error creating instance of CurrentWeatherData")
 	}
 	c.CurrentByName("Philadelphia")
 }
 
 func TestCurrentByCoordinates(t *testing.T) {
-
+	c, err := NewCurrent("imperial")
+	if err != nil {
+		t.Error("Error creating instance of CurrentWeatherData")
+	}
+	c.CurrentByCoordinates(
+		&Coordinates{
+			Longitude: -112.07,
+			Latitude:  33.45,
+		},
+	)
 }
 
 func TestCurrentByID(t *testing.T) {
-
+	c, err := NewCurrent("metric")
+	if err != nil {
+		t.Error("Error creating instance of CurrentWeatherData")
+	}
+	c.CurrentByID(5344157)
 }
 
 func TestCurrentByArea(t *testing.T) {}
