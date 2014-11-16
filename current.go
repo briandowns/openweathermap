@@ -84,7 +84,7 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) {
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	err = json.Unmarshal(result, &w)
@@ -104,7 +104,7 @@ func (w *CurrentWeatherData) CurrentByID(id int) {
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	err = json.Unmarshal(result, &w)
