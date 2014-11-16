@@ -15,6 +15,7 @@
 package openweathermap
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -24,13 +25,16 @@ func TestNewCurrent(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+		if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
+			t.Error("ERROR: incorrect data type returned")
+		}
 	} else {
 		t.Error("ERROR: unusable data unit")
 	}
 }
 
 func TestCurrentByName(t *testing.T) {
-
+	//c.CurrentByName("Philadelphia")
 }
 
 func TestCurrentByCoordinates(t *testing.T) {
