@@ -45,6 +45,7 @@ type ForecastWeatherList struct {
 	Speed    float64     `json:"speed"`
 	Deg      int         `json:"deg"`
 	Clouds   int         `json:"clouds"`
+	Snow     float64     `json:"snow"`
 	Rain     int         `json:"rain"`
 }
 

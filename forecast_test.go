@@ -19,6 +19,8 @@ import (
 	"testing"
 )
 
+var forecastRange = []int{3, 7, 10}
+
 func TestNewForecast(t *testing.T) {
 	t.Parallel()
 	for _, u := range dataUnits {
@@ -42,7 +44,9 @@ func TestDailyByName(t *testing.T) {
 	if err != nil {
 		t.Error("")
 	}
-	f.DailyByName("Dubai", 3)
+	for _, d := range forecastRange {
+		f.DailyByName("Dubai", d)
+	}
 }
 
 func TestDailyByCoordinates(t *testing.T) {}
