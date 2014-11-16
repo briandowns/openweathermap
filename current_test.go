@@ -20,21 +20,27 @@ import (
 )
 
 func TestNewCurrent(t *testing.T) {
-	if ValidDataUnit("metric") {
-		c, err := NewCurrent("metric")
-		if err != nil {
-			t.Error(err)
+	for _, u := range dataUnits {
+		if ValidDataUnit(u) {
+			c, err := NewCurrent(u)
+			if err != nil {
+				t.Error(err)
+			}
+			if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
+				t.Error("ERROR: incorrect data type returned")
+			}
+		} else {
+			t.Errorf("ERROR: unusable data unit - %s", u)
 		}
-		if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
-			t.Error("ERROR: incorrect data type returned")
-		}
-	} else {
-		t.Error("ERROR: unusable data unit")
 	}
 }
 
 func TestCurrentByName(t *testing.T) {
-	//c.CurrentByName("Philadelphia")
+	c, err := NewCurrent("imperial")
+	if err != nil {
+		t.Error("")
+	}
+	c.CurrentByName("Philadelphia")
 }
 
 func TestCurrentByCoordinates(t *testing.T) {

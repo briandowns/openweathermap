@@ -59,7 +59,7 @@ type Sys struct {
 // Wind struct contains the speed and degree of the wind.
 type Wind struct {
 	Speed float64 `json:"speed"`
-	Deg   int     `json:"deg"`
+	Deg   float64 `json:"deg"`
 }
 
 // Weather struct holds high-level, basic info on the returned
