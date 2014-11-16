@@ -42,12 +42,34 @@ func TestNewForecast(t *testing.T) {
 func TestDailyByName(t *testing.T) {
 	f, err := NewForecast("imperial")
 	if err != nil {
-		t.Error("")
+		t.Error(err)
 	}
 	for _, d := range forecastRange {
 		f.DailyByName("Dubai", d)
 	}
 }
 
-func TestDailyByCoordinates(t *testing.T) {}
-func TestDailyByID(t *testing.T)          {}
+func TestDailyByCoordinates(t *testing.T) {
+	f, err := NewForecast("internal")
+	if err != nil {
+		t.Error(err)
+	}
+	for _, d := range forecastRange {
+		f.DailyByCoordinates(
+			&Coordinates{
+				Longitude: -112.07,
+				Latitude:  33.45,
+			}, d,
+		)
+	}
+}
+
+func TestDailyByID(t *testing.T) {
+	f, err := NewForecast("metric")
+	if err != nil {
+		t.Error(err)
+	}
+	for _, d := range forecastRange {
+		f.DailyByID(524901, d)
+	}
+}

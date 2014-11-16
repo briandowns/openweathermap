@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -114,7 +115,7 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 // DailyByID will provide a forecast for the location ID give for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) {
-	response, err := http.Get(fmt.Sprintf(forecastBase, "id", id, f.Units, days))
+	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Units, days))
 	if err != nil {
 		log.Fatalln(err)
 	}
