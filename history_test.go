@@ -15,24 +15,24 @@
 package openweathermap
 
 import (
+	"reflect"
 	"testing"
 )
 
-func validDataUnit(h *HistoricalWeatherData) bool {
-	for _, m := range dataUnits {
-		if h.Units == m {
-			return true
+func TestNewHistory(t *testing.T) {
+	t.Parallel()
+	for _, u := range dataUnits {
+		t.Logf("Data unit: %s", u)
+		if ValidDataUnit(u) {
+			c, err := NewHistorical(u)
+			if err != nil {
+				t.Error(err)
+			}
+			if reflect.TypeOf(c).String() != "*openweathermap.HistoricalWeatherData" {
+				t.Error("ERROR: incorrect data type returned")
+			}
+		} else {
+			t.Errorf("ERROR: unusable data unit - %s", u)
 		}
-	}
-	return false
-}
-
-func TestNewHistorical(t *testing.T) {
-	h, err := NewHistorical("imperial")
-	if err != nil {
-		t.Error("Failed creating instance of HistoricalWeatherData")
-	}
-	if !validDataUnit(h) {
-		t.Error("Invalid data unit")
 	}
 }
