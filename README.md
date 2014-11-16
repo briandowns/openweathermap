@@ -1,4 +1,4 @@
-# OpenWeatherMap Go SDK
+# OpenWeatherMap Go API
 
 [![GoDoc](https://godoc.org/github.com/briandowns/openweathermap?status.svg)](https://godoc.org/github.com/briandowns/openweathermap) [![Build Status](https://travis-ci.org/briandowns/openweathermap.svg?branch=master)](https://travis-ci.org/briandowns/openweathermap)
 
