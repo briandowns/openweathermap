@@ -15,15 +15,35 @@
 package openweathermap
 
 import (
+	"reflect"
 	"testing"
 )
 
 func TestNewForecast(t *testing.T) {
-	f, err := NewForecast("imperial")
-	if err != nil {
-		t.Error(err)
-	}
-	if !ValidDataUnit(f.Units) {
-		t.Error("Failed creating instance of HistoricalWeatherData")
+	t.Parallel()
+	for _, u := range dataUnits {
+		t.Logf("Data unit: %s", u)
+		if ValidDataUnit(u) {
+			c, err := NewForecast(u)
+			if err != nil {
+				t.Error(err)
+			}
+			if reflect.TypeOf(c).String() != "*openweathermap.ForecastWeatherData" {
+				t.Error("ERROR: incorrect data type returned")
+			}
+		} else {
+			t.Errorf("ERROR: unusable data unit - %s", u)
+		}
 	}
 }
+
+func TestDailyByName(t *testing.T) {
+	f, err := NewForecast("imperial")
+	if err != nil {
+		t.Error("")
+	}
+	f.DailyByName("Dubai", 3)
+}
+
+func TestDailyByCoordinates(t *testing.T) {}
+func TestDailyByID(t *testing.T)          {}
