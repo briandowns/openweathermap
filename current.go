@@ -45,8 +45,8 @@ type CurrentWeatherData struct {
 // arguments.
 func NewCurrent(unit string) (*CurrentWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
-	for _, i := range dataUnits {
-		if strings.Contains(unitChoice, i) {
+	for d, _ := range dataUnits {
+		if strings.Contains(unitChoice, d) {
 			return &CurrentWeatherData{Units: unitChoice}, nil
 		}
 	}

@@ -21,10 +21,10 @@ import (
 
 func TestNewCurrent(t *testing.T) {
 	t.Parallel()
-	for _, u := range dataUnits {
-		t.Logf("Data unit: %s", u)
-		if ValidDataUnit(u) {
-			c, err := NewCurrent(u)
+	for d, _ := range dataUnits {
+		t.Logf("Data unit: %s", d)
+		if ValidDataUnit(d) {
+			c, err := NewCurrent(d)
 			if err != nil {
 				t.Error(err)
 			}
@@ -32,7 +32,7 @@ func TestNewCurrent(t *testing.T) {
 				t.Error("ERROR: incorrect data type returned")
 			}
 		} else {
-			t.Errorf("ERROR: unusable data unit - %s", u)
+			t.Errorf("ERROR: unusable data unit - %s", d)
 		}
 	}
 }

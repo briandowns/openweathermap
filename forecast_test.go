@@ -23,10 +23,10 @@ var forecastRange = []int{3, 7, 10}
 
 func TestNewForecast(t *testing.T) {
 	t.Parallel()
-	for _, u := range dataUnits {
-		t.Logf("Data unit: %s", u)
-		if ValidDataUnit(u) {
-			c, err := NewForecast(u)
+	for d, _ := range dataUnits {
+		t.Logf("Data unit: %s", d)
+		if ValidDataUnit(d) {
+			c, err := NewForecast(d)
 			if err != nil {
 				t.Error(err)
 			}
@@ -34,7 +34,7 @@ func TestNewForecast(t *testing.T) {
 				t.Error("ERROR: incorrect data type returned")
 			}
 		} else {
-			t.Errorf("ERROR: unusable data unit - %s", u)
+			t.Errorf("ERROR: unusable data unit - %s", d)
 		}
 	}
 }

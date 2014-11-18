@@ -53,8 +53,8 @@ type HistoricalWeatherData struct {
 //the supplied arguments.
 func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
-	for _, i := range dataUnits {
-		if strings.Contains(unitChoice, i) {
+	for d, _ := range dataUnits {
+		if strings.Contains(unitChoice, d) {
 			return &HistoricalWeatherData{Units: unitChoice}, nil
 		}
 	}
