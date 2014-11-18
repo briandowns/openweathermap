@@ -21,14 +21,10 @@ import (
 // TestValidDataUnit tests whether or not ValidDataUnit provides
 // the correct assertion on provided data unit.
 func TestValidDataUnit(t *testing.T) {
-	if !ValidDataUnit("metric") {
-		t.Error("False positive on data unit")
-	}
-	if !ValidDataUnit("imperial") {
-		t.Error("False positive on data unit")
-	}
-	if !ValidDataUnit("internal") {
-		t.Error("False positive on data unit")
+	for u, _ := range dataUnits {
+		if !ValidDataUnit(u) {
+			t.Error("False positive on data unit")
+		}
 	}
 	if ValidDataUnit("anything") {
 		t.Error("Invalid data unit")
@@ -36,5 +32,12 @@ func TestValidDataUnit(t *testing.T) {
 }
 
 func TestDataUnitValues(t *testing.T) {
-
+	for _, s := range dataUnits {
+		if !ValidDataUnitSymbol(s) {
+			t.Error("False positive on data unit symbol")
+		}
+	}
+	if ValidDataUnitSymbol("X") {
+		t.Error("Invalid data unit symbol")
+	}
 }
