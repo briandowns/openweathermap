@@ -34,3 +34,7 @@ func TestValidDataUnit(t *testing.T) {
 		t.Error("Invalid data unit")
 	}
 }
+
+func TestDataUnitValues(t *testing.T) {
+
+}

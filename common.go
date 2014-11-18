@@ -95,3 +95,14 @@ func ValidDataUnit(u string) bool {
 	}
 	return false
 }
+
+// ValidDataUnitSymbol makes sure the string passed in is an
+// acceptable data unit symbol.
+func ValidDataUnitSymbol(s string) bool {
+	for _, d := range dataUnits {
+		if s == d {
+			return true
+		}
+	}
+	return false
+}
