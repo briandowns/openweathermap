@@ -41,10 +41,6 @@ Contributions welcome!
 go get github.com/briandowns/openweathermap
 ```
 
-## TODO
-
-- Tests
-
 ## Examples
 
 ```Go
