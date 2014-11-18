@@ -43,21 +43,21 @@ func RetrieveIcon(destination, iconFile string) (int64, error) {
 	fullFilePath := fmt.Sprintf("%s/%s", destination, iconFile)
 
 	if _, err := os.Stat(fullFilePath); err != nil {
-		response, getErr := http.Get(fmt.Sprintf(iconURL, iconFile))
-		if getErr != nil {
-			log.Fatalln(getErr)
+		response, err := http.Get(fmt.Sprintf(iconURL, iconFile))
+		if err != nil {
+			return 0, err
 		}
 		defer response.Body.Close()
 
-		out, createErr := os.Create(fullFilePath)
-		if createErr != nil {
-			log.Fatalln(createErr)
+		out, err := os.Create(fullFilePath)
+		if err != nil {
+			return 0, err
 		}
 		defer out.Close()
 
-		n, copyErr := io.Copy(out, response.Body)
-		if copyErr != nil {
-			log.Fatalln(copyErr)
+		n, err := io.Copy(out, response.Body)
+		if err != nil {
+			return 0, err
 		}
 		return n, nil
 	}
