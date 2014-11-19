@@ -35,4 +35,8 @@ func TestNewHistory(t *testing.T) {
 			t.Errorf("ERROR: unusable data unit - %s", d)
 		}
 	}
+	_, err := NewHistorical("asdf")
+	if err == nil {
+		t.Error("ERROR: created instance when it shouldn't have")
+	}
 }
