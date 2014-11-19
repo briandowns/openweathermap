@@ -35,18 +35,22 @@ func TestNewCurrent(t *testing.T) {
 			t.Errorf("ERROR: unusable data unit - %s", d)
 		}
 	}
+	_, err := NewCurrent("asdf")
+	if err == nil {
+		t.Error("ERROR: created instance when it shouldn't have")
+	}
 }
 
 func TestCurrentByName(t *testing.T) {
-	testCities := []string{"Philadelphia", "Newark"}
+	testCities := []string{"Philadelphia", "Newark", "Helena"}
 	c, err := NewCurrent("imperial")
 	if err != nil {
-		t.Error("Error creating instance of CurrentWeatherData")
+		t.Error(err)
 	}
 	for _, city := range testCities {
 		c.CurrentByName(city)
 		if c.Name != city {
-			t.Error("ERROR: Incorrect city returned from call")
+			t.Error("ERROR: Incorrect city returned")
 		}
 	}
 }
