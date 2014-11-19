@@ -19,7 +19,7 @@ var (
 	iconURL      = "http://openweathermap.org/img/w/%s"
 	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
-	dataUnits    = map[string]string{"metric": "C", "imperial": "F", "internal": "K"}
+	DataUnits    = map[string]string{"metric": "C", "imperial": "F", "internal": "K"}
 )
 
 // Config will hold default settings to be passed into the
