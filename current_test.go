@@ -38,11 +38,17 @@ func TestNewCurrent(t *testing.T) {
 }
 
 func TestCurrentByName(t *testing.T) {
+	testCities := []string{"Philadelphia", "Newark"}
 	c, err := NewCurrent("imperial")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
-	c.CurrentByName("Philadelphia")
+	for _, city := range testCities {
+		c.CurrentByName(city)
+		if c.Name != city {
+			t.Error("ERROR: Incorrect city returned from call")
+		}
+	}
 }
 
 func TestCurrentByCoordinates(t *testing.T) {
