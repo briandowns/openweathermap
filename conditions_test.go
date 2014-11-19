@@ -23,32 +23,23 @@ import (
 // TestRetrieveIcon will test the retrieval of icons from the API.
 func TestRetrieveIcon(t *testing.T) {
 	tmpDir := "/tmp"
-	iconFile1 := "01d.png"
-	iconFile2 := "n7m.png"
-	s1, err := RetrieveIcon(tmpDir, iconFile1)
-	if err != nil {
-		t.Error(err)
-	}
-	f, err := os.Stat(fmt.Sprintf("%s/%s", tmpDir, iconFile1))
-	if err != nil {
-		t.Error(err)
-	}
-	if f.Size() != s1 {
-		t.Error("Size of downloaded file does not match actual size of file")
-	}
-	err = os.Remove(fmt.Sprintf("%s/%s", tmpDir, iconFile1))
-	if err != nil {
-		t.Error(err)
-	}
-	s2, err := RetrieveIcon(tmpDir, iconFile2)
-	if err != nil {
-		t.Error(err)
-	}
-	if f.Size() == s2 {
-		t.Error("Found bunk file and downloaded it...")
-	}
-	err = os.Remove(fmt.Sprintf("%s/%s", tmpDir, iconFile2))
-	if err != nil {
-		t.Error(err)
+	iconFiles := []string{"01d.png", "n7m.png"}
+
+	for _, iconFile := range iconFiles {
+		size, err := RetrieveIcon(tmpDir, iconFile)
+		if err != nil {
+			t.Error(err)
+		}
+		f, err := os.Stat(fmt.Sprintf("%s/%s", tmpDir, iconFile))
+		if err != nil {
+			t.Error(err)
+		}
+		if f.Size() != size {
+			t.Error("Size of downloaded file does not match actual size of file")
+		}
+		err = os.Remove(fmt.Sprintf("%s/%s", tmpDir, iconFile))
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
