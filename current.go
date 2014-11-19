@@ -45,10 +45,8 @@ type CurrentWeatherData struct {
 // arguments.
 func NewCurrent(unit string) (*CurrentWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
-	for d, _ := range dataUnits {
-		if strings.Contains(unitChoice, d) {
-			return &CurrentWeatherData{Units: unitChoice}, nil
-		}
+	if ValidDataUnit(unitChoice) {
+		return &CurrentWeatherData{Units: unitChoice}, nil
 	}
 	return nil, errors.New("ERROR: unit of measure not available")
 }

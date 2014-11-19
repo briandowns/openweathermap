@@ -53,10 +53,8 @@ type HistoricalWeatherData struct {
 //the supplied arguments.
 func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
-	for d, _ := range dataUnits {
-		if strings.Contains(unitChoice, d) {
-			return &HistoricalWeatherData{Units: unitChoice}, nil
-		}
+	if ValidDataUnit(unitChoice) {
+		return &HistoricalWeatherData{Units: unitChoice}, nil
 	}
 	return nil, errors.New("ERROR: unit of measure not available")
 }

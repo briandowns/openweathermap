@@ -64,10 +64,8 @@ type ForecastWeatherData struct {
 // the supplied arguments.
 func NewForecast(unit string) (*ForecastWeatherData, error) {
 	unitChoice := strings.ToLower(unit)
-	for d, _ := range dataUnits {
-		if strings.Contains(unitChoice, d) {
-			return &ForecastWeatherData{Units: unitChoice}, nil
-		}
+	if ValidDataUnit(unitChoice) {
+		return &ForecastWeatherData{Units: unitChoice}, nil
 	}
 	return nil, errors.New("ERROR: unit of measure not available")
 }
