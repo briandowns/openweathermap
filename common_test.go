@@ -21,7 +21,7 @@ import (
 // TestValidDataUnit tests whether or not ValidDataUnit provides
 // the correct assertion on provided data unit.
 func TestValidDataUnit(t *testing.T) {
-	for u, _ := range dataUnits {
+	for u, _ := range DataUnits {
 		if !ValidDataUnit(u) {
 			t.Error("False positive on data unit")
 		}
@@ -32,7 +32,7 @@ func TestValidDataUnit(t *testing.T) {
 }
 
 func TestDataUnitValues(t *testing.T) {
-	for _, s := range dataUnits {
+	for _, s := range DataUnits {
 		if !ValidDataUnitSymbol(s) {
 			t.Error("False positive on data unit symbol")
 		}

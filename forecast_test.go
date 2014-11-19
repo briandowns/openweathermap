@@ -23,7 +23,7 @@ var forecastRange = []int{3, 7, 10}
 
 func TestNewForecast(t *testing.T) {
 	t.Parallel()
-	for d, _ := range dataUnits {
+	for d, _ := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
 			c, err := NewForecast(d)

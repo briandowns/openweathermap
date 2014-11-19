@@ -21,7 +21,7 @@ import (
 
 func TestNewCurrent(t *testing.T) {
 	t.Parallel()
-	for d, _ := range dataUnits {
+	for d, _ := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
 			c, err := NewCurrent(d)

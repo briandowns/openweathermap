@@ -88,7 +88,7 @@ type Clouds struct {
 // ValidDataUnit makes sure the string passed in is an accepted
 // unit of measure to be used for the return data.
 func ValidDataUnit(u string) bool {
-	for d, _ := range dataUnits {
+	for d, _ := range DataUnits {
 		if u == d {
 			return true
 		}
@@ -99,7 +99,7 @@ func ValidDataUnit(u string) bool {
 // ValidDataUnitSymbol makes sure the string passed in is an
 // acceptable data unit symbol.
 func ValidDataUnitSymbol(s string) bool {
-	for _, d := range dataUnits {
+	for _, d := range DataUnits {
 		if s == d {
 			return true
 		}
