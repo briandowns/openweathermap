@@ -19,6 +19,7 @@ import (
 	"testing"
 )
 
+// TestNewHistory verifies NewHistorical does as advertised
 func TestNewHistory(t *testing.T) {
 	t.Parallel()
 	for d, _ := range dataUnits {

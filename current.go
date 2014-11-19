@@ -56,13 +56,13 @@ func NewCurrent(unit string) (*CurrentWeatherData, error) {
 func (w *CurrentWeatherData) CurrentByName(location string) {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s"), location, w.Units))
 	if err != nil {
-		log.Fatalln(err)
+		log.Print(err)
 	}
 	defer response.Body.Close()
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatalln(err)
+		log.Print(err)
 	}
 
 	err = json.Unmarshal(result, &w)
@@ -76,7 +76,7 @@ func (w *CurrentWeatherData) CurrentByName(location string) {
 func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, w.Units))
 	if err != nil {
-		log.Fatalln(err)
+		log.Print(err)
 	}
 	defer response.Body.Close()
 
@@ -87,7 +87,7 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) {
 
 	err = json.Unmarshal(result, &w)
 	if err != nil {
-		log.Fatalln(err)
+		log.Print(err)
 	}
 }
 
@@ -96,7 +96,7 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) {
 func (w *CurrentWeatherData) CurrentByID(id int) {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "id=%d&units=%s"), id, w.Units))
 	if err != nil {
-		log.Fatalln(err)
+		log.Print(err)
 	}
 	defer response.Body.Close()
 
@@ -107,7 +107,7 @@ func (w *CurrentWeatherData) CurrentByID(id int) {
 
 	err = json.Unmarshal(result, &w)
 	if err != nil {
-		log.Fatalln(err)
+		log.Print(err)
 	}
 }
 
