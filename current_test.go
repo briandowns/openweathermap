@@ -15,17 +15,16 @@
 package openweathermap
 
 import (
-	owm "github.com/briandowns/openweathermap"
 	"reflect"
 	"testing"
 )
 
 func TestNewCurrent(t *testing.T) {
 	t.Parallel()
-	for d, _ := range owm.DataUnits {
+	for d, _ := range DataUnits {
 		t.Logf("Data unit: %s", d)
-		if owm.ValidDataUnit(d) {
-			c, err := owm.NewCurrent(d)
+		if ValidDataUnit(d) {
+			c, err := NewCurrent(d)
 			if err != nil {
 				t.Error(err)
 			}
@@ -36,7 +35,7 @@ func TestNewCurrent(t *testing.T) {
 			t.Errorf("ERROR: unusable data unit - %s", d)
 		}
 	}
-	_, err := owm.NewCurrent("asdf")
+	_, err := NewCurrent("asdf")
 	if err == nil {
 		t.Error("ERROR: created instance when it shouldn't have")
 	}
@@ -44,7 +43,7 @@ func TestNewCurrent(t *testing.T) {
 
 func TestCurrentByName(t *testing.T) {
 	testCities := []string{"Philadelphia", "Newark", "Helena"}
-	c, err := owm.NewCurrent("imperial")
+	c, err := NewCurrent("imperial")
 	if err != nil {
 		t.Error(err)
 	}
@@ -57,12 +56,12 @@ func TestCurrentByName(t *testing.T) {
 }
 
 func TestCurrentByCoordinates(t *testing.T) {
-	c, err := owm.NewCurrent("imperial")
+	c, err := NewCurrent("imperial")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
 	c.CurrentByCoordinates(
-		&owm.Coordinates{
+		&Coordinates{
 			Longitude: -112.07,
 			Latitude:  33.45,
 		},
@@ -70,7 +69,7 @@ func TestCurrentByCoordinates(t *testing.T) {
 }
 
 func TestCurrentByID(t *testing.T) {
-	c, err := owm.NewCurrent("metric")
+	c, err := NewCurrent("metric")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}

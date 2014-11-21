@@ -16,7 +16,6 @@ package openweathermap
 
 import (
 	"fmt"
-	owm "github.com/briandowns/openweathermap"
 	"os"
 	"testing"
 )
@@ -27,7 +26,7 @@ func TestRetrieveIcon(t *testing.T) {
 	iconFiles := []string{"01d.png", "n7m.png"}
 
 	for _, iconFile := range iconFiles {
-		size, err := owm.RetrieveIcon(tmpDir, iconFile)
+		size, err := RetrieveIcon(tmpDir, iconFile)
 		if err != nil {
 			t.Error(err)
 		}

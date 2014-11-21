@@ -15,30 +15,29 @@
 package openweathermap
 
 import (
-	owm "github.com/briandowns/openweathermap"
+	"reflect"
 	"testing"
 )
 
-// TestValidDataUnit tests whether or not ValidDataUnit provides
-// the correct assertion on provided data unit.
-func TestValidDataUnit(t *testing.T) {
-	for u, _ := range owm.DataUnits {
-		if !owm.ValidDataUnit(u) {
-			t.Error("False positive on data unit")
+// TestNewHistory verifies NewHistorical does as advertised
+func TestNewHistory(t *testing.T) {
+	t.Parallel()
+	for d, _ := range DataUnits {
+		t.Logf("Data unit: %s", d)
+		if ValidDataUnit(d) {
+			c, err := NewHistorical(d)
+			if err != nil {
+				t.Error(err)
+			}
+			if reflect.TypeOf(c).String() != "*openweathermap.HistoricalWeatherData" {
+				t.Error("ERROR: incorrect data type returned")
+			}
+		} else {
+			t.Errorf("ERROR: unusable data unit - %s", d)
 		}
 	}
-	if owm.ValidDataUnit("anything") {
-		t.Error("Invalid data unit")
-	}
-}
-
-func TestDataUnitValues(t *testing.T) {
-	for _, s := range owm.DataUnits {
-		if !owm.ValidDataUnitSymbol(s) {
-			t.Error("False positive on data unit symbol")
-		}
-	}
-	if owm.ValidDataUnitSymbol("X") {
-		t.Error("Invalid data unit symbol")
+	_, err := NewHistorical("asdf")
+	if err == nil {
+		t.Error("ERROR: created instance when it shouldn't have")
 	}
 }
