@@ -13,11 +13,3 @@ notifications:
       - brian.downs@gmail.com
     on_success: change
     on_failure: always
-script:
-  - go test -v ./...
-notifications:
-  email:
-    recipients:
-      - brian.downs@gmail.com
-    on_success: change
-    on_failure: always
