@@ -18,11 +18,13 @@ Contributions welcome!
 
 ## Forecast
 
-- Daily Forecast for given number of days with the same parameters from above. Mostly still in the works...
+For a given number of days.
 
-## Historical Conditions
-
-- Historical conditions still in the works...
+- By City
+- By City,St (State)
+- By City,Co (Country)
+- By City ID
+- By Longitude and Latitude
 
 ### Access to Condition Codes and Icons
 
@@ -35,6 +37,10 @@ Contributions welcome!
 - Extreme
 - Additional
 
+## Historical Conditions
+
+- ...still in the works...
+
 ## Installation
 
 ```bash
@@ -42,6 +48,8 @@ go get github.com/briandowns/openweathermap
 ```
 
 ## Examples
+
+Full example in the examples directory.
 
 ```Go
 package main
@@ -62,8 +70,6 @@ func main() {
     fmt.Println(w)
 }
 ```
-```bash
-```
 
 ```Go
 func main() {
@@ -75,8 +81,6 @@ func main() {
     w.CurrentByName("Phoenix,AZ")
     fmt.Println(w)
 }
-```
-```bash
 ```
 
 ```Go
@@ -95,8 +99,6 @@ func main() {
     fmt.Println(w)
 }
 ```
-```bash
-```
 
 ```Go
 func main() {
@@ -108,6 +110,4 @@ func main() {
     w.CurrentByID(2172797)
     fmt.Println(w)
 }
-```
-```bash
 ```
