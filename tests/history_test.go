@@ -15,65 +15,30 @@
 package openweathermap
 
 import (
+	owm "github.com/briandowns/openweathermap"
 	"reflect"
 	"testing"
 )
 
-var forecastRange = []int{3, 7, 10}
-
-func TestNewForecast(t *testing.T) {
+// TestNewHistory verifies NewHistorical does as advertised
+func TestNewHistory(t *testing.T) {
 	t.Parallel()
-	for d, _ := range DataUnits {
+	for d, _ := range owm.DataUnits {
 		t.Logf("Data unit: %s", d)
-		if ValidDataUnit(d) {
-			c, err := NewForecast(d)
+		if owm.ValidDataUnit(d) {
+			c, err := owm.NewHistorical(d)
 			if err != nil {
 				t.Error(err)
 			}
-			if reflect.TypeOf(c).String() != "*openweathermap.ForecastWeatherData" {
+			if reflect.TypeOf(c).String() != "*openweathermap.HistoricalWeatherData" {
 				t.Error("ERROR: incorrect data type returned")
 			}
 		} else {
 			t.Errorf("ERROR: unusable data unit - %s", d)
 		}
 	}
-	_, err := NewForecast("asdf")
+	_, err := owm.NewHistorical("asdf")
 	if err == nil {
 		t.Error("ERROR: created instance when it shouldn't have")
-	}
-}
-
-func TestDailyByName(t *testing.T) {
-	f, err := NewForecast("imperial")
-	if err != nil {
-		t.Error(err)
-	}
-	for _, d := range forecastRange {
-		f.DailyByName("Dubai", d)
-	}
-}
-
-func TestDailyByCoordinates(t *testing.T) {
-	f, err := NewForecast("internal")
-	if err != nil {
-		t.Error(err)
-	}
-	for _, d := range forecastRange {
-		f.DailyByCoordinates(
-			&Coordinates{
-				Longitude: -112.07,
-				Latitude:  33.45,
-			}, d,
-		)
-	}
-}
-
-func TestDailyByID(t *testing.T) {
-	f, err := NewForecast("metric")
-	if err != nil {
-		t.Error(err)
-	}
-	for _, d := range forecastRange {
-		f.DailyByID(524901, d)
 	}
 }
