@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package openweathermap is a library for use to collect data using
-// the http://openweathermap.org API.  JSON and XML are supported
-// formats to have data returned in.
+// Package openweathermap is a library for use to access the
+// http://openweathermap.org API.  JSON is the only return format supported
+// supported at this time.
 package openweathermap
