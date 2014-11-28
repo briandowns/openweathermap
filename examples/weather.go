@@ -114,7 +114,7 @@ func getCurrent(l, u string) *owm.CurrentWeatherData {
 func main() {
 	flag.Parse()
 
-	if locationFlag == nil || unitFlag == nil {
+	if len(*locationFlag) <= 1 || len(*unitFlag) <= 1 {
 		flag.Usage()
 		os.Exit(1)
 	}
