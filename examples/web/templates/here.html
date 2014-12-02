@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<title>{{.Name}}</title>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+        <div class="container">
+	    <div class="page-header">
+	        <h1>Conditions in {{.Name}}</h1>
+	    </div>
+		<p class="lead">{{range .Weather}}<img src="static/img/{{.Icon}}.png" alt="weather icon"> {{.Description}} {{end}}</p>
+	    <table class="table table-hover table-condensed" data-toggle="table" data-cache="false">
+		    <thread>
+			<tr>
+				<th>Now</th>
+				<th>High</th>
+				<th>Low</th>
+			</tr>
+	        </thread>
+			<tr><td>{{.Main.Temp}} {{.Units}}</td><td>{{.Main.TempMax}} {{.Units}}</td><td>{{.Main.TempMin}} {{.Units}}</td></tr>
+	    </table>
+	    </div>
+	</body>
+</html>
