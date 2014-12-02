@@ -71,7 +71,8 @@ type Weather struct {
 	Icon        string `json:"icon"`
 }
 
-// Main struct contains the meat and potatos of the request.
+// Main struct contains the temperates, humidity, pressure for
+// the request.
 type Main struct {
 	Temp     float64 `json:"temp"`
 	TempMin  float64 `json:"temp_min"`
