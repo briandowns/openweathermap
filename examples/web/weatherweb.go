@@ -10,7 +10,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	owm "github.com/briandowns/openweathermap"
 	"html/template"
 	"io/ioutil"
@@ -82,7 +81,7 @@ func hereHandler(w http.ResponseWriter, r *http.Request) {
 
 	t, err := template.ParseFiles("templates/here.html")
 	if err != nil {
-		fmt.Fprintf(w, "error")
+		log.Fatal(err)
 	}
 	// We're doing naughty things below... Ignoring icon file size and possible errors.
 	_, _ = owm.RetrieveIcon("static/img", wd.Weather[0].Icon+".png")
