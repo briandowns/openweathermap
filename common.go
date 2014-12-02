@@ -76,7 +76,7 @@ type Main struct {
 	Temp     float64 `json:"temp"`
 	TempMin  float64 `json:"temp_min"`
 	TempMax  float64 `json:"temp_max"`
-	Pressure int     `json:"pressure"`
+	Pressure float64 `json:"pressure"`
 	Humidity int     `json:"humidity"`
 }
 
