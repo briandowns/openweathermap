@@ -3,6 +3,7 @@
 		<title>{{.Name}}</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="http://getbootstrap.com/examples/sticky-footer/sticky-footer.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	</head>
 	<body>
@@ -22,5 +23,10 @@
 			<tr><td>{{.Main.Temp}} {{.Units}}</td><td>{{.Main.TempMax}} {{.Units}}</td><td>{{.Main.TempMin}} {{.Units}}</td></tr>
 		</table>
 		</div>
+		<footer class="footer">
+        	<div class="container">
+        	<p class="text-muted">net/http : html/template : github.com/briandowns/openweathermap : Bootstrap</p>
+      		</div>
+    	</footer>
 	</body>
 </html>
