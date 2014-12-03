@@ -15,7 +15,6 @@
 package openweathermap
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
