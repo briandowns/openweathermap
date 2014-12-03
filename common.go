@@ -19,6 +19,7 @@ var (
 	iconURL      = "http://openweathermap.org/img/w/%s"
 	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
+	dataPostURL  = "http://openweathermap.org/data/post"
 	DataUnits    = map[string]string{"metric": "C", "imperial": "F", "internal": "K"}
 )
 
@@ -29,6 +30,8 @@ type Config struct {
 	Mode string
 	// Imperial, metric, or internal
 	Units string
+	// API Key for connecting to the OWM
+	APIKey string
 }
 
 // APIError returned on failed API calls.
@@ -104,6 +107,14 @@ func ValidDataUnitSymbol(s string) bool {
 		if s == d {
 			return true
 		}
+	}
+	return false
+}
+
+// CheckAPIKeyExists will see if an API key has been set.
+func CheckAPIKeyExists(c *Config) bool {
+	if len(c.APIKey) > 1 {
+		return true
 	}
 	return false
 }

@@ -41,3 +41,12 @@ func TestDataUnitValues(t *testing.T) {
 		t.Error("Invalid data unit symbol")
 	}
 }
+
+func TestCheckAPIKeyExists(t *testing.T) {
+	c := &Config{
+		APIKey: "asdf1234",
+	}
+	if len(c.APIKey) < 1 {
+		t.Error("Key not set")
+	}
+}
