@@ -41,8 +41,8 @@ type ConditionData struct {
 func RetrieveIcon(destination, iconFile string) (int64, error) {
 	fullFilePath := fmt.Sprintf("%s/%s", destination, iconFile)
 
-	// Check to see if we've already gotten that icon file.  If so, use it rather
-	// than getting it again.
+	// Check to see if we've already gotten that icon file.  If so, use it
+	// rather than getting it again.
 	if _, err := os.Stat(fullFilePath); err != nil {
 		response, err := http.Get(fmt.Sprintf(iconURL, iconFile))
 		if err != nil {
