@@ -26,12 +26,11 @@ var (
 // Config will hold default settings to be passed into the
 // "New..." function.
 type Config struct {
-	// User choice of JSON or XML
-	Mode string
-	// Imperial, metric, or internal
-	Units string
-	// API Key for connecting to the OWM
-	APIKey string
+	Mode     string // User choice of JSON or XML
+	Units    string // Imperial, metric, or internal
+	APIKey   string // API Key for connecting to the OWM
+	Username string // Username for posting data
+	Password string // Pasword for posting data
 }
 
 // APIError returned on failed API calls.
