@@ -41,6 +41,8 @@ type ConditionData struct {
 func RetrieveIcon(destination, iconFile string) (int64, error) {
 	fullFilePath := fmt.Sprintf("%s/%s", destination, iconFile)
 
+	// Check to see if we've already gotten that icon file.  If so, use it rather
+	// than getting it again.
 	if _, err := os.Stat(fullFilePath); err != nil {
 		response, err := http.Get(fmt.Sprintf(iconURL, iconFile))
 		if err != nil {
@@ -48,19 +50,21 @@ func RetrieveIcon(destination, iconFile string) (int64, error) {
 		}
 		defer response.Body.Close()
 
+		// Create the icon file
 		out, err := os.Create(fullFilePath)
 		if err != nil {
 			return 0, err
 		}
 		defer out.Close()
 
+		// Fill the empty file with the actual content
 		n, err := io.Copy(out, response.Body)
 		if err != nil {
 			return 0, err
 		}
 		return n, nil
 	}
-	return 0, errors.New("File exists.  Using found file")
+	return 0, nil
 }
 
 // IconList is a slice of IconData pointers
