@@ -49,7 +49,7 @@ go get github.com/briandowns/openweathermap
 
 ## Examples
 
-Full example in the examples directory.
+There are a few full examples in the examples directory that can be referenced.  1 is a command line application and 1 is a simple web application.
 
 ```Go
 package main
@@ -57,11 +57,13 @@ package main
 import (
     "log"
     "fmt"
-    "github.com/briandowns/openweathermap"
+
+	// Shortening the import reference name seems to make it a bit easier
+    owm "github.com/briandowns/openweathermap"
 )
 
 func main() {
-    w, err := openweathermap.NewCurrent("imperial")
+    w, err := owm.NewCurrent("imperial")
     if err != nil {
         log.Fatalln(err)
     }
@@ -73,7 +75,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := openweathermap.NewCurrent("metric")
+    w, err := owm.NewCurrent("metric")
     if err != nil {
         log.Fatalln(err)
     }
@@ -85,7 +87,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := openweathermap.NewCurrent("imperial")
+    w, err := owm.NewCurrent("imperial")
     if err != nil {
         log.Fatalln(err)
     }
@@ -102,7 +104,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := openweathermap.NewCurrent("metric")
+    w, err := owm.NewCurrent("metric")
     if err != nil {
         log.Fatalln(err)
     }
