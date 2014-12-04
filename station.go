@@ -13,3 +13,63 @@
 // limitations under the License.
 
 package openweathermap
+
+import (
+	"fmt"
+	"net/http"
+	"net/url"
+)
+
+// Slice of type string of the valid parameters to be sent from a station.
+// The API refers to this data as the "Weather station data transmission protocol"
+var StationDataParameters = []string{
+	"wind_dir",   // Wind direction
+	"wind_speed", // Wind speed
+	"wind_gust",  // Wind gust speed
+	"temp",       // Temperature
+	"humidity",   // Relative humidty
+	"pressure",   // Atmospheric pressure
+	"rain_1h",    // Rain in the last hour
+	"rain_24h",   // Rain in the last 24 hours
+	"rain_today", // Rain since midnight
+	"snow",       // Snow in the last 24 hours
+	"lum",        // Brightness
+	"lat",        // Latitude
+	"long",       // Longitude
+	"alt",        // Altitude
+	"radiation",  // Radiation
+	"dewpoint",   // Dew point
+	"uv",         // UV index
+	"name",       // Weather station name
+}
+
+// ValidateStationDataParameter will make sure that whatever parameter
+// supplied is one that can actually be used in the POST request.
+func ValidateStationDataParameter(param string) bool {
+	for _, p := range StationDataParameters {
+		if param == p {
+			return true
+		}
+	}
+	return false
+}
+
+// convertToURLValues will convert a map to a url.Values instance.
+func convertToURLValues(data map[string]string) url.Values {
+	v := url.Values{}
+	for key, val := range data {
+		v.Set(key, val)
+	}
+	v.Encode()
+	return v
+}
+
+// SendStationData will send an instance the provided url.Values to the
+// provided URL.
+func SendStationData(data url.Values) {
+	resp, err := http.PostForm(dataPostURL, data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(resp.Body)
+}
