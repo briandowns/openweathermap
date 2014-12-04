@@ -54,14 +54,15 @@ func ValidateStationDataParameter(param string) bool {
 	return false
 }
 
-// convertToURLValues will convert a map to a url.Values instance.
-func convertToURLValues(data map[string]string) url.Values {
+// convertToURLValues will convert a map to a url.Values instance. We're
+// taking a map[string]string instead of something more type specific since
+// the url.Values instance only takes strings to create the URL values.
+func convertToURLValues(data map[string]string) string {
 	v := url.Values{}
 	for key, val := range data {
 		v.Set(key, val)
 	}
-	v.Encode()
-	return v
+	return v.Encode()
 }
 
 // SendStationData will send an instance the provided url.Values to the
