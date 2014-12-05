@@ -46,7 +46,7 @@ func TestCheckAPIKeyExists(t *testing.T) {
 	c := &Config{
 		APIKey: "asdf1234",
 	}
-	if len(c.APIKey) < 1 {
+	if !c.CheckAPIKeyExists() {
 		t.Error("Key not set")
 	}
 }
