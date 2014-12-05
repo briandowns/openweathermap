@@ -112,8 +112,5 @@ func ValidDataUnitSymbol(s string) bool {
 
 // CheckAPIKeyExists will see if an API key has been set.
 func CheckAPIKeyExists(c *Config) bool {
-	if len(c.APIKey) > 1 {
-		return true
-	}
-	return false
+	return len(c.APIKey) > 1
 }
