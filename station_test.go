@@ -15,9 +15,41 @@
 package openweathermap
 
 import (
+	"reflect"
 	"testing"
 )
 
-func TestValidateStationDataParameter(t *testing.T) {}
-func TestconvertToURLValues(t *testing.T)           {}
-func TestSendStationData(t *testing.T)              {}
+// TestValidateStationDataParameter will make sure that a parameter passed
+// to ValidateStationDataParameter is in fact a valid parameter.
+func TestValidateStationDataParameter(t *testing.T) {
+	if !ValidateStationDataParameter("name") {
+		t.Error("Unable to match field to slice member")
+	}
+	if !ValidateStationDataParameter("lum") {
+		t.Error("Unable to match field to slice member")
+	}
+	if ValidateStationDataParameter("asdf") {
+		t.Error("Found incorrect member in slice")
+	}
+	if !ValidateStationDataParameter("rain_1h") {
+		t.Error("Found incorrect member in slice")
+	}
+}
+
+// TestConvertToURLValues will make sure that ConvertToURLValues will
+// convert a map[string]string to a url.Values instance and then to string.
+func TestConvertToURLValues(t *testing.T) {
+	var count = 1
+	var urlData = make(map[string]string)
+	for _, s := range StationDataParameters {
+		urlData[s] = string(count)
+		count++
+	}
+	if reflect.TypeOf(ConvertToURLValues(urlData)).String() != "string" {
+		t.Error("Unable to convert map to url.Values to string")
+	}
+}
+
+// TestSendStationData will make sure that weather data will be sent to
+// the OpenWeatherMap API.
+func TestSendStationData(t *testing.T) {}
