@@ -52,62 +52,65 @@ func NewCurrent(unit string) (*CurrentWeatherData, error) {
 
 // CurrentByName will provide the current weather with the
 // provided location name.
-func (w *CurrentWeatherData) CurrentByName(location string) {
+func (w *CurrentWeatherData) CurrentByName(location string) error {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s"), location, w.Units))
 	if err != nil {
-		log.Print(err)
+		return err
 	}
 	defer response.Body.Close()
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Print(err)
+		return err
 	}
 
 	err = json.Unmarshal(result, &w)
 	if err != nil {
-		log.Print(err)
+		return err
 	}
+	return nil
 }
 
 // CurrentByCoordinates will provide the current weather with the
 // provided location coordinates.
-func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) {
+func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, w.Units))
 	if err != nil {
-		log.Print(err)
+		return err
 	}
 	defer response.Body.Close()
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Println(err)
+		return err
 	}
 
 	err = json.Unmarshal(result, &w)
 	if err != nil {
-		log.Print(err)
+		return err
 	}
+	return nil
 }
 
 // CurrentByID will provide the current weather with the
 // provided location ID.
-func (w *CurrentWeatherData) CurrentByID(id int) {
+func (w *CurrentWeatherData) CurrentByID(id int) error {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "id=%d&units=%s"), id, w.Units))
 	if err != nil {
-		log.Print(err)
+		return err
 	}
 	defer response.Body.Close()
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Println(err)
+		return err
 	}
 
 	err = json.Unmarshal(result, &w)
 	if err != nil {
-		log.Print(err)
+		return err
 	}
+	return nil
 }
 
 // CurrentByArea will provide the current weather for the
