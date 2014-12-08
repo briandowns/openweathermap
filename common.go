@@ -24,7 +24,7 @@ var (
 )
 
 // Config will hold default settings to be passed into the
-// "New..." function.
+// "New{current, forecast, etc}" function.
 type Config struct {
 	Mode     string // User choice of JSON or XML
 	Units    string // Imperial, metric, or internal
