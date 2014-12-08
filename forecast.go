@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -26,7 +25,7 @@ type Temperature struct {
 	Morn  float64 `json:"morn"`
 }
 
-// City data
+// City data for given location
 type City struct {
 	ID         int         `json:"id"`
 	Name       string      `json:"name"`
@@ -36,7 +35,7 @@ type City struct {
 	Sys        ForecastSys `json:"sys"`
 }
 
-// ForecastWeatherList holds specific query  data
+// ForecastWeatherList holds specific query data
 type ForecastWeatherList struct {
 	Dt       int         `json:"dt"`
 	Temp     Temperature `json:"temp"`
@@ -72,60 +71,63 @@ func NewForecast(unit string) (*ForecastWeatherData, error) {
 
 // DailyByName will provide a forecast for the location given for the
 // number of days given.
-func (f *ForecastWeatherData) DailyByName(location string, days int) {
+func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 	response, err := http.Get(fmt.Sprintf(forecastBase, "q", location, f.Units, days))
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	defer response.Body.Close()
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	err = json.Unmarshal(result, &f)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
+	return nil
 }
 
 // DailyByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
-func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) {
+func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Units, days))
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	defer response.Body.Close()
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	err = json.Unmarshal(result, &f)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
+	return nil
 }
 
 // DailyByID will provide a forecast for the location ID give for the
 // number of days given.
-func (f *ForecastWeatherData) DailyByID(id, days int) {
+func (f *ForecastWeatherData) DailyByID(id, days int) error {
 	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Units, days))
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	defer response.Body.Close()
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	err = json.Unmarshal(result, &f)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
+	return nil
 }
