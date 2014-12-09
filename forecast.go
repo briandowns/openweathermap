@@ -66,7 +66,7 @@ func NewForecast(unit string) (*ForecastWeatherData, error) {
 	if ValidDataUnit(unitChoice) {
 		return &ForecastWeatherData{Units: unitChoice}, nil
 	}
-	return nil, errors.New("ERROR: unit of measure not available")
+	return nil, errors.New("unit of measure not available")
 }
 
 // DailyByName will provide a forecast for the location given for the
