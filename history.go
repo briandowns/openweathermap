@@ -56,5 +56,5 @@ func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 	if ValidDataUnit(unitChoice) {
 		return &HistoricalWeatherData{Units: unitChoice}, nil
 	}
-	return nil, errors.New("ERROR: unit of measure not available")
+	return nil, errors.New("unit of measure not available")
 }

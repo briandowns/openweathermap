@@ -46,7 +46,7 @@ func NewCurrent(unit string) (*CurrentWeatherData, error) {
 	if ValidDataUnit(unitChoice) {
 		return &CurrentWeatherData{Units: unitChoice}, nil
 	}
-	return nil, errors.New("ERROR: unit of measure not available")
+	return nil, errors.New("unit of measure not available")
 }
 
 // CurrentByName will provide the current weather with the

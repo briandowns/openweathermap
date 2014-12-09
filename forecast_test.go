@@ -31,15 +31,15 @@ func TestNewForecast(t *testing.T) {
 				t.Error(err)
 			}
 			if reflect.TypeOf(c).String() != "*openweathermap.ForecastWeatherData" {
-				t.Error("ERROR: incorrect data type returned")
+				t.Error("incorrect data type returned")
 			}
 		} else {
-			t.Errorf("ERROR: unusable data unit - %s", d)
+			t.Errorf("unusable data unit - %s", d)
 		}
 	}
 	_, err := NewForecast("asdf")
 	if err == nil {
-		t.Error("ERROR: created instance when it shouldn't have")
+		t.Error("created instance when it shouldn't have")
 	}
 }
 
