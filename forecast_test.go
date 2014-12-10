@@ -21,6 +21,7 @@ import (
 
 var forecastRange = []int{3, 7, 10}
 
+// TestNewForecast will make sure the a new instance of Forecast is returned
 func TestNewForecast(t *testing.T) {
 	t.Parallel()
 	for d, _ := range DataUnits {
@@ -43,6 +44,8 @@ func TestNewForecast(t *testing.T) {
 	}
 }
 
+// TestDailyByName will verify that a daily forecast can be retrieved for
+// a given named location
 func TestDailyByName(t *testing.T) {
 	f, err := NewForecast("imperial")
 	if err != nil {
@@ -53,6 +56,8 @@ func TestDailyByName(t *testing.T) {
 	}
 }
 
+// TestDailyByCooridinates will verify that a daily forecast can be retrieved
+// for a given set of coordinates
 func TestDailyByCoordinates(t *testing.T) {
 	f, err := NewForecast("internal")
 	if err != nil {
@@ -68,6 +73,8 @@ func TestDailyByCoordinates(t *testing.T) {
 	}
 }
 
+// TestDailyByID will verify that a daily forecast can be retrieved for a
+// given location ID
 func TestDailyByID(t *testing.T) {
 	f, err := NewForecast("metric")
 	if err != nil {
