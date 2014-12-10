@@ -19,6 +19,7 @@ import (
 	"testing"
 )
 
+// TestNewCurrent will verify that a new instance of CurrentWeatherData is created
 func TestNewCurrent(t *testing.T) {
 	t.Parallel()
 	for d, _ := range DataUnits {
@@ -41,6 +42,8 @@ func TestNewCurrent(t *testing.T) {
 	}
 }
 
+// TestCurrentByName will verify that current data can be retrieved for a give
+// location by name
 func TestCurrentByName(t *testing.T) {
 	testCities := []string{"Philadelphia", "Newark", "Helena"}
 	c, err := NewCurrent("imperial")
@@ -55,6 +58,8 @@ func TestCurrentByName(t *testing.T) {
 	}
 }
 
+// TestCurrentByCoordinates will verify that current data can be retrieved for a
+// given set of coordinates
 func TestCurrentByCoordinates(t *testing.T) {
 	c, err := NewCurrent("imperial")
 	if err != nil {
@@ -68,6 +73,8 @@ func TestCurrentByCoordinates(t *testing.T) {
 	)
 }
 
+// TestCurrentByID will verify that current data can be retrieved for a given
+// location id
 func TestCurrentByID(t *testing.T) {
 	c, err := NewCurrent("metric")
 	if err != nil {
