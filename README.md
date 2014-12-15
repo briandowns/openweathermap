@@ -73,6 +73,8 @@ func main() {
 }
 ```
 
+### Current Conditions in metric by location name
+
 ```Go
 func main() {
     w, err := owm.NewCurrent("metric")
@@ -85,14 +87,16 @@ func main() {
 }
 ```
 
+### Forecast Conditions in imperial by coordinates
+
 ```Go
 func main() {
-    w, err := owm.NewCurrent("imperial")
+    w, err := owm.NewForecast("imperial")
     if err != nil {
         log.Fatalln(err)
     }
 
-    w.CurrentByCoordinates(
+    w.DailyByCoordinates(
     		&Coordinates{
     			Longitude: -112.07,
     			Latitude: 33.45,
@@ -101,6 +105,8 @@ func main() {
     fmt.Println(w)
 }
 ```
+
+### Current conditions in metric by location ID
 
 ```Go
 func main() {
