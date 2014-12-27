@@ -59,6 +59,7 @@ func TestDailyByName(t *testing.T) {
 // TestDailyByCooridinates will verify that a daily forecast can be retrieved
 // for a given set of coordinates
 func TestDailyByCoordinates(t *testing.T) {
+	t.Parallel()
 	f, err := NewForecast("internal")
 	if err != nil {
 		t.Error(err)
@@ -76,6 +77,7 @@ func TestDailyByCoordinates(t *testing.T) {
 // TestDailyByID will verify that a daily forecast can be retrieved for a
 // given location ID
 func TestDailyByID(t *testing.T) {
+	t.Parallel()
 	f, err := NewForecast("metric")
 	if err != nil {
 		t.Error(err)

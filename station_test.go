@@ -22,6 +22,7 @@ import (
 // TestValidateStationDataParameter will make sure that a parameter passed
 // to ValidateStationDataParameter is in fact a valid parameter.
 func TestValidateStationDataParameter(t *testing.T) {
+	t.Parallel()
 	if !ValidateStationDataParameter("name") {
 		t.Error("Unable to match field to slice member")
 	}
@@ -39,6 +40,7 @@ func TestValidateStationDataParameter(t *testing.T) {
 // TestConvertToURLValues will make sure that ConvertToURLValues will
 // convert a map[string]string to a url.Values instance and then to string.
 func TestConvertToURLValues(t *testing.T) {
+	t.Parallel()
 	var count = 1
 	var urlData = make(map[string]string)
 	for _, s := range StationDataParameters {
