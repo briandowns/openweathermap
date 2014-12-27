@@ -21,6 +21,7 @@ var (
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
 	dataPostURL  = "http://openweathermap.org/data/post"
 	DataUnits    = map[string]string{"metric": "C", "imperial": "F", "internal": "K"}
+	//DataUnits    = map[string]string{"C": "metric", "F": "imperial", "K": "internal"} // Getting ready for rework
 )
 
 // Config will hold default settings to be passed into the
