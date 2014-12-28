@@ -42,7 +42,7 @@ type CurrentWeatherData struct {
 
 // NewCurrent returns a new WeatherData pointer with the supplied.
 func NewCurrent(unit string) (*CurrentWeatherData, error) {
-	unitChoice := strings.ToLower(unit)
+	unitChoice := strings.ToUpper(unit)
 	if ValidDataUnit(unitChoice) {
 		return &CurrentWeatherData{Units: unitChoice}, nil
 	}

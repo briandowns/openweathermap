@@ -47,7 +47,7 @@ func TestNewCurrent(t *testing.T) {
 func TestCurrentByName(t *testing.T) {
 	t.Parallel()
 	testCities := []string{"Philadelphia", "Newark", "Helena"}
-	c, err := NewCurrent("imperial")
+	c, err := NewCurrent("f")
 	if err != nil {
 		t.Error(err)
 	}
@@ -63,7 +63,7 @@ func TestCurrentByName(t *testing.T) {
 // given set of coordinates
 func TestCurrentByCoordinates(t *testing.T) {
 	t.Parallel()
-	c, err := NewCurrent("imperial")
+	c, err := NewCurrent("f")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
@@ -79,7 +79,7 @@ func TestCurrentByCoordinates(t *testing.T) {
 // location id
 func TestCurrentByID(t *testing.T) {
 	t.Parallel()
-	c, err := NewCurrent("metric")
+	c, err := NewCurrent("c")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}

@@ -52,7 +52,7 @@ type HistoricalWeatherData struct {
 // NewHistorical returns a new HistoricalWeatherData pointer with
 //the supplied arguments.
 func NewHistorical(unit string) (*HistoricalWeatherData, error) {
-	unitChoice := strings.ToLower(unit)
+	unitChoice := strings.ToUpper(unit)
 	if ValidDataUnit(unitChoice) {
 		return &HistoricalWeatherData{Units: unitChoice}, nil
 	}
