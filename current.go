@@ -49,10 +49,10 @@ func NewCurrent(unit string) (*CurrentWeatherData, error) {
 	return nil, errors.New("unit of measure not available")
 }
 
-// CurrentByName will provide the current weather with the
-// provided location name.
+// CurrentByName will provide the current weather with the provided
+// location name.
 func (w *CurrentWeatherData) CurrentByName(location string) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s"), location, w.Unit))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s"), location, DataUnits[w.Unit]))
 	if err != nil {
 		return err
 	}

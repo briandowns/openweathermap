@@ -76,7 +76,7 @@ func getCurrent(l, u string) *owm.CurrentWeatherData {
 
 // hereHandler will take are of requests coming in for the "/here" route.
 func hereHandler(w http.ResponseWriter, r *http.Request) {
-	wd := getCurrent(getLocation().City, "imperial")
+	wd := getCurrent(getLocation().City, "f")
 
 	// Process our template
 	t, err := template.ParseFiles("templates/here.html")

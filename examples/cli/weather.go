@@ -46,9 +46,9 @@ const (
 	// template used for output
 	weatherTemplate = `Current weather for {{.Name}}:
     Conditions: {{range .Weather}} {{.Description}} {{end}}
-    Now:         {{.Main.Temp}} {{.Units}}
-    High:        {{.Main.TempMax}} {{.Units}}
-    Low:         {{.Main.TempMin}} {{.Units}}
+    Now:         {{.Main.Temp}} {{.Unit}}
+    High:        {{.Main.TempMax}} {{.Unit}}
+    Low:         {{.Main.TempMin}} {{.Unit}}
 `
 )
 
@@ -138,7 +138,6 @@ func main() {
 
 	// Process request for the given location
 	w := getCurrent(*locationFlag, *unitFlag)
-
 	tmpl, err := template.New("weather").Parse(weatherTemplate)
 	if err != nil {
 		log.Fatalln(err)
