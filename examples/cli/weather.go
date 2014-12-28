@@ -46,9 +46,9 @@ const (
 	// template used for output
 	weatherTemplate = `Current weather for {{.Name}}:
     Conditions: {{range .Weather}} {{.Description}} {{end}}
-    Now:         {{.Main.Temp}} {{.Units}}
-    High:        {{.Main.TempMax}} {{.Units}}
-    Low:         {{.Main.TempMin}} {{.Units}}
+    Now:         {{.Main.Temp}} {{.Unit}}
+    High:        {{.Main.TempMax}} {{.Unit}}
+    Low:         {{.Main.TempMin}} {{.Unit}}
 `
 )
 
@@ -115,7 +115,7 @@ func main() {
 	flag.Parse()
 
 	// If there's any funkiness with cli args, tuck and roll...
-	if len(*locationFlag) <= 1 || len(*unitFlag) <= 1 {
+	if len(*locationFlag) <= 1 || len(*unitFlag) != 1 {
 		flag.Usage()
 		os.Exit(1)
 	}
@@ -123,7 +123,6 @@ func main() {
 	// Process request for location of "here"
 	if strings.ToLower(*locationFlag) == "here" {
 		w := getCurrent(getLocation().City, *unitFlag)
-		w.Units = owm.DataUnits[w.Units]
 		tmpl, err := template.New("weather").Parse(weatherTemplate)
 		if err != nil {
 			log.Fatalln(err)
@@ -139,8 +138,6 @@ func main() {
 
 	// Process request for the given location
 	w := getCurrent(*locationFlag, *unitFlag)
-	w.Units = owm.DataUnits[w.Units]
-
 	tmpl, err := template.New("weather").Parse(weatherTemplate)
 	if err != nil {
 		log.Fatalln(err)

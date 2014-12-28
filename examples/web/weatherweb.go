@@ -66,7 +66,7 @@ func getLocation() *Data {
 // getCurrent gets the current weather for the provided location in
 // the units provided.
 func getCurrent(l, u string) *owm.CurrentWeatherData {
-	w, err := owm.NewCurrent(u) // Create the instance with the given units
+	w, err := owm.NewCurrent(u) // Create the instance with the given unit
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,15 +76,14 @@ func getCurrent(l, u string) *owm.CurrentWeatherData {
 
 // hereHandler will take are of requests coming in for the "/here" route.
 func hereHandler(w http.ResponseWriter, r *http.Request) {
-	wd := getCurrent(getLocation().City, "imperial")
-	wd.Units = owm.DataUnits[wd.Units]
+	wd := getCurrent(getLocation().City, "f")
 
 	// Process our template
 	t, err := template.ParseFiles("templates/here.html")
 	if err != nil {
 		log.Fatal(err)
 	}
-	// We're doing naughty things below... Ignoring icon file size and possible errors.
+	// We're doin' naughty things below... Ignoring icon file size and possible errors.
 	_, _ = owm.RetrieveIcon("static/img", wd.Weather[0].Icon+".png")
 
 	// Write out the template with the given data

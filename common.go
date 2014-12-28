@@ -20,15 +20,15 @@ var (
 	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
 	dataPostURL  = "http://openweathermap.org/data/post"
-	DataUnits    = map[string]string{"metric": "C", "imperial": "F", "internal": "K"}
-	//DataUnits    = map[string]string{"C": "metric", "F": "imperial", "K": "internal"} // Getting ready for rework
+	//DataUnits    = map[string]string{"metric": "C", "imperial": "F", "internal": "K"}
+	DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 )
 
 // Config will hold default settings to be passed into the
 // "New{current, forecast, etc}" function.
 type Config struct {
 	Mode     string // User choice of JSON or XML
-	Units    string // Imperial, metric, or internal
+	Unit     string // F, C, or K
 	APIKey   string // API Key for connecting to the OWM
 	Username string // Username for posting data
 	Password string // Pasword for posting data
@@ -92,7 +92,7 @@ type Clouds struct {
 // ValidDataUnit makes sure the string passed in is an accepted
 // unit of measure to be used for the return data.
 func ValidDataUnit(u string) bool {
-	for d, _ := range DataUnits {
+	for d := range DataUnits {
 		if u == d {
 			return true
 		}
@@ -102,9 +102,9 @@ func ValidDataUnit(u string) bool {
 
 // ValidDataUnitSymbol makes sure the string passed in is an
 // acceptable data unit symbol.
-func ValidDataUnitSymbol(s string) bool {
+func ValidDataUnitSymbol(u string) bool {
 	for _, d := range DataUnits {
-		if s == d {
+		if u == d {
 			return true
 		}
 	}

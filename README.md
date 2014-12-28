@@ -39,6 +39,12 @@ For a given number of days.
 - Extreme
 - Additional
 
+### Data Available in Multiple Measurement Systems
+
+- Fahrenheit (OpenWeatherMap API - imperial)
+- Celcius (OpenWeatherMap API - metric)
+- Kelvin (OpenWeatherMap API - internal)
+
 ## Historical Conditions
 
 - ...still in the works...
@@ -65,7 +71,7 @@ import (
 )
 
 func main() {
-    w, err := owm.NewCurrent("imperial")
+    w, err := owm.NewCurrent("F") // fahrenheit (imperial)
     if err != nil {
         log.Fatalln(err)
     }
@@ -79,7 +85,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := owm.NewCurrent("metric")
+    w, err := owm.NewCurrent("C") // celsius (metric)
     if err != nil {
         log.Fatalln(err)
     }
@@ -93,7 +99,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := owm.NewForecast("imperial")
+    w, err := owm.NewForecast("F")
     if err != nil {
         log.Fatalln(err)
     }
@@ -112,7 +118,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := owm.NewCurrent("metric")
+    w, err := owm.NewCurrent("C")
     if err != nil {
         log.Fatalln(err)
     }
