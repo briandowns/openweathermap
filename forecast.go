@@ -56,7 +56,7 @@ type ForecastWeatherData struct {
 	City    City                  `json:"city"`
 	Cnt     int                   `json:"cnt"`
 	List    []ForecastWeatherList `json:"list"`
-	Units   string
+	Unit    string
 }
 
 // NewForecast returns a new HistoricalWeatherData pointer with
@@ -64,7 +64,7 @@ type ForecastWeatherData struct {
 func NewForecast(unit string) (*ForecastWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	if ValidDataUnit(unitChoice) {
-		return &ForecastWeatherData{Units: unitChoice}, nil
+		return &ForecastWeatherData{Unit: unitChoice}, nil
 	}
 	return nil, errors.New("unit of measure not available")
 }
@@ -72,7 +72,7 @@ func NewForecast(unit string) (*ForecastWeatherData, error) {
 // DailyByName will provide a forecast for the location given for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByName(location string, days int) error {
-	response, err := http.Get(fmt.Sprintf(forecastBase, "q", location, f.Units, days))
+	response, err := http.Get(fmt.Sprintf(forecastBase, "q", location, f.Unit, days))
 	if err != nil {
 		return err
 	}
@@ -93,7 +93,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 // DailyByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Units, days))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Unit, days))
 	if err != nil {
 		return err
 	}
@@ -114,7 +114,7 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 // DailyByID will provide a forecast for the location ID give for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) error {
-	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Units, days))
+	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Unit, days))
 	if err != nil {
 		return err
 	}

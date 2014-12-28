@@ -46,7 +46,7 @@ type HistoricalWeatherData struct {
 	CalcTime float64          `json:"calctime"`
 	Cnt      int              `json:"cnt"`
 	List     []WeatherHistory `json:"list"`
-	Units    string
+	Unit     string
 }
 
 // NewHistorical returns a new HistoricalWeatherData pointer with
@@ -54,7 +54,7 @@ type HistoricalWeatherData struct {
 func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	if ValidDataUnit(unitChoice) {
-		return &HistoricalWeatherData{Units: unitChoice}, nil
+		return &HistoricalWeatherData{Unit: unitChoice}, nil
 	}
 	return nil, errors.New("unit of measure not available")
 }

@@ -28,7 +28,7 @@ var (
 // "New{current, forecast, etc}" function.
 type Config struct {
 	Mode     string // User choice of JSON or XML
-	Units    string // Imperial, metric, or internal
+	Unit     string // F, C, or K
 	APIKey   string // API Key for connecting to the OWM
 	Username string // Username for posting data
 	Password string // Pasword for posting data
