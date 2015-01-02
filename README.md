@@ -81,11 +81,11 @@ func main() {
 }
 ```
 
-### Current Conditions in metric by location name
+### Current Conditions by location name
 
 ```Go
 func main() {
-    w, err := owm.NewCurrent("C") // celsius (metric)
+    w, err := owm.NewCurrent("K") // (internal - OpenWeatherMap reference for kelvin)
     if err != nil {
         log.Fatalln(err)
     }
@@ -95,7 +95,7 @@ func main() {
 }
 ```
 
-### Forecast Conditions in imperial by coordinates
+### Forecast Conditions in imperial (fahrenheit) by coordinates
 
 ```Go
 func main() {
@@ -114,7 +114,7 @@ func main() {
 }
 ```
 
-### Current conditions in metric by location ID
+### Current conditions in metric (celsius) by location ID
 
 ```Go
 func main() {
