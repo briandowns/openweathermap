@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -77,14 +76,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(result, &f)
-	if err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
 		return err
 	}
 	return nil
@@ -98,14 +90,7 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(result, &f)
-	if err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
 		return err
 	}
 	return nil
@@ -119,14 +104,7 @@ func (f *ForecastWeatherData) DailyByID(id, days int) error {
 		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(result, &f)
-	if err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
 		return err
 	}
 	return nil

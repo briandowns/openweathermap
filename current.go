@@ -18,7 +18,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strings"
 )
@@ -57,14 +56,7 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(result, &w)
-	if err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
 	return nil
@@ -78,14 +70,7 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(result, &w)
-	if err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
 	return nil
@@ -99,14 +84,7 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(result, &w)
-	if err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
 	return nil
