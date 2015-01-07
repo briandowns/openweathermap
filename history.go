@@ -15,7 +15,10 @@
 package openweathermap
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
 	"strings"
 )
 
@@ -27,6 +30,10 @@ type HistoricalParameters struct {
 	Cnt   int
 }
 
+type Rain struct {
+	threeH int `json:"3h"`
+}
+
 // WeatherHistory struct contains aggregate fields from the above
 // structs.
 type WeatherHistory struct {
@@ -34,6 +41,7 @@ type WeatherHistory struct {
 	Wind    Wind      `json:"wind"`
 	Clouds  Clouds    `json:"clouds"`
 	Weather []Weather `json:"weather"`
+	Rain    Rain      `json:"rain"`
 	Dt      int       `json:"dt"`
 }
 
@@ -57,4 +65,28 @@ func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 		return &HistoricalWeatherData{Unit: unitChoice}, nil
 	}
 	return nil, errors.New("unit of measure not available")
+}
+
+func (h *HistoricalWeatherData) HistoryByName(location string) error {
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), location))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (h *HistoricalWeatherData) HistoryByCoordinates(location *Coordinates) error {
+	return nil
+}
+
+func (h *HistoricalWeatherData) HistoryByID(id int) error {
+	return nil
+}
+
+func (h *HistoricalWeatherData) HistoryByArea() error {
+	return nil
 }

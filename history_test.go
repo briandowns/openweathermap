@@ -41,3 +41,16 @@ func TestNewHistory(t *testing.T) {
 		t.Error("created instance when it shouldn't have")
 	}
 }
+
+/*
+func TestHistoryByName(t *testing.T) {
+	t.Parallel()
+	h, err := NewHistorical("F")
+	if err != nil {
+		t.Error(err)
+	}
+	if err := h.HistoryByName("Vancouver"); err != nil {
+		t.Error(err)
+	}
+}
+*/
