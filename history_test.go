@@ -46,6 +46,7 @@ func TestNewHistory(t *testing.T) {
 func TestHistoryByName(t *testing.T) {
 	t.Parallel()
 	h, err := NewHistorical("F")
+	fmt.Println(h)
 	if err != nil {
 		t.Error(err)
 	}

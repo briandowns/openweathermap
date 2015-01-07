@@ -21,8 +21,7 @@ var (
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
 	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
 	dataPostURL  = "http://openweathermap.org/data/post"
-	//DataUnits    = map[string]string{"metric": "C", "imperial": "F", "internal": "K"}
-	DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
+	DataUnits    = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 )
 
 // Config will hold default settings to be passed into the
@@ -41,9 +40,8 @@ type APIError struct {
 	COD     string `json:"cod"`
 }
 
-// Coordinates struct holds longitude and latitude data
-// in returned JSON or as parameter data for requests
-// using longitude and latitude.
+// Coordinates struct holds longitude and latitude data in returned
+// JSON or as parameter data for requests using longitude and latitude.
 type Coordinates struct {
 	Longitude float64 `json:"lon"`
 	Latitude  float64 `json:"lat"`
@@ -75,8 +73,7 @@ type Weather struct {
 	Icon        string `json:"icon"`
 }
 
-// Main struct contains the temperates, humidity, pressure for
-// the request.
+// Main struct contains the temperates, humidity, pressure for the request.
 type Main struct {
 	Temp       float64 `json:"temp"`
 	TempMin    float64 `json:"temp_min"`

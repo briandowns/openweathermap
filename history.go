@@ -25,9 +25,9 @@ import (
 // HistoricalParameters struct holds the (optional) fields to be
 // supplied for historical data requests.
 type HistoricalParameters struct {
-	Start int64
-	End   int64
-	Cnt   int
+	Start int64 // Data start (unix time, UTC time zone)
+	End   int64 // Data end (unix time, UTC time zone)
+	Cnt   int   // Amount of returned data (one per hour, can be used instead of Data end)
 }
 
 type Rain struct {
@@ -67,6 +67,7 @@ func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 	return nil, errors.New("unit of measure not available")
 }
 
+// HistoryByName will return the history for the provided location
 func (h *HistoricalWeatherData) HistoryByName(location string) error {
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), location))
 	if err != nil {
@@ -79,14 +80,25 @@ func (h *HistoricalWeatherData) HistoryByName(location string) error {
 	return nil
 }
 
-func (h *HistoricalWeatherData) HistoryByCoordinates(location *Coordinates) error {
-	return nil
-}
-
-func (h *HistoricalWeatherData) HistoryByID(id int) error {
-	return nil
-}
-
-func (h *HistoricalWeatherData) HistoryByArea() error {
+// HistoryByID will return the history for the provided location ID
+func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters) error {
+	if len(hp) > 0 {
+		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&type=hour&start%d&end=%d&cnt=%d"), id, hp[0].Start, hp[0].End, hp[0].Cnt))
+		if err != nil {
+			return err
+		}
+		defer response.Body.Close()
+		if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
+			return err
+		}
+	}
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d"), id))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
+		return err
+	}
 	return nil
 }
