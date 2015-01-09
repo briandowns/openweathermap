@@ -20,7 +20,7 @@ Contributions welcome!
 
 ## Forecast
 
-For a given number of days.
+Get the weather conditions for a given number of days.
 
 - By City
 - By City,St (State)
@@ -29,6 +29,8 @@ For a given number of days.
 - By Longitude and Latitude
 
 ### Access to Condition Codes and Icons
+
+Gain access to OpenWeatherMap icons and condition codes.
 
 - Thunderstorms
 - Drizzle
