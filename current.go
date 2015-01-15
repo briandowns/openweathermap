@@ -46,14 +46,18 @@ func NewCurrent(unit string) (*CurrentWeatherData, error) {
 	if ValidDataUnit(unitChoice) {
 		return &CurrentWeatherData{Unit: unitChoice}, nil
 	}
-	return nil, errors.New("unit of measure not available")
+	return nil, errors.New(unitError)
 }
 
 // Set the language responses will be displayed as.  This isn't part of the
 // NewCurrent call because it'd keep it easier to go with API defaults and
 // adjust if explicitly called.
-func SetLang(lang string) error {
-	return err
+func (w *CurrentWeatherData) SetLang(lang string) error {
+	if !ValidLangCode(lang) {
+		return errors.New(langError)
+	}
+	w.Lang = lang
+	return nil
 }
 
 // CurrentByName will provide the current weather with the provided

@@ -14,6 +14,9 @@
 
 package openweathermap
 
+const langError = "language unavailable"
+const unitError = "unit unavailable"
+
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
 	baseURL      = "http://api.openweathermap.org/data/2.5/weather?%s"
@@ -57,6 +60,7 @@ var LangCodes = map[string]string{
 type Config struct {
 	Mode     string // User choice of JSON or XML
 	Unit     string // F, C, or K
+	Lang     string // should reference a key in the LangCodes map
 	APIKey   string // API Key for connecting to the OWM
 	Username string // Username for posting data
 	Password string // Pasword for posting data
