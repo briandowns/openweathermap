@@ -25,7 +25,7 @@ func TestNewCurrent(t *testing.T) {
 	for d, _ := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
-			c, err := NewCurrent(d)
+			c, err := NewCurrent(d, "en")
 			if err != nil {
 				t.Error(err)
 			}
@@ -36,7 +36,7 @@ func TestNewCurrent(t *testing.T) {
 			t.Errorf("unusable data unit - %s", d)
 		}
 	}
-	_, err := NewCurrent("Philadelphia")
+	_, err := NewCurrent("Philadelphia", "en")
 	if err == nil {
 		t.Error("created instance when it shouldn't have")
 	}
@@ -47,7 +47,7 @@ func TestNewCurrent(t *testing.T) {
 func TestCurrentByName(t *testing.T) {
 	t.Parallel()
 	testCities := []string{"Philadelphia", "Newark", "Helena"}
-	c, err := NewCurrent("f")
+	c, err := NewCurrent("f", "ru")
 	if err != nil {
 		t.Error(err)
 	}
@@ -63,7 +63,7 @@ func TestCurrentByName(t *testing.T) {
 // given set of coordinates
 func TestCurrentByCoordinates(t *testing.T) {
 	t.Parallel()
-	c, err := NewCurrent("f")
+	c, err := NewCurrent("f", "DE")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
@@ -79,7 +79,7 @@ func TestCurrentByCoordinates(t *testing.T) {
 // location id
 func TestCurrentByID(t *testing.T) {
 	t.Parallel()
-	c, err := NewCurrent("c")
+	c, err := NewCurrent("c", "ZH")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}

@@ -14,8 +14,8 @@
 
 package openweathermap
 
-const langError = "language unavailable"
 const unitError = "unit unavailable"
+const langError = "language unavailable"
 
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (

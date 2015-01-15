@@ -40,13 +40,22 @@ type CurrentWeatherData struct {
 	Lang    string
 }
 
-// NewCurrent returns a new WeatherData pointer with the supplied.
-func NewCurrent(unit string) (*CurrentWeatherData, error) {
+// NewCurrent returns a new CurrentWeatherData pointer with the supplied parameters
+func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
+	langChoice := strings.ToUpper(lang)
+	c := &CurrentWeatherData{}
 	if ValidDataUnit(unitChoice) {
-		return &CurrentWeatherData{Unit: unitChoice}, nil
+		c.Unit = unitChoice
+	} else {
+		return nil, errors.New(unitError)
 	}
-	return nil, errors.New(unitError)
+	if ValidLangCode(langChoice) {
+		c.Lang = langChoice
+	} else {
+		return nil, errors.New(langError)
+	}
+	return c, nil
 }
 
 // Set the language responses will be displayed as.  This isn't part of the
@@ -63,7 +72,7 @@ func (w *CurrentWeatherData) SetLang(lang string) error {
 // CurrentByName will provide the current weather with the provided
 // location name.
 func (w *CurrentWeatherData) CurrentByName(location string) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s"), location, DataUnits[w.Unit]))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s%lang=%s"), location, DataUnits[w.Unit], w.Lang))
 	if err != nil {
 		return err
 	}
