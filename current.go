@@ -37,6 +37,7 @@ type CurrentWeatherData struct {
 	Name    string      `json:"name"`
 	Cod     int         `json:"cod"`
 	Unit    string
+	Lang    string
 }
 
 // NewCurrent returns a new WeatherData pointer with the supplied.
@@ -46,6 +47,13 @@ func NewCurrent(unit string) (*CurrentWeatherData, error) {
 		return &CurrentWeatherData{Unit: unitChoice}, nil
 	}
 	return nil, errors.New("unit of measure not available")
+}
+
+// Set the language responses will be displayed as.  This isn't part of the
+// NewCurrent call because it'd keep it easier to go with API defaults and
+// adjust if explicitly called.
+func SetLang(lang string) error {
+	return err
 }
 
 // CurrentByName will provide the current weather with the provided

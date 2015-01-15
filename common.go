@@ -14,6 +14,7 @@
 
 package openweathermap
 
+var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
 	baseURL      = "http://api.openweathermap.org/data/2.5/weather?%s"
 	iconURL      = "http://openweathermap.org/img/w/%s"
@@ -21,8 +22,35 @@ var (
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
 	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
 	dataPostURL  = "http://openweathermap.org/data/post"
-	DataUnits    = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 )
+
+// LangCodes holds all supported languages to be used
+// inspried from and sourced from @bambocher (github.com/bambocher)
+var LangCodes = map[string]string{
+	"EN":    "English",
+	"RU":    "Russian",
+	"IT":    "Italian",
+	"ES":    "Spanish",
+	"SP":    "Spanish",
+	"UK":    "Ukrainian",
+	"UA":    "Ukrainian",
+	"DE":    "German",
+	"PT":    "Portuguese",
+	"RO":    "Romanian",
+	"PL":    "Polish",
+	"FI":    "Finnish",
+	"NL":    "Dutch",
+	"FR":    "French",
+	"BG":    "Bulgarian",
+	"SV":    "Swedish",
+	"SE":    "Swedish",
+	"TR":    "Turkish",
+	"HR":    "Croatian",
+	"CA":    "Catalan",
+	"ZH_TW": "Chinese Traditional",
+	"ZH":    "Chinese Simplified",
+	"ZH_CN": "Chinese Simplified",
+}
 
 // Config will hold default settings to be passed into the
 // "New{current, forecast, etc}" function.
@@ -94,6 +122,17 @@ type Clouds struct {
 func ValidDataUnit(u string) bool {
 	for d := range DataUnits {
 		if u == d {
+			return true
+		}
+	}
+	return false
+}
+
+// ValidLangValue makes sure the string passed in is an
+// acceptable lang code.
+func ValidLangCode(c string) bool {
+	for d, _ := range LangCodes {
+		if c == d {
 			return true
 		}
 	}
