@@ -56,22 +56,32 @@ type ForecastWeatherData struct {
 	Cnt     int                   `json:"cnt"`
 	List    []ForecastWeatherList `json:"list"`
 	Unit    string
+	Lang    string
 }
 
 // NewForecast returns a new HistoricalWeatherData pointer with
 // the supplied arguments.
-func NewForecast(unit string) (*ForecastWeatherData, error) {
+func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
+	langChoice := strings.ToUpper(lang)
+	f := &ForecastWeatherData{}
 	if ValidDataUnit(unitChoice) {
-		return &ForecastWeatherData{Unit: unitChoice}, nil
+		f.Unit = unitChoice
+	} else {
+		return nil, errors.New(unitError)
 	}
-	return nil, errors.New("unit of measure not available")
+	if ValidLangCode(langChoice) {
+		f.Lang = langChoice
+	} else {
+		return nil, errors.New(langError)
+	}
+	return f, nil
 }
 
 // DailyByName will provide a forecast for the location given for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByName(location string, days int) error {
-	response, err := http.Get(fmt.Sprintf(forecastBase, "q", location, f.Unit, days))
+	response, err := http.Get(fmt.Sprintf(forecastBase, "q", location, f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
@@ -85,7 +95,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 // DailyByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Unit, days))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
@@ -99,7 +109,7 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 // DailyByID will provide a forecast for the location ID give for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) error {
-	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Unit, days))
+	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}

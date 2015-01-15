@@ -86,7 +86,7 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 // CurrentByCoordinates will provide the current weather with the
 // provided location coordinates.
 func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, w.Unit))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "lat=%f&lon=%f&units=%s&lang=%s"), location.Latitude, location.Longitude, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
@@ -100,7 +100,7 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 // CurrentByID will provide the current weather with the
 // provided location ID.
 func (w *CurrentWeatherData) CurrentByID(id int) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "id=%d&units=%s"), id, w.Unit))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "id=%d&units=%s&lang=%s"), id, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}

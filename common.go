@@ -22,7 +22,7 @@ var (
 	baseURL      = "http://api.openweathermap.org/data/2.5/weather?%s"
 	iconURL      = "http://openweathermap.org/img/w/%s"
 	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
+	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
 	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
 	dataPostURL  = "http://openweathermap.org/data/post"
 )

@@ -27,7 +27,7 @@ func TestNewForecast(t *testing.T) {
 	for d, _ := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
-			c, err := NewForecast(d)
+			c, err := NewForecast(d, "ru")
 			if err != nil {
 				t.Error(err)
 			}
@@ -38,7 +38,7 @@ func TestNewForecast(t *testing.T) {
 			t.Errorf("unusable data unit - %s", d)
 		}
 	}
-	_, err := NewForecast("asdf")
+	_, err := NewForecast("asdf", "en")
 	if err == nil {
 		t.Error("created instance when it shouldn't have")
 	}
@@ -47,7 +47,7 @@ func TestNewForecast(t *testing.T) {
 // TestDailyByName will verify that a daily forecast can be retrieved for
 // a given named location
 func TestDailyByName(t *testing.T) {
-	f, err := NewForecast("f")
+	f, err := NewForecast("f", "fi")
 	if err != nil {
 		t.Error(err)
 	}
@@ -60,7 +60,7 @@ func TestDailyByName(t *testing.T) {
 // for a given set of coordinates
 func TestDailyByCoordinates(t *testing.T) {
 	t.Parallel()
-	f, err := NewForecast("f")
+	f, err := NewForecast("f", "PL")
 	if err != nil {
 		t.Error(err)
 	}
@@ -78,7 +78,7 @@ func TestDailyByCoordinates(t *testing.T) {
 // given location ID
 func TestDailyByID(t *testing.T) {
 	t.Parallel()
-	f, err := NewForecast("c")
+	f, err := NewForecast("c", "fr")
 	if err != nil {
 		t.Error(err)
 	}
