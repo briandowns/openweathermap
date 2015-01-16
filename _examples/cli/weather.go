@@ -54,8 +54,9 @@ const (
 
 // Pointers to hold the contents of the flag args.
 var (
-	locationFlag = flag.String("l", "", "Location to get weather.  If location has a space, wrap the location in double quotes.")
-	unitFlag     = flag.String("u", "", "Unit of measure to display temps in")
+	whereFlag = flag.String("w", "", "Location to get weather.  If location has a space, wrap the location in double quotes.")
+	unitFlag  = flag.String("u", "", "Unit of measure to display temps in")
+	langFlag  = flag.String("l", "", "Language to display temps in")
 )
 
 // Data will hold the result of the query to get the IP
@@ -103,7 +104,7 @@ func getLocation() *Data {
 // getCurrent gets the current weather for the provided
 // location in the units provided.
 func getCurrent(l, u string) *owm.CurrentWeatherData {
-	w, err := owm.NewCurrent(u)
+	w, err := owm.NewCurrent(u, "EN")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -115,7 +116,7 @@ func main() {
 	flag.Parse()
 
 	// If there's any funkiness with cli args, tuck and roll...
-	if len(*locationFlag) <= 1 || len(*unitFlag) != 1 {
+	if len(*whereFlag) <= 1 || len(*unitFlag) != 1 || len(*langFlag) != 2 {
 		flag.Usage()
 		os.Exit(1)
 	}
