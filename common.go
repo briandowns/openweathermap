@@ -111,8 +111,8 @@ type Main struct {
 	TempMin    float64 `json:"temp_min"`
 	TempMax    float64 `json:"temp_max"`
 	Pressure   float64 `json:"pressure"`
-	sea_level  float64 `json:"sea_level"`
-	grnd_level float64 `json:"grnd_level"`
+	Sea_level  float64 `json:"sea_level"`
+	Grnd_level float64 `json:"grnd_level"`
 	Humidity   int     `json:"humidity"`
 }
 
