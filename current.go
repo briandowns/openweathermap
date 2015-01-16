@@ -72,7 +72,7 @@ func (w *CurrentWeatherData) SetLang(lang string) error {
 // CurrentByName will provide the current weather with the provided
 // location name.
 func (w *CurrentWeatherData) CurrentByName(location string) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s%lang=%s"), location, DataUnits[w.Unit], w.Lang))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), location, DataUnits[w.Unit], w.Lang))
 	if err != nil {
 		return err
 	}

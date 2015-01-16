@@ -103,8 +103,8 @@ func getLocation() *Data {
 
 // getCurrent gets the current weather for the provided
 // location in the units provided.
-func getCurrent(l, u string) *owm.CurrentWeatherData {
-	w, err := owm.NewCurrent(u, "EN")
+func getCurrent(l, u, lang string) *owm.CurrentWeatherData {
+	w, err := owm.NewCurrent(u, lang)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -123,7 +123,7 @@ func main() {
 
 	// Process request for location of "here"
 	if strings.ToLower(*whereFlag) == "here" {
-		w := getCurrent(getLocation().City, *unitFlag)
+		w := getCurrent(getLocation().City, *unitFlag, *langFlag)
 		tmpl, err := template.New("weather").Parse(weatherTemplate)
 		if err != nil {
 			log.Fatalln(err)
@@ -138,7 +138,7 @@ func main() {
 	}
 
 	// Process request for the given location
-	w := getCurrent(*whereFlag, *unitFlag)
+	w := getCurrent(*whereFlag, *unitFlag, *langFlag)
 	tmpl, err := template.New("weather").Parse(weatherTemplate)
 	if err != nil {
 		log.Fatalln(err)

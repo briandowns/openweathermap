@@ -63,8 +63,8 @@ func getLocation() *Data {
 
 // getCurrent gets the current weather for the provided location in
 // the units provided.
-func getCurrent(l, u string) *owm.CurrentWeatherData {
-	w, err := owm.NewCurrent(u, "RU") // Create the instance with the given unit
+func getCurrent(l, u, lang string) *owm.CurrentWeatherData {
+	w, err := owm.NewCurrent(u, lang) // Create the instance with the given unit
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -74,7 +74,7 @@ func getCurrent(l, u string) *owm.CurrentWeatherData {
 
 // hereHandler will take are of requests coming in for the "/here" route.
 func hereHandler(w http.ResponseWriter, r *http.Request) {
-	wd := getCurrent(getLocation().City, "f")
+	wd := getCurrent(getLocation().City, "c", "RU")
 
 	// Process our template
 	t, err := template.ParseFiles("templates/here.html")
