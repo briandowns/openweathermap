@@ -17,9 +17,7 @@ import (
 	"net/http"
 )
 
-const (
-	url = "http://ip-api.com/json"
-)
+const url = "http://ip-api.com/json"
 
 // Data will hold the result of the query to get the IP
 // address of the caller.
@@ -66,7 +64,7 @@ func getLocation() *Data {
 // getCurrent gets the current weather for the provided location in
 // the units provided.
 func getCurrent(l, u string) *owm.CurrentWeatherData {
-	w, err := owm.NewCurrent(u) // Create the instance with the given unit
+	w, err := owm.NewCurrent(u, "RU") // Create the instance with the given unit
 	if err != nil {
 		log.Fatal(err)
 	}

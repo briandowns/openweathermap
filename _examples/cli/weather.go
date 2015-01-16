@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -122,7 +122,7 @@ func main() {
 	}
 
 	// Process request for location of "here"
-	if strings.ToLower(*locationFlag) == "here" {
+	if strings.ToLower(*whereFlag) == "here" {
 		w := getCurrent(getLocation().City, *unitFlag)
 		tmpl, err := template.New("weather").Parse(weatherTemplate)
 		if err != nil {
@@ -138,7 +138,7 @@ func main() {
 	}
 
 	// Process request for the given location
-	w := getCurrent(*locationFlag, *unitFlag)
+	w := getCurrent(*whereFlag, *unitFlag)
 	tmpl, err := template.New("weather").Parse(weatherTemplate)
 	if err != nil {
 		log.Fatalln(err)
