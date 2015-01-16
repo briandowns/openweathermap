@@ -55,6 +55,12 @@ var LangCodes = map[string]string{
 	"ZH_CN": "Chinese Simplified",
 }
 
+type Weather interface {
+	ByName() error
+	ByID() error
+	ByLocation() error
+}
+
 // Config will hold default settings to be passed into the
 // "New{current, forecast, etc}" function.
 type Config struct {

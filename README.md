@@ -51,6 +51,10 @@ Gain access to OpenWeatherMap icons and condition codes.
 
 - ...still in the works...
 
+## Supported Languages
+
+English - en, Russian - ru, Italian - it, Spanish - es (or sp), Ukrainian - uk (or ua), German - de, Portuguese - pt, Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw, Chinese Simplified - zh (or zh_cn), Turkish - tr, Croatian - hr, Catalan - ca
+
 ## Installation
 
 ```bash
@@ -73,7 +77,7 @@ import (
 )
 
 func main() {
-    w, err := owm.NewCurrent("F") // fahrenheit (imperial)
+    w, err := owm.NewCurrent("F", "ru") // fahrenheit (imperial) with Russian output
     if err != nil {
         log.Fatalln(err)
     }
@@ -87,7 +91,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := owm.NewCurrent("K") // (internal - OpenWeatherMap reference for kelvin)
+    w, err := owm.NewCurrent("K", "EN") // (internal - OpenWeatherMap reference for kelvin) with English output
     if err != nil {
         log.Fatalln(err)
     }
@@ -101,7 +105,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := owm.NewForecast("F")
+    w, err := owm.NewForecast("F", "FI")
     if err != nil {
         log.Fatalln(err)
     }
@@ -120,7 +124,7 @@ func main() {
 
 ```Go
 func main() {
-    w, err := owm.NewCurrent("C")
+    w, err := owm.NewCurrent("C", "PL")
     if err != nil {
         log.Fatalln(err)
     }
