@@ -12,12 +12,12 @@ import (
 	"encoding/json"
 	owm "github.com/briandowns/openweathermap"
 	"html/template"
-	"io/ioutil"
+	//	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-const url = "http://ip-api.com/json"
+const URL = "http://ip-api.com/json"
 
 // Data will hold the result of the query to get the IP
 // address of the caller.
@@ -41,24 +41,36 @@ type Data struct {
 
 // getLocation will get the location details for where this
 // application has been run from.
-func getLocation() *Data {
-	response, err := http.Get(url)
+func getLocation() (*Data, error) {
+	/*
+		response, err := http.Get(URL)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer response.Body.Close()
+
+		result, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		r := &Data{}
+		err = json.Unmarshal(result, &r)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return r
+	*/
+	response, err := http.Get(URL)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	r := &Data{}
-	err = json.Unmarshal(result, &r)
-	if err != nil {
-		log.Fatal(err)
+	if err = json.NewDecoder(response.Body).Decode(&r); err != nil {
+		return nil, err
 	}
-	return r
+	return r, nil
 }
 
 // getCurrent gets the current weather for the provided location in
@@ -74,7 +86,11 @@ func getCurrent(l, u, lang string) *owm.CurrentWeatherData {
 
 // hereHandler will take are of requests coming in for the "/here" route.
 func hereHandler(w http.ResponseWriter, r *http.Request) {
-	wd := getCurrent(getLocation().City, "c", "RU")
+	location, err := getLocation()
+	if err != nil {
+		log.Fatal(err)
+	}
+	wd := getCurrent(location.City, "c", "RU")
 
 	// Process our template
 	t, err := template.ParseFiles("templates/here.html")
