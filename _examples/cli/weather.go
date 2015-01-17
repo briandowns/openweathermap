@@ -23,10 +23,10 @@
 //
 // Examples:
 //          go run weather.go --help
-//          go run weather.go -l Philadelphia -u imperial # fahrenheit
-//          go run weather.go -l here -u imperial         # fahrenheit
-//          go run weather.go -l Dublin -u metric         # celcius
-//          go run weather.go -l "Las Vegas" -u internal  # kelvin
+//          go run weather.go -w Philadelphia -u f -l en  # fahrenheit, English
+//          go run weather.go -w here -u f -l ru          # fahrenheit, Russian
+//          go run weather.go -w Dublin -u c -l fi        # celcius, Finnish
+//          go run weather.go -w "Las Vegas" -u k -l es   # kelvin, Spanish
 package main
 
 import (
