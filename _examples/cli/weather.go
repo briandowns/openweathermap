@@ -41,16 +41,15 @@ import (
 	"text/template"
 )
 
-const (
-	url = "http://ip-api.com/json"
-	// template used for output
-	weatherTemplate = `Current weather for {{.Name}}:
+const URL = "http://ip-api.com/json"
+
+// template used for output
+const weatherTemplate = `Current weather for {{.Name}}:
     Conditions: {{range .Weather}} {{.Description}} {{end}}
     Now:         {{.Main.Temp}} {{.Unit}}
     High:        {{.Main.TempMax}} {{.Unit}}
     Low:         {{.Main.TempMin}} {{.Unit}}
 `
-)
 
 // Pointers to hold the contents of the flag args.
 var (
@@ -82,7 +81,7 @@ type Data struct {
 // getLocation will get the location details for where this
 // application has been run from.
 func getLocation() *Data {
-	response, err := http.Get(url)
+	response, err := http.Get(URL)
 	if err != nil {
 		log.Fatalln(err)
 	}
