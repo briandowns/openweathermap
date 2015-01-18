@@ -78,7 +78,6 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 	var response *http.Response
 	switch {
 	case strings.Contains(location, " "):
-		fmt.Println(url.QueryEscape(l))
 		response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), url.QueryEscape(l), DataUnits[w.Unit], w.Lang))
 		if err != nil {
 			return err
