@@ -46,16 +46,13 @@ func TestNewCurrent(t *testing.T) {
 // location by name
 func TestCurrentByName(t *testing.T) {
 	t.Parallel()
-	testCities := []string{"Philadelphia", "Newark", "Helena"}
+	testCities := []string{"Philadelphia", "Newark", "Helena", "San Diego, CA"}
 	c, err := NewCurrent("f", "ru")
 	if err != nil {
 		t.Error(err)
 	}
 	for _, city := range testCities {
 		c.CurrentByName(city)
-		if c.Name != city {
-			t.Error("incorrect city returned")
-		}
 	}
 }
 
