@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -72,12 +73,22 @@ func (w *CurrentWeatherData) SetLang(lang string) error {
 // CurrentByName will provide the current weather with the provided
 // location name.
 func (w *CurrentWeatherData) CurrentByName(location string) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), location, DataUnits[w.Unit], w.Lang))
-	if err != nil {
-		return err
+	var err error
+	var response *http.Response
+	switch {
+	case strings.Contains(location, " "):
+		response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), url.QueryEscape(location), DataUnits[w.Unit], w.Lang))
+		if err != nil {
+			return err
+		}
+	default:
+		response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), location, DataUnits[w.Unit], w.Lang))
+		if err != nil {
+			return err
+		}
 	}
 	defer response.Body.Close()
-	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
+	if err := json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
 	return nil
