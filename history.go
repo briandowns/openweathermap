@@ -72,17 +72,9 @@ func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 func (h *HistoricalWeatherData) HistoryByName(location string) error {
 	var err error
 	var response *http.Response
-	switch {
-	case strings.Contains(location, " "):
-		response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), url.QueryEscape(location)))
-		if err != nil {
-			return err
-		}
-	default:
-		response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), location))
-		if err != nil {
-			return err
-		}
+	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), url.QueryEscape(location)))
+	if err != nil {
+		return err
 	}
 	defer response.Body.Close()
 	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {

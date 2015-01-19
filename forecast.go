@@ -98,17 +98,9 @@ func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
 func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 	var err error
 	var response *http.Response
-	switch {
-	case strings.Contains(location, " "):
-		response, err = http.Get(fmt.Sprintf(forecastBase, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
-		if err != nil {
-			return err
-		}
-	default:
-		response, err = http.Get(fmt.Sprintf(forecastBase, "q", location, f.Unit, f.Lang, days))
-		if err != nil {
-			return err
-		}
+	response, err = http.Get(fmt.Sprintf(forecastBase, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
+	if err != nil {
+		return err
 	}
 	defer response.Body.Close()
 	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {

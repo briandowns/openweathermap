@@ -75,17 +75,9 @@ func (w *CurrentWeatherData) SetLang(lang string) error {
 func (w *CurrentWeatherData) CurrentByName(location string) error {
 	var err error
 	var response *http.Response
-	switch {
-	case strings.Contains(location, " "):
-		response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), url.QueryEscape(location), DataUnits[w.Unit], w.Lang))
-		if err != nil {
-			return err
-		}
-	default:
-		response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), location, DataUnits[w.Unit], w.Lang))
-		if err != nil {
-			return err
-		}
+	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), url.QueryEscape(location), DataUnits[w.Unit], w.Lang))
+	if err != nil {
+		return err
 	}
 	defer response.Body.Close()
 	if err := json.NewDecoder(response.Body).Decode(&w); err != nil {
