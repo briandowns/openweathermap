@@ -124,34 +124,15 @@ type Clouds struct {
 // ValidDataUnit makes sure the string passed in is an accepted
 // unit of measure to be used for the return data.
 func ValidDataUnit(u string) bool {
-	for d := range DataUnits {
-		if u == d {
-			return true
-		}
-	}
-	return false
+	_, ok := DataUnits[u]
+	return ok
 }
 
 // ValidLangValue makes sure the string passed in is an
 // acceptable lang code.
 func ValidLangCode(c string) bool {
-	for d, _ := range LangCodes {
-		if c == d {
-			return true
-		}
-	}
-	return false
-}
-
-// ValidDataUnitSymbol makes sure the string passed in is an
-// acceptable data unit symbol.
-func ValidDataUnitSymbol(u string) bool {
-	for _, d := range DataUnits {
-		if u == d {
-			return true
-		}
-	}
-	return false
+	_, ok := LangCodes[c]
+	return ok
 }
 
 // CheckAPIKeyExists will see if an API key has been set.
