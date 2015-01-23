@@ -132,10 +132,10 @@ func ValidDataUnit(u string) bool {
 	return false
 }
 
-// ValidLangValue makes sure the string passed in is an
+// ValidLangCode makes sure the string passed in is an
 // acceptable lang code.
 func ValidLangCode(c string) bool {
-	for d, _ := range LangCodes {
+	for d := range LangCodes {
 		if c == d {
 			return true
 		}
