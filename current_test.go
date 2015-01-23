@@ -22,7 +22,7 @@ import (
 // TestNewCurrent will verify that a new instance of CurrentWeatherData is created
 func TestNewCurrent(t *testing.T) {
 	t.Parallel()
-	for d, _ := range DataUnits {
+	for d := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
 			c, err := NewCurrent(d, "en")

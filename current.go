@@ -59,7 +59,7 @@ func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 	return c, nil
 }
 
-// Set the language responses will be displayed as.  This isn't part of the
+// SetLang allows you to set the language responses will be displayed as.  This isn't part of the
 // NewCurrent call because it'd keep it easier to go with API defaults and
 // adjust if explicitly called.
 func (w *CurrentWeatherData) SetLang(lang string) error {

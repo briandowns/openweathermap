@@ -24,7 +24,7 @@ var forecastRange = []int{3, 7, 10}
 // TestNewForecast will make sure the a new instance of Forecast is returned
 func TestNewForecast(t *testing.T) {
 	t.Parallel()
-	for d, _ := range DataUnits {
+	for d := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
 			c, err := NewForecast(d, "ru")
