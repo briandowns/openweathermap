@@ -31,17 +31,6 @@ func TestValidDataUnit(t *testing.T) {
 	}
 }
 
-func TestDataUnitValues(t *testing.T) {
-	for _, s := range DataUnits {
-		if !ValidDataUnitSymbol(s) {
-			t.Error("False positive on data unit symbol")
-		}
-	}
-	if ValidDataUnitSymbol("X") {
-		t.Error("Invalid data unit symbol")
-	}
-}
-
 func TestCheckAPIKeyExists(t *testing.T) {
 	c := &Config{
 		APIKey: "asdf1234",
