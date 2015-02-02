@@ -28,7 +28,7 @@ var (
 )
 
 // LangCodes holds all supported languages to be used
-// inspried from and sourced from @bambocher (github.com/bambocher)
+// inspried and sourced from @bambocher (github.com/bambocher)
 var LangCodes = map[string]string{
 	"EN":    "English",
 	"RU":    "Russian",
@@ -56,10 +56,10 @@ var LangCodes = map[string]string{
 }
 
 // Config will hold default settings to be passed into the
-// "New{current, forecast, etc}" function.
+// "NewCurrent, NewForecast, etc}" functions.
 type Config struct {
-	Mode     string // User choice of JSON or XML
-	Unit     string // F, C, or K
+	Mode     string // user choice of JSON or XML
+	Unit     string // measurement for results to be displayed.  F, C, or K
 	Lang     string // should reference a key in the LangCodes map
 	APIKey   string // API Key for connecting to the OWM
 	Username string // Username for posting data
