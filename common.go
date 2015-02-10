@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,53 @@
 
 package openweathermap
 
+const unitError = "unit unavailable"
+const langError = "language unavailable"
+
+var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
 	baseURL      = "http://api.openweathermap.org/data/2.5/weather?%s"
 	iconURL      = "http://openweathermap.org/img/w/%s"
 	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&cnt=%d"
+	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
+	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
 	dataPostURL  = "http://openweathermap.org/data/post"
-	DataUnits    = map[string]string{"metric": "C", "imperial": "F", "internal": "K"}
 )
 
+// LangCodes holds all supported languages to be used
+// inspried and sourced from @bambocher (github.com/bambocher)
+var LangCodes = map[string]string{
+	"EN":    "English",
+	"RU":    "Russian",
+	"IT":    "Italian",
+	"ES":    "Spanish",
+	"SP":    "Spanish",
+	"UK":    "Ukrainian",
+	"UA":    "Ukrainian",
+	"DE":    "German",
+	"PT":    "Portuguese",
+	"RO":    "Romanian",
+	"PL":    "Polish",
+	"FI":    "Finnish",
+	"NL":    "Dutch",
+	"FR":    "French",
+	"BG":    "Bulgarian",
+	"SV":    "Swedish",
+	"SE":    "Swedish",
+	"TR":    "Turkish",
+	"HR":    "Croatian",
+	"CA":    "Catalan",
+	"ZH_TW": "Chinese Traditional",
+	"ZH":    "Chinese Simplified",
+	"ZH_CN": "Chinese Simplified",
+}
+
 // Config will hold default settings to be passed into the
-// "New..." function.
+// "NewCurrent, NewForecast, etc}" functions.
 type Config struct {
-	Mode     string // User choice of JSON or XML
-	Units    string // Imperial, metric, or internal
+	Mode     string // user choice of JSON or XML
+	Unit     string // measurement for results to be displayed.  F, C, or K
+	Lang     string // should reference a key in the LangCodes map
 	APIKey   string // API Key for connecting to the OWM
 	Username string // Username for posting data
 	Password string // Pasword for posting data
@@ -39,9 +72,8 @@ type APIError struct {
 	COD     string `json:"cod"`
 }
 
-// Coordinates struct holds longitude and latitude data
-// in returned JSON or as parameter data for requests
-// using longitude and latitude.
+// Coordinates struct holds longitude and latitude data in returned
+// JSON or as parameter data for requests using longitude and latitude.
 type Coordinates struct {
 	Longitude float64 `json:"lon"`
 	Latitude  float64 `json:"lat"`
@@ -73,14 +105,15 @@ type Weather struct {
 	Icon        string `json:"icon"`
 }
 
-// Main struct contains the temperates, humidity, pressure for
-// the request.
+// Main struct contains the temperates, humidity, pressure for the request.
 type Main struct {
-	Temp     float64 `json:"temp"`
-	TempMin  float64 `json:"temp_min"`
-	TempMax  float64 `json:"temp_max"`
-	Pressure float64 `json:"pressure"`
-	Humidity int     `json:"humidity"`
+	Temp       float64 `json:"temp"`
+	TempMin    float64 `json:"temp_min"`
+	TempMax    float64 `json:"temp_max"`
+	Pressure   float64 `json:"pressure"`
+	Sea_level  float64 `json:"sea_level"`
+	Grnd_level float64 `json:"grnd_level"`
+	Humidity   int     `json:"humidity"`
 }
 
 // Clouds struct holds data regarding cloud cover.
@@ -91,8 +124,19 @@ type Clouds struct {
 // ValidDataUnit makes sure the string passed in is an accepted
 // unit of measure to be used for the return data.
 func ValidDataUnit(u string) bool {
-	for d, _ := range DataUnits {
+	for d := range DataUnits {
 		if u == d {
+			return true
+		}
+	}
+	return false
+}
+
+// ValidLangCode makes sure the string passed in is an
+// acceptable lang code.
+func ValidLangCode(c string) bool {
+	for d := range LangCodes {
+		if c == d {
 			return true
 		}
 	}
@@ -101,9 +145,9 @@ func ValidDataUnit(u string) bool {
 
 // ValidDataUnitSymbol makes sure the string passed in is an
 // acceptable data unit symbol.
-func ValidDataUnitSymbol(s string) bool {
+func ValidDataUnitSymbol(u string) bool {
 	for _, d := range DataUnits {
-		if s == d {
+		if u == d {
 			return true
 		}
 	}
@@ -111,6 +155,4 @@ func ValidDataUnitSymbol(s string) bool {
 }
 
 // CheckAPIKeyExists will see if an API key has been set.
-func (c *Config) CheckAPIKeyExists() bool {
-	return len(c.APIKey) > 1
-}
+func (c *Config) CheckAPIKeyExists() bool { return len(c.APIKey) > 1 }

@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import (
 // TestValidDataUnit tests whether or not ValidDataUnit provides
 // the correct assertion on provided data unit.
 func TestValidDataUnit(t *testing.T) {
-	for u, _ := range DataUnits {
+	for u := range DataUnits {
 		if !ValidDataUnit(u) {
 			t.Error("False positive on data unit")
 		}

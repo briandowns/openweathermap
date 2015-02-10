@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,44 +19,48 @@ import (
 	"testing"
 )
 
+// TestNewCurrent will verify that a new instance of CurrentWeatherData is created
 func TestNewCurrent(t *testing.T) {
 	t.Parallel()
-	for d, _ := range DataUnits {
+	for d := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
-			c, err := NewCurrent(d)
+			c, err := NewCurrent(d, "en")
 			if err != nil {
 				t.Error(err)
 			}
 			if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
-				t.Error("ERROR: incorrect data type returned")
+				t.Error("incorrect data type returned")
 			}
 		} else {
-			t.Errorf("ERROR: unusable data unit - %s", d)
+			t.Errorf("unusable data unit - %s", d)
 		}
 	}
-	_, err := NewCurrent("asdf")
+	_, err := NewCurrent("Philadelphia", "en")
 	if err == nil {
-		t.Error("ERROR: created instance when it shouldn't have")
+		t.Error("created instance when it shouldn't have")
 	}
 }
 
+// TestCurrentByName will verify that current data can be retrieved for a give
+// location by name
 func TestCurrentByName(t *testing.T) {
-	testCities := []string{"Philadelphia", "Newark", "Helena"}
-	c, err := NewCurrent("imperial")
+	t.Parallel()
+	testCities := []string{"Philadelphia", "Newark", "Helena", "San Diego, CA"}
+	c, err := NewCurrent("f", "ru")
 	if err != nil {
 		t.Error(err)
 	}
 	for _, city := range testCities {
 		c.CurrentByName(city)
-		if c.Name != city {
-			t.Error("ERROR: Incorrect city returned")
-		}
 	}
 }
 
+// TestCurrentByCoordinates will verify that current data can be retrieved for a
+// given set of coordinates
 func TestCurrentByCoordinates(t *testing.T) {
-	c, err := NewCurrent("imperial")
+	t.Parallel()
+	c, err := NewCurrent("f", "DE")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
@@ -68,8 +72,11 @@ func TestCurrentByCoordinates(t *testing.T) {
 	)
 }
 
+// TestCurrentByID will verify that current data can be retrieved for a given
+// location id
 func TestCurrentByID(t *testing.T) {
-	c, err := NewCurrent("metric")
+	t.Parallel()
+	c, err := NewCurrent("c", "ZH")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}

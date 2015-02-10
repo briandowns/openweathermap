@@ -1,12 +1,25 @@
+// Copyright 2015 Brian J. Downs
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package openweathermap
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -26,7 +39,7 @@ type Temperature struct {
 	Morn  float64 `json:"morn"`
 }
 
-// City data
+// City data for given location
 type City struct {
 	ID         int         `json:"id"`
 	Name       string      `json:"name"`
@@ -36,7 +49,7 @@ type City struct {
 	Sys        ForecastSys `json:"sys"`
 }
 
-// ForecastWeatherList holds specific query  data
+// ForecastWeatherList holds specific query data
 type ForecastWeatherList struct {
 	Dt       int         `json:"dt"`
 	Temp     Temperature `json:"temp"`
@@ -57,75 +70,69 @@ type ForecastWeatherData struct {
 	City    City                  `json:"city"`
 	Cnt     int                   `json:"cnt"`
 	List    []ForecastWeatherList `json:"list"`
-	Units   string
+	Unit    string
+	Lang    string
 }
 
 // NewForecast returns a new HistoricalWeatherData pointer with
 // the supplied arguments.
-func NewForecast(unit string) (*ForecastWeatherData, error) {
-	unitChoice := strings.ToLower(unit)
+func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
+	unitChoice := strings.ToUpper(unit)
+	langChoice := strings.ToUpper(lang)
+	f := &ForecastWeatherData{}
 	if ValidDataUnit(unitChoice) {
-		return &ForecastWeatherData{Units: unitChoice}, nil
+		f.Unit = unitChoice
+	} else {
+		return nil, errors.New(unitError)
 	}
-	return nil, errors.New("ERROR: unit of measure not available")
+	if ValidLangCode(langChoice) {
+		f.Lang = langChoice
+	} else {
+		return nil, errors.New(langError)
+	}
+	return f, nil
 }
 
 // DailyByName will provide a forecast for the location given for the
 // number of days given.
-func (f *ForecastWeatherData) DailyByName(location string, days int) {
-	response, err := http.Get(fmt.Sprintf(forecastBase, "q", location, f.Units, days))
+func (f *ForecastWeatherData) DailyByName(location string, days int) error {
+	var err error
+	var response *http.Response
+	response, err = http.Get(fmt.Sprintf(forecastBase, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println(err)
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
+		return err
 	}
-
-	err = json.Unmarshal(result, &f)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	return nil
 }
 
 // DailyByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
-func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Units, days))
+func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Unit, f.Lang, days))
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println(err)
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
+		return err
 	}
-
-	err = json.Unmarshal(result, &f)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	return nil
 }
 
 // DailyByID will provide a forecast for the location ID give for the
 // number of days given.
-func (f *ForecastWeatherData) DailyByID(id, days int) {
-	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Units, days))
+func (f *ForecastWeatherData) DailyByID(id, days int) error {
+	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Unit, f.Lang, days))
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println(err)
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
+		return err
 	}
-
-	err = json.Unmarshal(result, &f)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	return nil
 }

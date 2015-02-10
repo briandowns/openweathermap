@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,24 @@
 package openweathermap
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
 // HistoricalParameters struct holds the (optional) fields to be
 // supplied for historical data requests.
 type HistoricalParameters struct {
-	Start int64
-	End   int64
-	Cnt   int
+	Start int64 // Data start (unix time, UTC time zone)
+	End   int64 // Data end (unix time, UTC time zone)
+	Cnt   int   // Amount of returned data (one per hour, can be used instead of Data end)
+}
+
+type Rain struct {
+	ThreeH int `json:"3h"`
 }
 
 // WeatherHistory struct contains aggregate fields from the above
@@ -34,6 +42,7 @@ type WeatherHistory struct {
 	Wind    Wind      `json:"wind"`
 	Clouds  Clouds    `json:"clouds"`
 	Weather []Weather `json:"weather"`
+	Rain    Rain      `json:"rain"`
 	Dt      int       `json:"dt"`
 }
 
@@ -46,15 +55,53 @@ type HistoricalWeatherData struct {
 	CalcTime float64          `json:"calctime"`
 	Cnt      int              `json:"cnt"`
 	List     []WeatherHistory `json:"list"`
-	Units    string
+	Unit     string
 }
 
 // NewHistorical returns a new HistoricalWeatherData pointer with
 //the supplied arguments.
 func NewHistorical(unit string) (*HistoricalWeatherData, error) {
-	unitChoice := strings.ToLower(unit)
+	unitChoice := strings.ToUpper(unit)
 	if ValidDataUnit(unitChoice) {
-		return &HistoricalWeatherData{Units: unitChoice}, nil
+		return &HistoricalWeatherData{Unit: unitChoice}, nil
 	}
-	return nil, errors.New("ERROR: unit of measure not available")
+	return nil, errors.New("unit of measure not available")
+}
+
+// HistoryByName will return the history for the provided location
+func (h *HistoricalWeatherData) HistoryByName(location string) error {
+	var err error
+	var response *http.Response
+	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), url.QueryEscape(location)))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
+		return err
+	}
+	return nil
+}
+
+// HistoryByID will return the history for the provided location ID
+func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters) error {
+	if len(hp) > 0 {
+		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&type=hour&start%d&end=%d&cnt=%d"), id, hp[0].Start, hp[0].End, hp[0].Cnt))
+		if err != nil {
+			return err
+		}
+		defer response.Body.Close()
+		if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
+			return err
+		}
+	}
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d"), id))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
+		return err
+	}
+	return nil
 }

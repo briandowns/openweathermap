@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ func ValidateStationDataParameter(param string) bool {
 	return false
 }
 
-// convertToURLValues will convert a map to a url.Values instance. We're
+// ConvertToURLValues will convert a map to a url.Values instance. We're
 // taking a map[string]string instead of something more type specific since
 // the url.Values instance only takes strings to create the URL values.
 func ConvertToURLValues(data map[string]string) string {

@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,30 +21,33 @@ import (
 
 var forecastRange = []int{3, 7, 10}
 
+// TestNewForecast will make sure the a new instance of Forecast is returned
 func TestNewForecast(t *testing.T) {
 	t.Parallel()
-	for d, _ := range DataUnits {
+	for d := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
-			c, err := NewForecast(d)
+			c, err := NewForecast(d, "ru")
 			if err != nil {
 				t.Error(err)
 			}
 			if reflect.TypeOf(c).String() != "*openweathermap.ForecastWeatherData" {
-				t.Error("ERROR: incorrect data type returned")
+				t.Error("incorrect data type returned")
 			}
 		} else {
-			t.Errorf("ERROR: unusable data unit - %s", d)
+			t.Errorf("unusable data unit - %s", d)
 		}
 	}
-	_, err := NewForecast("asdf")
+	_, err := NewForecast("asdf", "en")
 	if err == nil {
-		t.Error("ERROR: created instance when it shouldn't have")
+		t.Error("created instance when it shouldn't have")
 	}
 }
 
+// TestDailyByName will verify that a daily forecast can be retrieved for
+// a given named location
 func TestDailyByName(t *testing.T) {
-	f, err := NewForecast("imperial")
+	f, err := NewForecast("f", "fi")
 	if err != nil {
 		t.Error(err)
 	}
@@ -53,8 +56,11 @@ func TestDailyByName(t *testing.T) {
 	}
 }
 
+// TestDailyByCooridinates will verify that a daily forecast can be retrieved
+// for a given set of coordinates
 func TestDailyByCoordinates(t *testing.T) {
-	f, err := NewForecast("internal")
+	t.Parallel()
+	f, err := NewForecast("f", "PL")
 	if err != nil {
 		t.Error(err)
 	}
@@ -68,8 +74,11 @@ func TestDailyByCoordinates(t *testing.T) {
 	}
 }
 
+// TestDailyByID will verify that a daily forecast can be retrieved for a
+// given location ID
 func TestDailyByID(t *testing.T) {
-	f, err := NewForecast("metric")
+	t.Parallel()
+	f, err := NewForecast("c", "fr")
 	if err != nil {
 		t.Error(err)
 	}

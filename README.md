@@ -2,6 +2,8 @@
 
 [![GoDoc](https://godoc.org/github.com/briandowns/openweathermap?status.svg)](https://godoc.org/github.com/briandowns/openweathermap) [![Build Status](https://travis-ci.org/briandowns/openweathermap.svg?branch=master)](https://travis-ci.org/briandowns/openweathermap)
 
+Go (golang) package for use with openweathermap.org's API.
+
 For more detail about the library and its features, reference your local godoc once installed.
 
 Contributions welcome!
@@ -18,7 +20,7 @@ Contributions welcome!
 
 ## Forecast
 
-For a given number of days.
+Get the weather conditions for a given number of days.
 
 - By City
 - By City,St (State)
@@ -27,6 +29,8 @@ For a given number of days.
 - By Longitude and Latitude
 
 ### Access to Condition Codes and Icons
+
+Gain access to OpenWeatherMap icons and condition codes.
 
 - Thunderstorms
 - Drizzle
@@ -37,9 +41,19 @@ For a given number of days.
 - Extreme
 - Additional
 
+### Data Available in Multiple Measurement Systems
+
+- Fahrenheit (OpenWeatherMap API - imperial)
+- Celcius (OpenWeatherMap API - metric)
+- Kelvin (OpenWeatherMap API - internal)
+
 ## Historical Conditions
 
 - ...still in the works...
+
+## Supported Languages
+
+English - en, Russian - ru, Italian - it, Spanish - es (or sp), Ukrainian - uk (or ua), German - de, Portuguese - pt, Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw, Chinese Simplified - zh (or zh_cn), Turkish - tr, Croatian - hr, Catalan - ca
 
 ## Installation
 
@@ -63,7 +77,7 @@ import (
 )
 
 func main() {
-    w, err := owm.NewCurrent("imperial")
+    w, err := owm.NewCurrent("F", "ru") // fahrenheit (imperial) with Russian output
     if err != nil {
         log.Fatalln(err)
     }
@@ -73,9 +87,11 @@ func main() {
 }
 ```
 
+### Current Conditions by location name
+
 ```Go
 func main() {
-    w, err := owm.NewCurrent("metric")
+    w, err := owm.NewCurrent("K", "EN") // (internal - OpenWeatherMap reference for kelvin) with English output
     if err != nil {
         log.Fatalln(err)
     }
@@ -85,14 +101,16 @@ func main() {
 }
 ```
 
+### Forecast Conditions in imperial (fahrenheit) by coordinates
+
 ```Go
 func main() {
-    w, err := owm.NewCurrent("imperial")
+    w, err := owm.NewForecast("F", "FI")
     if err != nil {
         log.Fatalln(err)
     }
 
-    w.CurrentByCoordinates(
+    w.DailyByCoordinates(
     		&Coordinates{
     			Longitude: -112.07,
     			Latitude: 33.45,
@@ -102,9 +120,11 @@ func main() {
 }
 ```
 
+### Current conditions in metric (celsius) by location ID
+
 ```Go
 func main() {
-    w, err := owm.NewCurrent("metric")
+    w, err := owm.NewCurrent("C", "PL")
     if err != nil {
         log.Fatalln(err)
     }

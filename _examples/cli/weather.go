@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@
 //
 // Examples:
 //          go run weather.go --help
-//          go run weather.go -l Philadelphia -u imperial # fahrenheit
-//          go run weather.go -l here -u imperial         # fahrenheit
-//          go run weather.go -l Dublin -u metric         # celcius
-//          go run weather.go -l "Las Vegas" -u internal  # kelvin
+//          go run weather.go -w Philadelphia -u f -l en  # fahrenheit, English
+//          go run weather.go -w here -u f -l ru          # fahrenheit, Russian
+//          go run weather.go -w Dublin -u c -l fi        # celcius, Finnish
+//          go run weather.go -w "Las Vegas" -u k -l es   # kelvin, Spanish
 package main
 
 import (
@@ -41,21 +41,21 @@ import (
 	"text/template"
 )
 
-const (
-	url = "http://ip-api.com/json"
-	// template used for output
-	weatherTemplate = `Current weather for {{.Name}}:
+const URL = "http://ip-api.com/json"
+
+// template used for output
+const weatherTemplate = `Current weather for {{.Name}}:
     Conditions: {{range .Weather}} {{.Description}} {{end}}
-    Now:         {{.Main.Temp}} {{.Units}}
-    High:        {{.Main.TempMax}} {{.Units}}
-    Low:         {{.Main.TempMin}} {{.Units}}
+    Now:         {{.Main.Temp}} {{.Unit}}
+    High:        {{.Main.TempMax}} {{.Unit}}
+    Low:         {{.Main.TempMin}} {{.Unit}}
 `
-)
 
 // Pointers to hold the contents of the flag args.
 var (
-	locationFlag = flag.String("l", "", "Location to get weather.  If location has a space, wrap the location in double quotes.")
-	unitFlag     = flag.String("u", "", "Unit of measure to display temps in")
+	whereFlag = flag.String("w", "", "Location to get weather.  If location has a space, wrap the location in double quotes.")
+	unitFlag  = flag.String("u", "", "Unit of measure to display temps in")
+	langFlag  = flag.String("l", "", "Language to display temps in")
 )
 
 // Data will hold the result of the query to get the IP
@@ -81,7 +81,7 @@ type Data struct {
 // getLocation will get the location details for where this
 // application has been run from.
 func getLocation() *Data {
-	response, err := http.Get(url)
+	response, err := http.Get(URL)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -102,8 +102,8 @@ func getLocation() *Data {
 
 // getCurrent gets the current weather for the provided
 // location in the units provided.
-func getCurrent(l, u string) *owm.CurrentWeatherData {
-	w, err := owm.NewCurrent(u)
+func getCurrent(l, u, lang string) *owm.CurrentWeatherData {
+	w, err := owm.NewCurrent(u, lang)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -115,15 +115,14 @@ func main() {
 	flag.Parse()
 
 	// If there's any funkiness with cli args, tuck and roll...
-	if len(*locationFlag) <= 1 || len(*unitFlag) <= 1 {
+	if len(*whereFlag) <= 1 || len(*unitFlag) != 1 || len(*langFlag) != 2 {
 		flag.Usage()
 		os.Exit(1)
 	}
 
 	// Process request for location of "here"
-	if strings.ToLower(*locationFlag) == "here" {
-		w := getCurrent(getLocation().City, *unitFlag)
-		w.Units = owm.DataUnits[w.Units]
+	if strings.ToLower(*whereFlag) == "here" {
+		w := getCurrent(getLocation().City, *unitFlag, *langFlag)
 		tmpl, err := template.New("weather").Parse(weatherTemplate)
 		if err != nil {
 			log.Fatalln(err)
@@ -138,9 +137,7 @@ func main() {
 	}
 
 	// Process request for the given location
-	w := getCurrent(*locationFlag, *unitFlag)
-	w.Units = owm.DataUnits[w.Units]
-
+	w := getCurrent(*whereFlag, *unitFlag, *langFlag)
 	tmpl, err := template.New("weather").Parse(weatherTemplate)
 	if err != nil {
 		log.Fatalln(err)

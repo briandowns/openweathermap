@@ -1,4 +1,4 @@
-// Copyright 2014 Brian J. Downs
+// Copyright 2015 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -38,77 +37,81 @@ type CurrentWeatherData struct {
 	ID      int         `json:"id"`
 	Name    string      `json:"name"`
 	Cod     int         `json:"cod"`
-	Units   string
+	Unit    string
+	Lang    string
 }
 
-// NewCurrent returns a new WeatherData pointer with the supplied
-// arguments.
-func NewCurrent(unit string) (*CurrentWeatherData, error) {
-	unitChoice := strings.ToLower(unit)
+// NewCurrent returns a new CurrentWeatherData pointer with the supplied parameters
+func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
+	unitChoice := strings.ToUpper(unit)
+	langChoice := strings.ToUpper(lang)
+	c := &CurrentWeatherData{}
 	if ValidDataUnit(unitChoice) {
-		return &CurrentWeatherData{Units: unitChoice}, nil
+		c.Unit = unitChoice
+	} else {
+		return nil, errors.New(unitError)
 	}
-	return nil, errors.New("ERROR: unit of measure not available")
+	if ValidLangCode(langChoice) {
+		c.Lang = langChoice
+	} else {
+		return nil, errors.New(langError)
+	}
+	return c, nil
 }
 
-// CurrentByName will provide the current weather with the
-// provided location name.
-func (w *CurrentWeatherData) CurrentByName(location string) {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s"), location, w.Units))
+// SetLang allows you to set the language responses will be displayed as.  This isn't part of the
+// NewCurrent call because it'd keep it easier to go with API defaults and
+// adjust if explicitly called.
+func (w *CurrentWeatherData) SetLang(lang string) error {
+	if !ValidLangCode(lang) {
+		return errors.New(langError)
+	}
+	w.Lang = lang
+	return nil
+}
+
+// CurrentByName will provide the current weather with the provided
+// location name.
+func (w *CurrentWeatherData) CurrentByName(location string) error {
+	var err error
+	var response *http.Response
+	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), url.QueryEscape(location), DataUnits[w.Unit], w.Lang))
 	if err != nil {
-		log.Print(err)
+		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Print(err)
+	if err := json.NewDecoder(response.Body).Decode(&w); err != nil {
+		return err
 	}
-
-	err = json.Unmarshal(result, &w)
-	if err != nil {
-		log.Print(err)
-	}
+	return nil
 }
 
 // CurrentByCoordinates will provide the current weather with the
 // provided location coordinates.
-func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, w.Units))
+func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "lat=%f&lon=%f&units=%s&lang=%s"), location.Latitude, location.Longitude, w.Unit, w.Lang))
 	if err != nil {
-		log.Print(err)
+		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Println(err)
+	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
+		return err
 	}
-
-	err = json.Unmarshal(result, &w)
-	if err != nil {
-		log.Print(err)
-	}
+	return nil
 }
 
 // CurrentByID will provide the current weather with the
 // provided location ID.
-func (w *CurrentWeatherData) CurrentByID(id int) {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "id=%d&units=%s"), id, w.Units))
+func (w *CurrentWeatherData) CurrentByID(id int) error {
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "id=%d&units=%s&lang=%s"), id, w.Unit, w.Lang))
 	if err != nil {
-		log.Print(err)
+		return err
 	}
 	defer response.Body.Close()
-
-	result, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Println(err)
+	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
+		return err
 	}
-
-	err = json.Unmarshal(result, &w)
-	if err != nil {
-		log.Print(err)
-	}
+	return nil
 }
 
 // CurrentByArea will provide the current weather for the
