@@ -42,25 +42,6 @@ type Data struct {
 // getLocation will get the location details for where this
 // application has been run from.
 func getLocation() (*Data, error) {
-	/*
-		response, err := http.Get(URL)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer response.Body.Close()
-
-		result, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		r := &Data{}
-		err = json.Unmarshal(result, &r)
-		if err != nil {
-			log.Fatal(err)
-		}
-		return r
-	*/
 	response, err := http.Get(URL)
 	if err != nil {
 		log.Fatal(err)
