@@ -108,13 +108,13 @@ type Weather struct {
 
 // Main struct contains the temperates, humidity, pressure for the request.
 type Main struct {
-	Temp       float64 `json:"temp"`
-	TempMin    float64 `json:"temp_min"`
-	TempMax    float64 `json:"temp_max"`
-	Pressure   float64 `json:"pressure"`
-	Sea_level  float64 `json:"sea_level"`
-	Grnd_level float64 `json:"grnd_level"`
-	Humidity   int     `json:"humidity"`
+	Temp      float64 `json:"temp"`
+	TempMin   float64 `json:"temp_min"`
+	TempMax   float64 `json:"temp_max"`
+	Pressure  float64 `json:"pressure"`
+	SeaLevel  float64 `json:"sea_level"`
+	GrndLevel float64 `json:"grnd_level"`
+	Humidity  int     `json:"humidity"`
 }
 
 // Clouds struct holds data regarding cloud cover.
