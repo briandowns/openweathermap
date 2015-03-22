@@ -17,6 +17,7 @@ import (
 	"net/http"
 )
 
+// URL is a constant that contains where to find the IP locale info
 const URL = "http://ip-api.com/json"
 
 // Data will hold the result of the query to get the IP

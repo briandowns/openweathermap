@@ -41,6 +41,7 @@ import (
 	"text/template"
 )
 
+// URL is a constant that contains where to find the IP locale info
 const URL = "http://ip-api.com/json"
 
 // template used for output
