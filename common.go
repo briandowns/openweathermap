@@ -17,6 +17,7 @@ package openweathermap
 const unitError = "unit unavailable"
 const langError = "language unavailable"
 
+// DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
 	baseURL      = "http://api.openweathermap.org/data/2.5/weather?%s"
