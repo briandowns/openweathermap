@@ -31,6 +31,7 @@ type HistoricalParameters struct {
 	Cnt   int   // Amount of returned data (one per hour, can be used instead of Data end)
 }
 
+// Rain struct contains 3 hour data
 type Rain struct {
 	ThreeH int `json:"3h"`
 }
