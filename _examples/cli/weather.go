@@ -17,9 +17,9 @@
 //
 // This application will go out and get the weather for the given
 // location and display it in the given data units (fahrenheit,
-// celcius, or kelvin.  If the string "here" is provided as an
+// celcius, or kelvin).  If the string "here" is provided as an
 // argument to the -l flag, the app will try to figure out where
-// it's being executed from based on geolocation from IP address.
+// it's being executed from based on geolocation from the IP address.
 //
 // Examples:
 //          go run weather.go --help
