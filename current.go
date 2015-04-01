@@ -114,6 +114,20 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 	return nil
 }
 
+// CurrentByZip will provide the current weather for the
+// provided zip code.
+func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "zip=%d,%s&units=%s&lang=%s"), zip, countryCode, w.Unit, w.Lang))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
+		return err
+	}
+	return nil
+}
+
 // CurrentByArea will provide the current weather for the
 // provided area.
 func (w *CurrentWeatherData) CurrentByArea() {}
