@@ -1,83 +1,195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
     <title>Openweathermap by briandowns</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Openweathermap</h1>
-        <h2>Go (golang) library for use with openweathermap.org&#39;s API.</h2>
-        <a href="https://github.com/briandowns/openweathermap" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/briandowns/openweathermap">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/briandowns/openweathermap/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/briandowns/openweathermap/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+    <div class="wrapper">
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+      <section>
+        <div id="title">
+          <h1>Openweathermap</h1>
+          <p>Go (golang) library for use with openweathermap.org&#39;s API.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/briandowns">briandowns</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+        <h1>
+<a id="openweathermap-go-api" class="anchor" href="#openweathermap-go-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>OpenWeatherMap Go API</h1>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p><a href="https://godoc.org/github.com/briandowns/openweathermap"><img src="https://godoc.org/github.com/briandowns/openweathermap?status.svg" alt="GoDoc"></a> <a href="https://travis-ci.org/briandowns/openweathermap"><img src="https://travis-ci.org/briandowns/openweathermap.svg?branch=master" alt="Build Status"></a></p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<p>Go (golang) package for use with openweathermap.org's API.</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>For more detail about the library and its features, reference your local godoc once installed.</p>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<p>Contributions welcome!</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a id="current-weather-conditions" class="anchor" href="#current-weather-conditions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current Weather Conditions</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </section>
+<ul>
+<li>By City</li>
+<li>By City,St (State)</li>
+<li>By City,Co (Country)</li>
+<li>By City ID</li>
+<li>By Longitude and Latitude</li>
+</ul>
 
-        <aside id="sidebar">
-          <a href="https://github.com/briandowns/openweathermap/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/briandowns/openweathermap/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+<h2>
+<a id="forecast" class="anchor" href="#forecast" aria-hidden="true"><span class="octicon octicon-link"></span></a>Forecast</h2>
 
-          <p class="repo-owner"><a href="https://github.com/briandowns/openweathermap"></a> is maintained by <a href="https://github.com/briandowns">briandowns</a>.</p>
+<p>Get the weather conditions for a given number of days.</p>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+<ul>
+<li>By City</li>
+<li>By City,St (State)</li>
+<li>By City,Co (Country)</li>
+<li>By City ID</li>
+<li>By Longitude and Latitude</li>
+</ul>
+
+<h3>
+<a id="access-to-condition-codes-and-icons" class="anchor" href="#access-to-condition-codes-and-icons" aria-hidden="true"><span class="octicon octicon-link"></span></a>Access to Condition Codes and Icons</h3>
+
+<p>Gain access to OpenWeatherMap icons and condition codes.</p>
+
+<ul>
+<li>Thunderstorms</li>
+<li>Drizzle</li>
+<li>Rain</li>
+<li>Snow</li>
+<li>Atmosphere</li>
+<li>Clouds</li>
+<li>Extreme</li>
+<li>Additional</li>
+</ul>
+
+<h3>
+<a id="data-available-in-multiple-measurement-systems" class="anchor" href="#data-available-in-multiple-measurement-systems" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Available in Multiple Measurement Systems</h3>
+
+<ul>
+<li>Fahrenheit (OpenWeatherMap API - imperial)</li>
+<li>Celcius (OpenWeatherMap API - metric)</li>
+<li>Kelvin (OpenWeatherMap API - internal)</li>
+</ul>
+
+<h2>
+<a id="historical-conditions" class="anchor" href="#historical-conditions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Historical Conditions</h2>
+
+<ul>
+<li>...still in the works...</li>
+</ul>
+
+<h2>
+<a id="supported-languages" class="anchor" href="#supported-languages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported Languages</h2>
+
+<p>English - en, Russian - ru, Italian - it, Spanish - es (or sp), Ukrainian - uk (or ua), German - de, Portuguese - pt, Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw, Chinese Simplified - zh (or zh_cn), Turkish - tr, Croatian - hr, Catalan - ca</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<div class="highlight highlight-bash"><pre>go get github.com/briandowns/openweathermap</pre></div>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>There are a few full examples in the examples directory that can be referenced.  1 is a command line application and 1 is a simple web application.</p>
+
+<div class="highlight highlight-Go"><pre><span class="pl-k">package</span> main
+
+<span class="pl-k">import</span> (
+    <span class="pl-s"><span class="pl-pds">"</span>log<span class="pl-pds">"</span></span>
+    <span class="pl-s"><span class="pl-pds">"</span>fmt<span class="pl-pds">"</span></span>
+
+    <span class="pl-c">// Shortening the import reference name seems to make it a bit easier</span>
+    owm <span class="pl-s"><span class="pl-pds">"</span>github.com/briandowns/openweathermap<span class="pl-pds">"</span></span>
+)
+
+<span class="pl-k">func</span> <span class="pl-en">main</span>() {
+    <span class="pl-smi">w</span>, <span class="pl-smi">err</span> <span class="pl-k">:=</span> owm.<span class="pl-c1">NewCurrent</span>(<span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>ru<span class="pl-pds">"</span></span>) <span class="pl-c">// fahrenheit (imperial) with Russian output</span>
+    <span class="pl-k">if</span> err != <span class="pl-c1">nil</span> {
+        log.<span class="pl-c1">Fatalln</span>(err)
+    }
+
+    w.<span class="pl-c1">CurrentByName</span>(<span class="pl-s"><span class="pl-pds">"</span>Phoenix<span class="pl-pds">"</span></span>)
+    fmt.<span class="pl-c1">Println</span>(w)
+}</pre></div>
+
+<h3>
+<a id="current-conditions-by-location-name" class="anchor" href="#current-conditions-by-location-name" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current Conditions by location name</h3>
+
+<div class="highlight highlight-Go"><pre><span class="pl-k">func</span> <span class="pl-en">main</span>() {
+    <span class="pl-smi">w</span>, <span class="pl-smi">err</span> <span class="pl-k">:=</span> owm.<span class="pl-c1">NewCurrent</span>(<span class="pl-s"><span class="pl-pds">"</span>K<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>EN<span class="pl-pds">"</span></span>) <span class="pl-c">// (internal - OpenWeatherMap reference for kelvin) with English output</span>
+    <span class="pl-k">if</span> err != <span class="pl-c1">nil</span> {
+        log.<span class="pl-c1">Fatalln</span>(err)
+    }
+
+    w.<span class="pl-c1">CurrentByName</span>(<span class="pl-s"><span class="pl-pds">"</span>Phoenix,AZ<span class="pl-pds">"</span></span>)
+    fmt.<span class="pl-c1">Println</span>(w)
+}</pre></div>
+
+<h3>
+<a id="forecast-conditions-in-imperial-fahrenheit-by-coordinates" class="anchor" href="#forecast-conditions-in-imperial-fahrenheit-by-coordinates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Forecast Conditions in imperial (fahrenheit) by coordinates</h3>
+
+<div class="highlight highlight-Go"><pre><span class="pl-k">func</span> <span class="pl-en">main</span>() {
+    <span class="pl-smi">w</span>, <span class="pl-smi">err</span> <span class="pl-k">:=</span> owm.<span class="pl-c1">NewForecast</span>(<span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>FI<span class="pl-pds">"</span></span>)
+    <span class="pl-k">if</span> err != <span class="pl-c1">nil</span> {
+        log.<span class="pl-c1">Fatalln</span>(err)
+    }
+
+    w.<span class="pl-c1">DailyByCoordinates</span>(
+            &amp;Coordinates{
+                Longitude: -<span class="pl-c1">112.07</span>,
+                Latitude: <span class="pl-c1">33.45</span>,
+            },
+    )
+    fmt.<span class="pl-c1">Println</span>(w)
+}</pre></div>
+
+<h3>
+<a id="current-conditions-in-metric-celsius-by-location-id" class="anchor" href="#current-conditions-in-metric-celsius-by-location-id" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current conditions in metric (celsius) by location ID</h3>
+
+<div class="highlight highlight-Go"><pre><span class="pl-k">func</span> <span class="pl-en">main</span>() {
+    <span class="pl-smi">w</span>, <span class="pl-smi">err</span> <span class="pl-k">:=</span> owm.<span class="pl-c1">NewCurrent</span>(<span class="pl-s"><span class="pl-pds">"</span>C<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>PL<span class="pl-pds">"</span></span>)
+    <span class="pl-k">if</span> err != <span class="pl-c1">nil</span> {
+        log.<span class="pl-c1">Fatalln</span>(err)
+    }
+
+    w.<span class="pl-c1">CurrentByID</span>(<span class="pl-c1">2172797</span>)
+    fmt.<span class="pl-c1">Println</span>(w)
+}</pre></div>
+      </section>
+
     </div>
-
-  
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
