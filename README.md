@@ -6,6 +6,8 @@ Go (golang) package for use with openweathermap.org's API.
 
 For more detail about the library and its features, reference your local godoc once installed.
 
+[Website](https://briandowns.github.io/openweathermap)!
+
 Contributions welcome!
 
 ## Features
@@ -16,6 +18,7 @@ Contributions welcome!
 - By City,St (State)
 - By City,Co (Country)
 - By City ID
+- By Zip,Co (Country)
 - By Longitude and Latitude
 
 ## Forecast
@@ -131,5 +134,19 @@ func main() {
 
     w.CurrentByID(2172797)
     fmt.Println(w)
+}
+```
+
+### Current conditions by zip code. 2 character country code required
+
+```Go
+func main() {
+	w, err := owm.NewCurrent("F", "US")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	w.CurrentByZip(19125, "US")
+	fmt.Println(w)
 }
 ```
