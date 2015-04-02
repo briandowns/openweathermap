@@ -47,6 +47,8 @@
 
 <p>For more detail about the library and its features, reference your local godoc once installed.</p>
 
+<p><a href="https://briandowns.github.io/openweathermap">Website</a>!</p>
+
 <p>Contributions welcome!</p>
 
 <h2>
@@ -60,6 +62,7 @@
 <li>By City,St (State)</li>
 <li>By City,Co (Country)</li>
 <li>By City ID</li>
+<li>By Zip,Co (Country)</li>
 <li>By Longitude and Latitude</li>
 </ul>
 
@@ -184,6 +187,19 @@
     }
 
     w.<span class="pl-c1">CurrentByID</span>(<span class="pl-c1">2172797</span>)
+    fmt.<span class="pl-c1">Println</span>(w)
+}</pre></div>
+
+<h3>
+<a id="current-conditions-by-zip-code-2-character-country-code-required" class="anchor" href="#current-conditions-by-zip-code-2-character-country-code-required" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current conditions by zip code. 2 character country code required</h3>
+
+<div class="highlight highlight-Go"><pre><span class="pl-k">func</span> <span class="pl-en">main</span>() {
+    <span class="pl-smi">w</span>, <span class="pl-smi">err</span> <span class="pl-k">:=</span> owm.<span class="pl-c1">NewCurrent</span>(<span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>US<span class="pl-pds">"</span></span>)
+    <span class="pl-k">if</span> err != <span class="pl-c1">nil</span> {
+        log.<span class="pl-c1">Fatalln</span>(err)
+    }
+
+    w.<span class="pl-c1">CurrentByZip</span>(<span class="pl-c1">19125</span>, <span class="pl-s"><span class="pl-pds">"</span>US<span class="pl-pds">"</span></span>)
     fmt.<span class="pl-c1">Println</span>(w)
 }</pre></div>
       </section>
