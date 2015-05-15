@@ -64,7 +64,7 @@ type HistoricalWeatherData struct {
 func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	if ValidDataUnit(unitChoice) {
-		return &HistoricalWeatherData{Unit: unitChoice}, nil
+		return &HistoricalWeatherData{Unit: DataUnits[unitChoice]}, nil
 	}
 	return nil, errors.New("unit of measure not available")
 }
