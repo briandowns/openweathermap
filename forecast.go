@@ -81,7 +81,7 @@ func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
 	langChoice := strings.ToUpper(lang)
 	f := &ForecastWeatherData{}
 	if ValidDataUnit(unitChoice) {
-		f.Unit = unitChoice
+		f.Unit = DataUnits[unitChoice]
 	} else {
 		return nil, errors.New(unitError)
 	}
