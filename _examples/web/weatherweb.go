@@ -10,8 +10,9 @@ package main
 
 import (
 	"encoding/json"
-	owm "github.com/briandowns/openweathermap"
 	"html/template"
+
+	owm "github.com/briandowns/openweathermap"
 	//	"io/ioutil"
 	"log"
 	"net/http"
@@ -72,7 +73,7 @@ func hereHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	wd := getCurrent(location.City, "c", "RU")
+	wd := getCurrent(location.City, "F", "en")
 
 	// Process our template
 	t, err := template.ParseFiles("templates/here.html")
