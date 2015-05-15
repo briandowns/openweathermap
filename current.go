@@ -47,7 +47,7 @@ func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 	langChoice := strings.ToUpper(lang)
 	c := &CurrentWeatherData{}
 	if ValidDataUnit(unitChoice) {
-		c.Unit = unitChoice
+		c.Unit = DataUnits[unitChoice]
 	} else {
 		return nil, errors.New(unitError)
 	}
