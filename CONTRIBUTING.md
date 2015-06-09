@@ -8,7 +8,7 @@
 
 ## Fixing Problems and/or Adding Features
 
-* Feel free to fork and fix an issue(s).
-* If at all possible, provide a test for the submitted code.
-* Run `go fmt`
+* Feel free to fork and fix an issue(s) or add a feature.
+* Please provide tests for the submitted code.
+* Run `go fmt` and `go vet`
 * Once the pull request is submitted, it'll be tested and merged.
