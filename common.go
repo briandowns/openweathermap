@@ -20,11 +20,11 @@ const langError = "language unavailable"
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
-	baseURL        = "http://api.openweathermap.org/data/2.5/weather?APPID=%s&%s"
+	baseURL        = "http://api.openweathermap.org/data/2.5/weather?appid=%s&%s"
 	iconURL        = "http://openweathermap.org/img/w/%s"
 	stationURL     = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecastBase   = "http://api.openweathermap.org/data/2.5/forecast/daily?APPID=%s&%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
-	forecast3HBase = "http://api.openweathermap.org/data/2.5/forecast?APPID=%s&%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
+	forecastBase   = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
+	forecast3HBase = "http://api.openweathermap.org/data/2.5/forecast?appid=%s&%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
 	historyURL     = "http://api.openweathermap.org/data/2.5/history/%s"
 	dataPostURL    = "http://openweathermap.org/data/post"
 )
