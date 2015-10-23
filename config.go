@@ -71,7 +71,7 @@ const envVarNameUsername = "OWM_USERNAME"
 const envVarNamePassword = "OWM_PASSWORD"
 
 // InitConfig parses environment variables to initialize configuration
-func InitConfig() error {
+func Init() error {
 	var lApiKey string
 
 	if lApiKey = os.Getenv(envVarNameAPIKey); !ValidateApiKey(lApiKey) {

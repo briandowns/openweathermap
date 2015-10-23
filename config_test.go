@@ -50,7 +50,7 @@ func TestApiKeyNotFoundNegativeTC(t *testing.T) {
 }
 
 func setupConfigTC() {
-	InitConfig()
+	Init()
 }
 
 func teardownConfigTC() {
@@ -59,7 +59,7 @@ func teardownConfigTC() {
 }
 
 // TestInitConfigRequest
-func TestInitConfigRequest(t *testing.T) {
+func TestInitRequest(t *testing.T) {
 	t.Parallel()
 
 	setupConfigTC()
@@ -75,7 +75,7 @@ func TestInitConfigRequest(t *testing.T) {
 }
 
 // TestInitConfig
-func TestInitConfig(t *testing.T) {
+func TestInit(t *testing.T) {
 	t.Parallel()
 
 	lOrigAPIKey := os.Getenv(envVarNameAPIKey)
@@ -86,7 +86,7 @@ func TestInitConfig(t *testing.T) {
 	os.Setenv(envVarNameUsername, "Username")
 	os.Setenv(envVarNamePassword, "Password")
 
-	InitConfig()
+	Init()
 
 	if GetApiKey() != "12345678901234567890123456789012" {
 		t.Error(errors.New("InitConfig failed parsing API key!"))
@@ -106,14 +106,14 @@ func TestInitConfig(t *testing.T) {
 }
 
 // TestInitConfigNegativeNoApiKey
-func TestInitConfigNegativeNoApiKey(t *testing.T) {
+func TestInitNegativeNoApiKey(t *testing.T) {
 	t.Parallel()
 
 	lOrigAPIKey := os.Getenv(envVarNameAPIKey)
 
 	os.Setenv(envVarNameAPIKey, "")
 
-	if InitConfig() != ErrNoApiKeyInEnvVar {
+	if Init() != ErrNoApiKeyInEnvVar {
 		t.Error(errors.New("InitConfig failed parsing API key!"))
 	}
 
