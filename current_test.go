@@ -15,9 +15,20 @@
 package openweathermap
 
 import (
+	"errors"
+	"fmt"
+	"os"
 	"reflect"
 	"testing"
 )
+
+func testSetup() {
+	SetApiKey(os.Getenv("OWM_API_KEY"))
+}
+
+func testTeardown() {
+	SetApiKey("")
+}
 
 // TestNewCurrent will verify that a new instance of CurrentWeatherData is created
 func TestNewCurrent(t *testing.T) {
@@ -46,41 +57,92 @@ func TestNewCurrent(t *testing.T) {
 // location by name
 func TestCurrentByName(t *testing.T) {
 	t.Parallel()
+
+	testSetup()
 	testCities := []string{"Philadelphia", "Newark", "Helena", "San Diego, CA"}
 	c, err := NewCurrent("f", "ru")
 	if err != nil {
 		t.Error(err)
 	}
 	for _, city := range testCities {
-		c.CurrentByName(city)
+		if bFetchErr := c.CurrentByName(city); bFetchErr != nil {
+			t.Error(bFetchErr)
+		}
 	}
+	testTeardown()
 }
 
 // TestCurrentByCoordinates will verify that current data can be retrieved for a
 // given set of coordinates
 func TestCurrentByCoordinates(t *testing.T) {
 	t.Parallel()
+
+	testSetup()
 	c, err := NewCurrent("f", "DE")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
-	c.CurrentByCoordinates(
+	bFetchErr := c.CurrentByCoordinates(
 		&Coordinates{
 			Longitude: -112.07,
 			Latitude:  33.45,
 		},
 	)
+
+	if bFetchErr != nil {
+		t.Error(bFetchErr)
+	}
+	testTeardown()
 }
 
 // TestCurrentByID will verify that current data can be retrieved for a given
 // location id
 func TestCurrentByID(t *testing.T) {
 	t.Parallel()
+
+	testSetup()
 	c, err := NewCurrent("c", "ZH")
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
-	c.CurrentByID(5344157)
+	bFetchErr := c.CurrentByID(5344157)
+
+	if bFetchErr != nil {
+		t.Error(bFetchErr)
+	}
+	testTeardown()
 }
 
 func TestCurrentByArea(t *testing.T) {}
+
+func TestApiKeyNotFoundNegativeTC(t *testing.T) {
+	t.Parallel()
+
+	c, err := NewCurrent("f", "ru")
+	if err != nil {
+		t.Error(err)
+	}
+
+	bFetchErr := c.CurrentByName("Stockholm")
+	if bFetchErr != ApiKeyNotFound {
+		t.Error(errors.New("CurrentByName did not return ApiKeyNotFound!"))
+	}
+	fmt.Println(c)
+
+	bFetchErr = c.CurrentByCoordinates(
+		&Coordinates{
+			Longitude: -112.07,
+			Latitude:  33.45,
+		},
+	)
+	if bFetchErr != ApiKeyNotFound {
+		t.Error(errors.New("CurrentByCoordinates did not return ApiKeyNotFound!"))
+	}
+	fmt.Println(c)
+
+	bFetchErr = c.CurrentByID(5344157)
+	if bFetchErr != ApiKeyNotFound {
+		t.Error(errors.New("CurrentByID did not return ApiKeyNotFound!"))
+	}
+	fmt.Println(c)
+}

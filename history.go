@@ -73,7 +73,10 @@ func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 func (h *HistoricalWeatherData) HistoryByName(location string) error {
 	var err error
 	var response *http.Response
-	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), url.QueryEscape(location)))
+	if !config.CheckAPIKeyExists() {
+		return ApiKeyNotFound
+	}
+	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s&APPID=%s"), url.QueryEscape(location), config.APIKey))
 	if err != nil {
 		return err
 	}
@@ -86,8 +89,11 @@ func (h *HistoricalWeatherData) HistoryByName(location string) error {
 
 // HistoryByID will return the history for the provided location ID
 func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters) error {
+	if !config.CheckAPIKeyExists() {
+		return ApiKeyNotFound
+	}
 	if len(hp) > 0 {
-		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&type=hour&start%d&end=%d&cnt=%d"), id, hp[0].Start, hp[0].End, hp[0].Cnt))
+		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&type=hour&start%d&end=%d&cnt=%d&APPID=%s"), id, hp[0].Start, hp[0].End, hp[0].Cnt, config.APIKey))
 		if err != nil {
 			return err
 		}
@@ -96,7 +102,7 @@ func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters)
 			return err
 		}
 	}
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d"), id))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&APPID=%s"), id, config.APIKey))
 	if err != nil {
 		return err
 	}

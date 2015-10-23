@@ -47,42 +47,56 @@ func TestNewForecast(t *testing.T) {
 // TestDailyByName will verify that a daily forecast can be retrieved for
 // a given named location
 func TestDailyByName(t *testing.T) {
+	testSetup()
 	f, err := NewForecast("f", "fi")
 	if err != nil {
 		t.Error(err)
 	}
 	for _, d := range forecastRange {
-		f.DailyByName("Dubai", d)
+		if bFetchErr := f.DailyByName("Dubai", d); bFetchErr != nil {
+			t.Error(bFetchErr)
+		}
 	}
+	testTeardown()
 }
 
 // TestDailyByCooridinates will verify that a daily forecast can be retrieved
 // for a given set of coordinates
 func TestDailyByCoordinates(t *testing.T) {
 	t.Parallel()
+	testSetup()
 	f, err := NewForecast("f", "PL")
 	if err != nil {
 		t.Error(err)
 	}
 	for _, d := range forecastRange {
-		f.DailyByCoordinates(
+		bFetchErr := f.DailyByCoordinates(
 			&Coordinates{
 				Longitude: -112.07,
 				Latitude:  33.45,
 			}, d,
 		)
+
+		if bFetchErr != nil {
+			t.Error(bFetchErr)
+		}
 	}
+	testTeardown()
 }
 
 // TestDailyByID will verify that a daily forecast can be retrieved for a
 // given location ID
 func TestDailyByID(t *testing.T) {
 	t.Parallel()
+	testSetup()
 	f, err := NewForecast("c", "fr")
 	if err != nil {
 		t.Error(err)
 	}
 	for _, d := range forecastRange {
-		f.DailyByID(524901, d)
+		if bFetchErr := f.DailyByID(524901, d); bFetchErr != nil {
+			t.Error(bFetchErr)
+		}
 	}
+	testTeardown()
 }
