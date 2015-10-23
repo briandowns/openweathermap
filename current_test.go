@@ -15,8 +15,6 @@
 package openweathermap
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -114,35 +112,3 @@ func TestCurrentByID(t *testing.T) {
 }
 
 func TestCurrentByArea(t *testing.T) {}
-
-func TestApiKeyNotFoundNegativeTC(t *testing.T) {
-	t.Parallel()
-
-	c, err := NewCurrent("f", "ru")
-	if err != nil {
-		t.Error(err)
-	}
-
-	bFetchErr := c.CurrentByName("Stockholm")
-	if bFetchErr != ApiKeyNotFound {
-		t.Error(errors.New("CurrentByName did not return ApiKeyNotFound!"))
-	}
-	fmt.Println(c)
-
-	bFetchErr = c.CurrentByCoordinates(
-		&Coordinates{
-			Longitude: -112.07,
-			Latitude:  33.45,
-		},
-	)
-	if bFetchErr != ApiKeyNotFound {
-		t.Error(errors.New("CurrentByCoordinates did not return ApiKeyNotFound!"))
-	}
-	fmt.Println(c)
-
-	bFetchErr = c.CurrentByID(5344157)
-	if bFetchErr != ApiKeyNotFound {
-		t.Error(errors.New("CurrentByID did not return ApiKeyNotFound!"))
-	}
-	fmt.Println(c)
-}

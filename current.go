@@ -76,7 +76,7 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 	var err error
 	var response *http.Response
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 
 	response, err = http.Get(fmt.Sprintf(
@@ -97,7 +97,7 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 // provided location coordinates.
 func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, config.APIKey, "lat=%f&lon=%f&units=%s&lang=%s"),
 		location.Latitude, location.Longitude,
@@ -116,7 +116,7 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 // provided location ID.
 func (w *CurrentWeatherData) CurrentByID(id int) error {
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, config.APIKey, "id=%d&units=%s&lang=%s"), id, w.Unit, w.Lang))
 	if err != nil {
@@ -133,7 +133,7 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 // provided zip code.
 func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, config.APIKey, "zip=%d,%s&units=%s&lang=%s"), zip, countryCode, w.Unit, w.Lang))
 	if err != nil {

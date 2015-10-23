@@ -99,7 +99,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 	var err error
 	var response *http.Response
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 	response, err = http.Get(fmt.Sprintf(forecastBase, config.APIKey, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
 	if err != nil {
@@ -116,7 +116,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 // for the number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, config.APIKey, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Unit, f.Lang, days))
 	if err != nil {
@@ -133,7 +133,7 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) error {
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 	response, err := http.Get(fmt.Sprintf(forecastBase, config.APIKey, "id", strconv.Itoa(id), f.Unit, f.Lang, days))
 	if err != nil {

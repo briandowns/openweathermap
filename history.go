@@ -33,7 +33,7 @@ type HistoricalParameters struct {
 
 // Rain struct contains 3 hour data
 type Rain struct {
-	ThreeH int `json:"3h"`
+	ThreeH float64 `json:"3h"`
 }
 
 // WeatherHistory struct contains aggregate fields from the above
@@ -74,7 +74,7 @@ func (h *HistoricalWeatherData) HistoryByName(location string) error {
 	var err error
 	var response *http.Response
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s&APPID=%s"), url.QueryEscape(location), config.APIKey))
 	if err != nil {
@@ -90,7 +90,7 @@ func (h *HistoricalWeatherData) HistoryByName(location string) error {
 // HistoryByID will return the history for the provided location ID
 func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters) error {
 	if !config.CheckAPIKeyExists() {
-		return ApiKeyNotFound
+		return ErrApiKeyNotFound
 	}
 	if len(hp) > 0 {
 		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&type=hour&start%d&end=%d&cnt=%d&APPID=%s"), id, hp[0].Start, hp[0].End, hp[0].Cnt, config.APIKey))
