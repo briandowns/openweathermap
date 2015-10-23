@@ -21,7 +21,7 @@ import (
 
 // Config will hold default settings to be passed into the
 // "NewCurrent, NewForecast, etc}" functions.
-type Config struct {
+type ConfigData struct {
 	Mode     string // user choice of JSON or XML
 	Unit     string // measurement for results to be displayed.  F, C, or K
 	Lang     string // should reference a key in the LangCodes map
@@ -31,36 +31,36 @@ type Config struct {
 }
 
 // CheckAPIKeyExists will see if an API key has been set.
-func (c *Config) CheckAPIKeyExists() bool {
+func (c *ConfigData) CheckAPIKeyExists() bool {
 	return len(c.APIKey) > 1
 }
 
-// config will hold default settings to be passed into the OWM requests
-var config = Config{}
-
 // SetApiKey sets the API key
-func SetApiKey(aNewApiKey string) {
-	config.APIKey = aNewApiKey
+func (me *ConfigData) SetApiKey(aNewApiKey string) {
+	me.APIKey = aNewApiKey
 }
 
 // GetApiKey returns the API key. This value can be set using SetApiKey function
-func GetApiKey() string {
-	return config.APIKey
+func (me *ConfigData) GetApiKey() string {
+	return Config.APIKey
 }
 
 // SetAuthenticationCredentials sets username and password
-func SetAuthenticationCredentials(aUsername, aPassword string) {
-	config.Username = aUsername
-	config.Password = aPassword
+func (me *ConfigData) SetAuthenticationCredentials(aUsername, aPassword string) {
+	me.Username = aUsername
+	me.Password = aPassword
 }
 
-func GetUsername() string {
-	return config.Username
+func (me *ConfigData) GetUsername() string {
+	return me.Username
 }
 
-func GetPassword() string {
-	return config.Password
+func (me *ConfigData) GetPassword() string {
+	return me.Password
 }
+
+// config will hold default settings to be passed into the OWM requests
+var Config = ConfigData{}
 
 var ErrApiKeyNotFound = errors.New("OWM Api key not found!")
 
@@ -81,9 +81,9 @@ func Init() error {
 	lUsername := os.Getenv(envVarNameUsername)
 	lPassword := os.Getenv(envVarNamePassword)
 
-	config.APIKey = lApiKey
-	config.Username = lUsername
-	config.Password = lPassword
+	Config.APIKey = lApiKey
+	Config.Username = lUsername
+	Config.Password = lPassword
 
 	return nil
 }

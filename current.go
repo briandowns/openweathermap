@@ -75,12 +75,12 @@ func (w *CurrentWeatherData) SetLang(lang string) error {
 func (w *CurrentWeatherData) CurrentByName(location string) error {
 	var err error
 	var response *http.Response
-	if !config.CheckAPIKeyExists() {
+	if !Config.CheckAPIKeyExists() {
 		return ErrApiKeyNotFound
 	}
 
 	response, err = http.Get(fmt.Sprintf(
-		fmt.Sprintf(baseURL, config.APIKey, "q=%s&units=%s&lang=%s"),
+		fmt.Sprintf(baseURL, Config.APIKey, "q=%s&units=%s&lang=%s"),
 		url.QueryEscape(location),
 		w.Unit, w.Lang))
 	if err != nil {
@@ -96,10 +96,10 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 // CurrentByCoordinates will provide the current weather with the
 // provided location coordinates.
 func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
-	if !config.CheckAPIKeyExists() {
+	if !Config.CheckAPIKeyExists() {
 		return ErrApiKeyNotFound
 	}
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, config.APIKey, "lat=%f&lon=%f&units=%s&lang=%s"),
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, Config.APIKey, "lat=%f&lon=%f&units=%s&lang=%s"),
 		location.Latitude, location.Longitude,
 		w.Unit, w.Lang))
 	if err != nil {
@@ -115,10 +115,10 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 // CurrentByID will provide the current weather with the
 // provided location ID.
 func (w *CurrentWeatherData) CurrentByID(id int) error {
-	if !config.CheckAPIKeyExists() {
+	if !Config.CheckAPIKeyExists() {
 		return ErrApiKeyNotFound
 	}
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, config.APIKey, "id=%d&units=%s&lang=%s"), id, w.Unit, w.Lang))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, Config.APIKey, "id=%d&units=%s&lang=%s"), id, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
@@ -132,10 +132,10 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 // CurrentByZip will provide the current weather for the
 // provided zip code.
 func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
-	if !config.CheckAPIKeyExists() {
+	if !Config.CheckAPIKeyExists() {
 		return ErrApiKeyNotFound
 	}
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, config.APIKey, "zip=%d,%s&units=%s&lang=%s"), zip, countryCode, w.Unit, w.Lang))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, Config.APIKey, "zip=%d,%s&units=%s&lang=%s"), zip, countryCode, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}

@@ -21,11 +21,11 @@ import (
 )
 
 func testSetup() {
-	SetApiKey(os.Getenv("OWM_API_KEY"))
+	Config.SetApiKey(os.Getenv("OWM_API_KEY"))
 }
 
 func testTeardown() {
-	SetApiKey("")
+	Config.SetApiKey("")
 }
 
 // TestNewCurrent will verify that a new instance of CurrentWeatherData is created

@@ -71,10 +71,10 @@ func NewForecast3H(unit, lang string) (*Forecast3HData, error) {
 func (f *Forecast3HData) ByName(location string, days int) error {
 	var err error
 	var response *http.Response
-	if !config.CheckAPIKeyExists() {
+	if !Config.CheckAPIKeyExists() {
 		return ErrApiKeyNotFound
 	}
-	response, err = http.Get(fmt.Sprintf(forecast3HBase, config.APIKey, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
+	response, err = http.Get(fmt.Sprintf(forecast3HBase, Config.APIKey, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
@@ -88,10 +88,10 @@ func (f *Forecast3HData) ByName(location string, days int) error {
 // ByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
 func (f *Forecast3HData) ByCoordinates(location *Coordinates, days int) error {
-	if !config.CheckAPIKeyExists() {
+	if !Config.CheckAPIKeyExists() {
 		return ErrApiKeyNotFound
 	}
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecast3HBase, config.APIKey, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Unit, f.Lang, days))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecast3HBase, Config.APIKey, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
@@ -105,10 +105,10 @@ func (f *Forecast3HData) ByCoordinates(location *Coordinates, days int) error {
 // ByID will provide a forecast for the location ID give for the
 // number of days given.
 func (f *Forecast3HData) ByID(id, days int) error {
-	if !config.CheckAPIKeyExists() {
+	if !Config.CheckAPIKeyExists() {
 		return ErrApiKeyNotFound
 	}
-	response, err := http.Get(fmt.Sprintf(forecast3HBase, config.APIKey, "id", strconv.Itoa(id), f.Unit, f.Lang, days))
+	response, err := http.Get(fmt.Sprintf(forecast3HBase, Config.APIKey, "id", strconv.Itoa(id), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}

@@ -54,8 +54,8 @@ func setupConfigTC() {
 }
 
 func teardownConfigTC() {
-	SetApiKey("")
-	SetAuthenticationCredentials("", "")
+	Config.SetApiKey("")
+	Config.SetAuthenticationCredentials("", "")
 }
 
 // TestInitConfigRequest
@@ -88,15 +88,15 @@ func TestInit(t *testing.T) {
 
 	Init()
 
-	if GetApiKey() != "12345678901234567890123456789012" {
+	if Config.GetApiKey() != "12345678901234567890123456789012" {
 		t.Error(errors.New("InitConfig failed parsing API key!"))
 	}
 
-	if GetUsername() != "Username" {
+	if Config.GetUsername() != "Username" {
 		t.Error(errors.New("InitConfig failed parsing Username!"))
 	}
 
-	if GetPassword() != "Password" {
+	if Config.GetPassword() != "Password" {
 		t.Error(errors.New("InitConfig failed parsing password!"))
 	}
 

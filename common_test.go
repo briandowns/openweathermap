@@ -43,7 +43,7 @@ func TestDataUnitValues(t *testing.T) {
 }
 
 func TestCheckAPIKeyExists(t *testing.T) {
-	c := &Config{
+	c := &ConfigData{
 		APIKey: "asdf1234",
 	}
 	if !c.CheckAPIKeyExists() {
