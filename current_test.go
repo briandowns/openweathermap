@@ -54,8 +54,6 @@ func TestNewCurrent(t *testing.T) {
 // TestCurrentByName will verify that current data can be retrieved for a give
 // location by name
 func TestCurrentByName(t *testing.T) {
-	t.Parallel()
-
 	testSetup()
 	testCities := []string{"Philadelphia", "Newark", "Helena", "San Diego, CA"}
 	c, err := NewCurrent("f", "ru")
@@ -73,8 +71,6 @@ func TestCurrentByName(t *testing.T) {
 // TestCurrentByCoordinates will verify that current data can be retrieved for a
 // given set of coordinates
 func TestCurrentByCoordinates(t *testing.T) {
-	t.Parallel()
-
 	testSetup()
 	c, err := NewCurrent("f", "DE")
 	if err != nil {
@@ -96,8 +92,6 @@ func TestCurrentByCoordinates(t *testing.T) {
 // TestCurrentByID will verify that current data can be retrieved for a given
 // location id
 func TestCurrentByID(t *testing.T) {
-	t.Parallel()
-
 	testSetup()
 	c, err := NewCurrent("c", "ZH")
 	if err != nil {

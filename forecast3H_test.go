@@ -63,7 +63,6 @@ func TestForecast3HByName(t *testing.T) {
 // TestForecast3HByCoordinates will verify that a hourly forecast can be retrieved
 // for a given set of coordinates
 func TestForecast3HByCoordinates(t *testing.T) {
-	t.Parallel()
 	testSetup()
 	f, err := NewForecast3H("f", "PL")
 	if err != nil {
@@ -87,7 +86,6 @@ func TestForecast3HByCoordinates(t *testing.T) {
 // TestForecast3HByID will verify that a hourly forecast can be retrieved for a
 // given location ID
 func TestForecast3HByID(t *testing.T) {
-	t.Parallel()
 	testSetup()
 	f, err := NewForecast3H("c", "fr")
 	if err != nil {

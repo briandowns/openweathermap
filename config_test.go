@@ -60,8 +60,6 @@ func teardownConfigTC() {
 
 // TestInitConfigRequest
 func TestInitRequest(t *testing.T) {
-	t.Parallel()
-
 	setupConfigTC()
 	c, err := NewCurrent("f", "en")
 	if err != nil {
@@ -76,8 +74,6 @@ func TestInitRequest(t *testing.T) {
 
 // TestInitConfig
 func TestInit(t *testing.T) {
-	t.Parallel()
-
 	lOrigAPIKey := os.Getenv(envVarNameAPIKey)
 	lOrigUsername := os.Getenv(envVarNameUsername)
 	lOrigPassword := os.Getenv(envVarNamePassword)
@@ -107,8 +103,6 @@ func TestInit(t *testing.T) {
 
 // TestInitConfigNegativeNoApiKey
 func TestInitNegativeNoApiKey(t *testing.T) {
-	t.Parallel()
-
 	lOrigAPIKey := os.Getenv(envVarNameAPIKey)
 
 	os.Setenv(envVarNameAPIKey, "")
