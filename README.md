@@ -7,7 +7,7 @@ Go (golang) package for use with openweathermap.org's API.
 
 For more detail about the library and its features, reference your local godoc once installed.
 
-[Website](https://briandowns.github.io/openweathermap)!
+[Website](http://tejainece.github.io/openweathermap)!
 
 Contributions welcome!
 
