@@ -20,12 +20,13 @@ const langError = "language unavailable"
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
-	baseURL      = "http://api.openweathermap.org/data/2.5/weather?%s"
-	iconURL      = "http://openweathermap.org/img/w/%s"
-	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
-	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
-	dataPostURL  = "http://openweathermap.org/data/post"
+	baseURL        = "http://api.openweathermap.org/data/2.5/weather?appid=%s&%s"
+	iconURL        = "http://openweathermap.org/img/w/%s"
+	stationURL     = "http://api.openweathermap.org/data/2.5/station?id=%d"
+	forecastBase   = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
+	forecast3HBase = "http://api.openweathermap.org/data/2.5/forecast?appid=%s&%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
+	historyURL     = "http://api.openweathermap.org/data/2.5/history/%s"
+	dataPostURL    = "http://openweathermap.org/data/post"
 )
 
 // LangCodes holds all supported languages to be used
@@ -56,17 +57,6 @@ var LangCodes = map[string]string{
 	"ZH_CN": "Chinese Simplified",
 }
 
-// Config will hold default settings to be passed into the
-// "NewCurrent, NewForecast, etc}" functions.
-type Config struct {
-	Mode     string // user choice of JSON or XML
-	Unit     string // measurement for results to be displayed.  F, C, or K
-	Lang     string // should reference a key in the LangCodes map
-	APIKey   string // API Key for connecting to the OWM
-	Username string // Username for posting data
-	Password string // Pasword for posting data
-}
-
 // APIError returned on failed API calls.
 type APIError struct {
 	Message string `json:"message"`
@@ -95,6 +85,11 @@ type Sys struct {
 type Wind struct {
 	Speed float64 `json:"speed"`
 	Deg   float64 `json:"deg"`
+}
+
+// Snow struct contains 3 hour data
+type Snow struct {
+	ThreeH int `json:"3h"`
 }
 
 // Weather struct holds high-level, basic info on the returned
@@ -154,6 +149,3 @@ func ValidDataUnitSymbol(u string) bool {
 	}
 	return false
 }
-
-// CheckAPIKeyExists will see if an API key has been set.
-func (c *Config) CheckAPIKeyExists() bool { return len(c.APIKey) > 1 }

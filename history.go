@@ -33,7 +33,7 @@ type HistoricalParameters struct {
 
 // Rain struct contains 3 hour data
 type Rain struct {
-	ThreeH int `json:"3h"`
+	ThreeH float64 `json:"3h"`
 }
 
 // WeatherHistory struct contains aggregate fields from the above
@@ -73,7 +73,10 @@ func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 func (h *HistoricalWeatherData) HistoryByName(location string) error {
 	var err error
 	var response *http.Response
-	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), url.QueryEscape(location)))
+	if !Config.CheckAPIKeyExists() {
+		return ErrApiKeyNotFound
+	}
+	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s&appid=%s"), url.QueryEscape(location), Config.APIKey))
 	if err != nil {
 		return err
 	}
@@ -86,8 +89,11 @@ func (h *HistoricalWeatherData) HistoryByName(location string) error {
 
 // HistoryByID will return the history for the provided location ID
 func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters) error {
+	if !Config.CheckAPIKeyExists() {
+		return ErrApiKeyNotFound
+	}
 	if len(hp) > 0 {
-		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&type=hour&start%d&end=%d&cnt=%d"), id, hp[0].Start, hp[0].End, hp[0].Cnt))
+		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&type=hour&start%d&end=%d&cnt=%d&appid=%s"), id, hp[0].Start, hp[0].End, hp[0].Cnt, Config.APIKey))
 		if err != nil {
 			return err
 		}
@@ -96,7 +102,7 @@ func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters)
 			return err
 		}
 	}
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d"), id))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&appid=%s"), id, Config.APIKey))
 	if err != nil {
 		return err
 	}

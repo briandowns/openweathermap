@@ -19,57 +19,57 @@ import (
 	"testing"
 )
 
-var forecastRange = []int{3, 7, 10}
+var forecast3HRange = []int{1, 3, 5}
 
-// TestNewForecast will make sure the a new instance of Forecast is returned
-func TestNewForecast(t *testing.T) {
+// TestNewForecast3HData will make sure the a new instance of Forecast is returned
+func TestNewForecast3HData(t *testing.T) {
 	t.Parallel()
 	for d := range DataUnits {
 		t.Logf("Data unit: %s", d)
 		if ValidDataUnit(d) {
-			c, err := NewForecast(d, "ru")
+			c, err := NewForecast3H(d, "ru")
 			if err != nil {
 				t.Error(err)
 			}
-			if reflect.TypeOf(c).String() != "*openweathermap.ForecastWeatherData" {
+			if reflect.TypeOf(c).String() != "*openweathermap.Forecast3HData" {
 				t.Error("incorrect data type returned")
 			}
 		} else {
 			t.Errorf("unusable data unit - %s", d)
 		}
 	}
-	_, err := NewForecast("asdf", "en")
+	_, err := NewForecast3H("asdf", "en")
 	if err == nil {
 		t.Error("created instance when it shouldn't have")
 	}
 }
 
-// TestDailyByName will verify that a daily forecast can be retrieved for
+// TestForecast3HByName will verify that a hourly forecast can be retrieved for
 // a given named location
-func TestDailyByName(t *testing.T) {
+func TestForecast3HByName(t *testing.T) {
 	testSetup()
-	f, err := NewForecast("f", "fi")
+	f, err := NewForecast3H("f", "fi")
 	if err != nil {
 		t.Error(err)
 	}
-	for _, d := range forecastRange {
-		if bFetchErr := f.DailyByName("Dubai", d); bFetchErr != nil {
+	for _, d := range forecast3HRange {
+		if bFetchErr := f.ByName("Malmö", d); bFetchErr != nil {
 			t.Error(bFetchErr)
 		}
 	}
 	testTeardown()
 }
 
-// TestDailyByCooridinates will verify that a daily forecast can be retrieved
+// TestForecast3HByCoordinates will verify that a hourly forecast can be retrieved
 // for a given set of coordinates
-func TestDailyByCoordinates(t *testing.T) {
+func TestForecast3HByCoordinates(t *testing.T) {
 	testSetup()
-	f, err := NewForecast("f", "PL")
+	f, err := NewForecast3H("f", "PL")
 	if err != nil {
 		t.Error(err)
 	}
-	for _, d := range forecastRange {
-		bFetchErr := f.DailyByCoordinates(
+	for _, d := range forecast3HRange {
+		bFetchErr := f.ByCoordinates(
 			&Coordinates{
 				Longitude: -112.07,
 				Latitude:  33.45,
@@ -83,16 +83,16 @@ func TestDailyByCoordinates(t *testing.T) {
 	testTeardown()
 }
 
-// TestDailyByID will verify that a daily forecast can be retrieved for a
+// TestForecast3HByID will verify that a hourly forecast can be retrieved for a
 // given location ID
-func TestDailyByID(t *testing.T) {
+func TestForecast3HByID(t *testing.T) {
 	testSetup()
-	f, err := NewForecast("c", "fr")
+	f, err := NewForecast3H("c", "fr")
 	if err != nil {
 		t.Error(err)
 	}
-	for _, d := range forecastRange {
-		if bFetchErr := f.DailyByID(524901, d); bFetchErr != nil {
+	for _, d := range forecast3HRange {
+		if bFetchErr := f.ByID(524901, d); bFetchErr != nil {
 			t.Error(bFetchErr)
 		}
 	}
