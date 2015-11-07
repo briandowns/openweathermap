@@ -14,8 +14,14 @@
 
 package openweathermap
 
+import (
+	"log"
+	"os"
+)
+
 const unitError = "unit unavailable"
 const langError = "language unavailable"
+const keyError = "invalid api key"
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
@@ -23,7 +29,7 @@ var (
 	baseURL      = "http://api.openweathermap.org/data/2.5/weather?%s"
 	iconURL      = "http://openweathermap.org/img/w/%s"
 	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
+	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
 	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
 	dataPostURL  = "http://openweathermap.org/data/post"
 )
@@ -122,6 +128,15 @@ type Clouds struct {
 	All int `json:"all"`
 }
 
+func getKey() string {
+	key := os.Getenv("OWM_API_KEY")
+	if !ValidAPIKey(key) {
+		log.Fatalln(keyError)
+	}
+
+	return key
+}
+
 // ValidDataUnit makes sure the string passed in is an accepted
 // unit of measure to be used for the return data.
 func ValidDataUnit(u string) bool {
@@ -151,6 +166,14 @@ func ValidDataUnitSymbol(u string) bool {
 		if u == d {
 			return true
 		}
+	}
+	return false
+}
+
+// ValidAPIKey makes sure that the key given is a valid one
+func ValidAPIKey(key string) bool {
+	if len(key) == 32 {
+		return true
 	}
 	return false
 }
