@@ -8,6 +8,8 @@ For more detail about the library and its features, reference your local godoc o
 
 [Website](https://briandowns.github.io/openweathermap)!
 
+To use the OpenweatherMap API, you need to obtain an API key.  Sign up [here](http://home.openweathermap.org/users/sign_up).  Once you have your key, create an environment variable called `OWM_API_KEY`.  Start coding!
+
 Contributions welcome!
 
 ## Features
