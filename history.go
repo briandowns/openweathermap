@@ -57,52 +57,65 @@ type HistoricalWeatherData struct {
 	Cnt      int              `json:"cnt"`
 	List     []WeatherHistory `json:"list"`
 	Unit     string
+	Key      string
 }
 
 // NewHistorical returns a new HistoricalWeatherData pointer with
 //the supplied arguments.
 func NewHistorical(unit string) (*HistoricalWeatherData, error) {
+	var h HistoricalWeatherData
+
 	unitChoice := strings.ToUpper(unit)
-	if ValidDataUnit(unitChoice) {
-		return &HistoricalWeatherData{Unit: DataUnits[unitChoice]}, nil
+	if !ValidDataUnit(unitChoice) {
+		return nil, errors.New("unit of measure not available")
 	}
-	return nil, errors.New("unit of measure not available")
+	h.Unit = DataUnits[unitChoice]
+
+	h.Key = getKey()
+
+	return &h, nil
 }
 
 // HistoryByName will return the history for the provided location
 func (h *HistoricalWeatherData) HistoryByName(location string) error {
 	var err error
 	var response *http.Response
-	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?q=%s"), url.QueryEscape(location)))
+	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&q=%s"), h.Key, url.QueryEscape(location)))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
 		return err
 	}
+
 	return nil
 }
 
 // HistoryByID will return the history for the provided location ID
 func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters) error {
 	if len(hp) > 0 {
-		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d&type=hour&start%d&end=%d&cnt=%d"), id, hp[0].Start, hp[0].End, hp[0].Cnt))
+		response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&id=%d&type=hour&start%d&end=%d&cnt=%d"), h.Key, id, hp[0].Start, hp[0].End, hp[0].Cnt))
 		if err != nil {
 			return err
 		}
 		defer response.Body.Close()
+
 		if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
 			return err
 		}
 	}
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?id=%d"), id))
+
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&id=%d"), h.Key, id))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
 		return err
 	}
+
 	return nil
 }
