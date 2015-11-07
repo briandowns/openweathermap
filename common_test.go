@@ -26,6 +26,7 @@ func TestValidDataUnit(t *testing.T) {
 			t.Error("False positive on data unit")
 		}
 	}
+
 	if ValidDataUnit("anything") {
 		t.Error("Invalid data unit")
 	}
@@ -37,6 +38,7 @@ func TestDataUnitValues(t *testing.T) {
 			t.Error("False positive on data unit symbol")
 		}
 	}
+
 	if ValidDataUnitSymbol("X") {
 		t.Error("Invalid data unit symbol")
 	}
@@ -46,6 +48,7 @@ func TestCheckAPIKeyExists(t *testing.T) {
 	c := &Config{
 		APIKey: "asdf1234",
 	}
+
 	if !c.CheckAPIKeyExists() {
 		t.Error("Key not set")
 	}

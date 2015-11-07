@@ -30,13 +30,16 @@ func TestRetrieveIcon(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
 		f, err := os.Stat(fmt.Sprintf("%s/%s", tmpDir, iconFile))
 		if err != nil {
 			t.Error(err)
 		}
+
 		if f.Size() != size {
 			t.Error("Size of downloaded file does not match actual size of file")
 		}
+
 		err = os.Remove(fmt.Sprintf("%s/%s", tmpDir, iconFile))
 		if err != nil {
 			t.Error(err)
