@@ -16,7 +16,6 @@ package openweathermap
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -67,7 +66,7 @@ func NewHistorical(unit string) (*HistoricalWeatherData, error) {
 
 	unitChoice := strings.ToUpper(unit)
 	if !ValidDataUnit(unitChoice) {
-		return nil, errors.New("unit of measure not available")
+		return nil, errUnitUnavailable
 	}
 	h.Unit = DataUnits[unitChoice]
 

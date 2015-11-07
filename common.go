@@ -15,13 +15,14 @@
 package openweathermap
 
 import (
+	"errors"
 	"log"
 	"os"
 )
 
-const unitError = "unit unavailable"
-const langError = "language unavailable"
-const keyError = "invalid api key"
+var errUnitUnavailable = errors.New("unit unavailable")
+var errLangUnavailable = errors.New("language unavailable")
+var errInvalidKey = errors.New("invalid api key")
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
@@ -130,8 +131,9 @@ type Clouds struct {
 
 func getKey() string {
 	key := os.Getenv("OWM_API_KEY")
+
 	if !ValidAPIKey(key) {
-		log.Fatalln(keyError)
+		log.Fatalln(errInvalidKey)
 	}
 
 	return key
@@ -145,6 +147,7 @@ func ValidDataUnit(u string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -156,6 +159,7 @@ func ValidLangCode(c string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -167,6 +171,7 @@ func ValidDataUnitSymbol(u string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -175,6 +180,7 @@ func ValidAPIKey(key string) bool {
 	if len(key) == 32 {
 		return true
 	}
+
 	return false
 }
 

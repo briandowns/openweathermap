@@ -16,7 +16,6 @@ package openweathermap
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -52,13 +51,13 @@ func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 	if ValidDataUnit(unitChoice) {
 		c.Unit = DataUnits[unitChoice]
 	} else {
-		return nil, errors.New(unitError)
+		return nil, errUnitUnavailable
 	}
 
 	if ValidLangCode(langChoice) {
 		c.Lang = langChoice
 	} else {
-		return nil, errors.New(langError)
+		return nil, errLangUnavailable
 	}
 
 	c.Key = getKey()
@@ -71,7 +70,7 @@ func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 // adjust if explicitly called.
 func (w *CurrentWeatherData) SetLang(lang string) error {
 	if !ValidLangCode(lang) {
-		return errors.New(langError)
+		return errLangUnavailable
 	}
 	w.Lang = lang
 

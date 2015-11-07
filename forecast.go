@@ -16,7 +16,6 @@ package openweathermap
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -86,13 +85,13 @@ func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
 	if ValidDataUnit(unitChoice) {
 		f.Unit = DataUnits[unitChoice]
 	} else {
-		return nil, errors.New(unitError)
+		return nil, errUnitUnavailable
 	}
 
 	if ValidLangCode(langChoice) {
 		f.Lang = langChoice
 	} else {
-		return nil, errors.New(langError)
+		return nil, errLangUnavailable
 	}
 
 	f.Key = getKey()
