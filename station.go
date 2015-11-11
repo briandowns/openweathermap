@@ -51,6 +51,7 @@ func ValidateStationDataParameter(param string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -59,9 +60,11 @@ func ValidateStationDataParameter(param string) bool {
 // the url.Values instance only takes strings to create the URL values.
 func ConvertToURLValues(data map[string]string) string {
 	v := url.Values{}
+
 	for key, val := range data {
 		v.Set(key, val)
 	}
+
 	return v.Encode()
 }
 
@@ -72,5 +75,6 @@ func SendStationData(data url.Values) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	fmt.Println(resp.Body)
 }

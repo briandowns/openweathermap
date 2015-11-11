@@ -22,8 +22,10 @@ import (
 // TestNewHistory verifies NewHistorical does as advertised
 func TestNewHistory(t *testing.T) {
 	t.Parallel()
+
 	for d := range DataUnits {
 		t.Logf("Data unit: %s", d)
+
 		if ValidDataUnit(d) {
 			c, err := NewHistorical(d)
 			if err != nil {
@@ -36,6 +38,7 @@ func TestNewHistory(t *testing.T) {
 			t.Errorf("unusable data unit - %s", d)
 		}
 	}
+
 	_, err := NewHistorical("asdf")
 	if err == nil {
 		t.Error("created instance when it shouldn't have")

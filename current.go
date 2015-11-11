@@ -16,7 +16,6 @@ package openweathermap
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -39,23 +38,30 @@ type CurrentWeatherData struct {
 	Cod     int         `json:"cod"`
 	Unit    string
 	Lang    string
+	Key     string
 }
 
 // NewCurrent returns a new CurrentWeatherData pointer with the supplied parameters
 func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
+
 	c := &CurrentWeatherData{}
+
 	if ValidDataUnit(unitChoice) {
 		c.Unit = DataUnits[unitChoice]
 	} else {
-		return nil, errors.New(unitError)
+		return nil, errUnitUnavailable
 	}
+
 	if ValidLangCode(langChoice) {
 		c.Lang = langChoice
 	} else {
-		return nil, errors.New(langError)
+		return nil, errLangUnavailable
 	}
+
+	c.Key = getKey()
+
 	return c, nil
 }
 
@@ -64,9 +70,10 @@ func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 // adjust if explicitly called.
 func (w *CurrentWeatherData) SetLang(lang string) error {
 	if !ValidLangCode(lang) {
-		return errors.New(langError)
+		return errLangUnavailable
 	}
 	w.Lang = lang
+
 	return nil
 }
 
@@ -75,56 +82,65 @@ func (w *CurrentWeatherData) SetLang(lang string) error {
 func (w *CurrentWeatherData) CurrentByName(location string) error {
 	var err error
 	var response *http.Response
-	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "q=%s&units=%s&lang=%s"), url.QueryEscape(location), w.Unit, w.Lang))
+
+	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&q=%s&units=%s&lang=%s"), w.Key, url.QueryEscape(location), w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err := json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
+
 	return nil
 }
 
 // CurrentByCoordinates will provide the current weather with the
 // provided location coordinates.
 func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "lat=%f&lon=%f&units=%s&lang=%s"), location.Latitude, location.Longitude, w.Unit, w.Lang))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&lat=%f&lon=%f&units=%s&lang=%s"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
+
 	return nil
 }
 
 // CurrentByID will provide the current weather with the
 // provided location ID.
 func (w *CurrentWeatherData) CurrentByID(id int) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "id=%d&units=%s&lang=%s"), id, w.Unit, w.Lang))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&id=%d&units=%s&lang=%s"), w.Key, id, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
+
 	return nil
 }
 
 // CurrentByZip will provide the current weather for the
 // provided zip code.
 func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "zip=%d,%s&units=%s&lang=%s"), zip, countryCode, w.Unit, w.Lang))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
+
 	return nil
 }
 

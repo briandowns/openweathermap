@@ -16,7 +16,6 @@ package openweathermap
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -72,6 +71,7 @@ type ForecastWeatherData struct {
 	List    []ForecastWeatherList `json:"list"`
 	Unit    string
 	Lang    string
+	Key     string
 }
 
 // NewForecast returns a new HistoricalWeatherData pointer with
@@ -79,17 +79,23 @@ type ForecastWeatherData struct {
 func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
+
 	f := &ForecastWeatherData{}
+
 	if ValidDataUnit(unitChoice) {
 		f.Unit = DataUnits[unitChoice]
 	} else {
-		return nil, errors.New(unitError)
+		return nil, errUnitUnavailable
 	}
+
 	if ValidLangCode(langChoice) {
 		f.Lang = langChoice
 	} else {
-		return nil, errors.New(langError)
+		return nil, errLangUnavailable
 	}
+
+	f.Key = getKey()
+
 	return f, nil
 }
 
@@ -98,41 +104,48 @@ func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
 func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 	var err error
 	var response *http.Response
-	response, err = http.Get(fmt.Sprintf(forecastBase, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
+
+	response, err = http.Get(fmt.Sprintf(forecastBase, f.Key, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
 		return err
 	}
+
 	return nil
 }
 
 // DailyByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), location.Latitude, location.Longitude, f.Unit, f.Lang, days))
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), f.Key, location.Latitude, location.Longitude, f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
 		return err
 	}
+
 	return nil
 }
 
 // DailyByID will provide a forecast for the location ID give for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) error {
-	response, err := http.Get(fmt.Sprintf(forecastBase, "id", strconv.Itoa(id), f.Unit, f.Lang, days))
+	response, err := http.Get(fmt.Sprintf(forecastBase, f.Key, "id", strconv.Itoa(id), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
+
 	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
 		return err
 	}
+
 	return nil
 }

@@ -22,13 +22,16 @@ import (
 // TestNewCurrent will verify that a new instance of CurrentWeatherData is created
 func TestNewCurrent(t *testing.T) {
 	t.Parallel()
+
 	for d := range DataUnits {
 		t.Logf("Data unit: %s", d)
+
 		if ValidDataUnit(d) {
 			c, err := NewCurrent(d, "en")
 			if err != nil {
 				t.Error(err)
 			}
+
 			if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
 				t.Error("incorrect data type returned")
 			}
@@ -36,6 +39,7 @@ func TestNewCurrent(t *testing.T) {
 			t.Errorf("unusable data unit - %s", d)
 		}
 	}
+
 	_, err := NewCurrent("Philadelphia", "en")
 	if err == nil {
 		t.Error("created instance when it shouldn't have")
