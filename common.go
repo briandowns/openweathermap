@@ -32,6 +32,7 @@ var (
 	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s=%s&mode=json&units=%s&lang=%s&cnt=%d"
 	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
+	uvURL        = "http://api.owm.io/air/1.0/uvi/"
 	dataPostURL  = "http://openweathermap.org/data/post"
 )
 
