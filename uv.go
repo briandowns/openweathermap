@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 // CurUV holds the results of a call to the UV API
@@ -23,7 +24,7 @@ type HistUV struct {
 }
 
 // CurrentUV gets the current UV data for the given coordinates
-func CurrentUV(coord Coordinates) (*CurUV, error) {
+func CurrentUV(coord *Coordinates) (*CurUV, error) {
 	response, err := http.Get(fmt.Sprintf("%scurrent?lat=%f&lon=%f&appid=%s", uvURL, coord.Latitude, coord.Longitude, getKey()))
 	if err != nil {
 		return nil, err
@@ -40,7 +41,7 @@ func CurrentUV(coord Coordinates) (*CurUV, error) {
 }
 
 // HistoricalUV gets the historical
-func HistoricalUV(coord Coordinates, start, end int64) (*HistUV, error) {
+func HistoricalUV(coord *Coordinates, start, end time.Time) (*HistUV, error) {
 	response, err := http.Get(fmt.Sprintf("%slist?lat=%f&lon=%f&from=%d&to=%d&appid=%s", uvURL, coord.Latitude, coord.Longitude, start, end, getKey()))
 	if err != nil {
 		return nil, err
