@@ -109,41 +109,42 @@ var UVData = []*UVIndexInfo{
 // UVInformation provides information on the given UV data which includes the severity
 // and "Recommended protection"
 func (u *UV) UVInformation() ([]*UVIndexInfo, error) {
-	if u.Value != 0 {
+	switch {
+	case u.Value != 0:
 		switch {
 		case u.Value < 2.9:
-			return []UVIndex{UVData[0]}
+			return []UVIndex{UVData[0]}, nil
 		case u.Value > 3 && u.Value < 5.9:
-			return []UVIndex{UVData[1]}
+			return []UVIndex{UVData[1]}, nil
 		case u.Value > 6 && u.Value < 7.9:
-			return []UVIndex{UVData[2]}
+			return []UVIndex{UVData[2]}, nil
 		case u.Value > 8 && u.Value < 10.9:
-			return []UVIndex{UVData[3]}
+			return []UVIndex{UVData[3]}, nil
 		case u.Value >= 11:
-			return []UVIndex{UVData[4]}
+			return []UVIndex{UVData[4]}, nil
 		default:
-			return errInvalidUVIndex
+			return nil, errInvalidUVIndex
+		}
+
+	case len(u.Data) > 0:
+		var uvi []*UVIndexInfo
+		for _, i := range u.Data {
+			switch {
+			case i.Value < 2.9:
+				uvi = append(uvi, UVData[0])
+			case i.Value > 3 && u.Value < 5.9:
+				uvi = append(uvi, UVData[1])
+			case i.Value > 6 && u.Value < 7.9:
+				uvi = append(uvi, UVData[2])
+			case i.Value > 8 && u.Value < 10.9:
+				uvi = append(uvi, UVData[3])
+			case i.Value >= 11:
+				uvi = append(uvi, UVData[4])
+			default:
+				return nil, errInvalidUVIndex
+			}
 		}
 	}
 
-	var uvi UVIndexInfo
-
-	for _, i := range u.Data {
-		switch {
-		case i.Value < 2.9:
-			uvi = append(uvi, UVData[0])
-		case i.Value > 3 && u.Value < 5.9:
-			uvi = append(uvi, UVData[1])
-		case i.Value > 6 && u.Value < 7.9:
-			uvi = append(uvi, UVData[2])
-		case i.Value > 8 && u.Value < 10.9:
-			uvi = append(uvi, UVData[3])
-		case i.Value >= 11:
-			uvi = append(uvi, UVData[4])
-		default:
-			return errInvalidUVIndex
-		}
-	}
-
-	return uvi, nil
+	return nil, nil
 }
