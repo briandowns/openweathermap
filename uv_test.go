@@ -47,3 +47,8 @@ func TestHistoricalUV(t *testing.T) {
 		t.Error("incorrect data type returned")
 	}*/
 }
+
+func TestUVInformation(t *testing.T) {
+	t.Parallel()
+
+}
