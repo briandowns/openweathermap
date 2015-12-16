@@ -9,9 +9,9 @@ import (
 
 // CurUV holds the results of a call to the UV API
 type CurUV struct {
-	Coord []Coordinates `json:"coord"`
-	DT    int64         `json:"dt"`
-	Value float64       `json:"value"`
+	Coord []float64 `json:"coord"`
+	DT    int64     `json:"dt"`
+	Value float64   `json:"value"`
 }
 
 // HistUV holds the results of a call to the UV API
