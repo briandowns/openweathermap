@@ -2,10 +2,13 @@ package openweathermap
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
 )
+
+var errInvalidUVIndex = errors.New("invalid UV index value")
 
 // UV contains the response from the OWM UV API
 type UV struct {
@@ -70,7 +73,7 @@ type UVIndexInfo struct {
 }
 
 // UVData contains data in regards to UV index ranges, rankings, and steps for protection
-var UVData = []UVIndexInfo{
+var UVData = []*UVIndexInfo{
 	{
 		UVIndex: []float64{0, 2.9},
 		MGC:     "Green",
@@ -105,6 +108,42 @@ var UVData = []UVIndexInfo{
 
 // UVInformation provides information on the given UV data which includes the severity
 // and "Recommended protection"
-func (u *UV) UVInformation() *UVIndexInfo {
+func (u *UV) UVInformation() ([]*UVIndexInfo, error) {
+	if u.Value != 0 {
+		switch {
+		case u.Value < 2.9:
+			return []UVIndex{UVData[0]}
+		case u.Value > 3 && u.Value < 5.9:
+			return []UVIndex{UVData[1]}
+		case u.Value > 6 && u.Value < 7.9:
+			return []UVIndex{UVData[2]}
+		case u.Value > 8 && u.Value < 10.9:
+			return []UVIndex{UVData[3]}
+		case u.Value >= 11:
+			return []UVIndex{UVData[4]}
+		default:
+			return errInvalidUVIndex
+		}
+	}
 
+	var uvi UVIndexInfo
+
+	for _, i := range u.Data {
+		switch {
+		case i.Value < 2.9:
+			uvi = append(uvi, UVData[0])
+		case i.Value > 3 && u.Value < 5.9:
+			uvi = append(uvi, UVData[1])
+		case i.Value > 6 && u.Value < 7.9:
+			uvi = append(uvi, UVData[2])
+		case i.Value > 8 && u.Value < 10.9:
+			uvi = append(uvi, UVData[3])
+		case i.Value >= 11:
+			uvi = append(uvi, UVData[4])
+		default:
+			return errInvalidUVIndex
+		}
+	}
+
+	return uvi, nil
 }

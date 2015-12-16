@@ -51,4 +51,16 @@ func TestHistoricalUV(t *testing.T) {
 func TestUVInformation(t *testing.T) {
 	t.Parallel()
 
+	uvc := NewUV()
+
+	if err := uv.Current(coord); err != nil {
+		t.Error(err)
+	}
+
+	info, err := uvc.UVInformation()
+	if err != nil {
+		t.Error(err)
+	}
+
+	t.Log(info)
 }
