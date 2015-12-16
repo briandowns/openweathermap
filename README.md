@@ -164,8 +164,14 @@ func main() {
 
 ```Go
 func main() {
-    c, err := CurrentUV(coord)
-    if err != nil {
+    uv := NewUV()
+
+    coord := &Coordinates{
+        Longitude: 53.343497,
+        Latitude:  -6.288379,
+    }
+
+    if err := uv.Current(coord); err != nil {
         t.Error(err)
     }
 }
@@ -175,6 +181,8 @@ func main() {
 
 ```Go
 func main() {
+    uv := NewUV()
+
     coord := &Coordinates{
         Longitude: 54.995656,
         Latitude:  -7.326834,
@@ -183,8 +191,7 @@ func main() {
     end := time.Now().UTC()
     start := time.Now().UTC().Add(-time.Hour * time.Duration(24))
 
-    h, err := HistoricalUV(coord, start, end)
-    if err != nil {
+    if err := uv.Historical(coord, start, end); err != nil {
         t.Error(err)
     }
 }
