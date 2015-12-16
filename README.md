@@ -196,3 +196,20 @@ func main() {
     }
 }
 ```
+
+### UV Information 
+
+```Go
+func main() {
+    uv := NewUV()
+
+    if err := uv.Current(coords); err != nil {
+        t.Error(err)
+    }
+
+    info, err := uv.UVInformation()
+    if err != nil {
+        t.Error(err)
+    }
+}
+```
