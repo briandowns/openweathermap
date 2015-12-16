@@ -52,12 +52,8 @@ func TestUVInformation(t *testing.T) {
 		t.Error(err)
 	}
 
-	t.Log(uv)
-
-	info, err := uv.UVInformation()
+	_, err := uv.UVInformation()
 	if err != nil {
 		t.Error(err)
 	}
-
-	t.Log(info)
 }

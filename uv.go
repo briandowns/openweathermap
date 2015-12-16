@@ -73,7 +73,7 @@ type UVIndexInfo struct {
 }
 
 // UVData contains data in regards to UV index ranges, rankings, and steps for protection
-var UVData = []*UVIndexInfo{
+var UVData = []UVIndexInfo{
 	{
 		UVIndex: []float64{0, 2.9},
 		MGC:     "Green",
@@ -108,26 +108,26 @@ var UVData = []*UVIndexInfo{
 
 // UVInformation provides information on the given UV data which includes the severity
 // and "Recommended protection"
-func (u *UV) UVInformation() ([]*UVIndexInfo, error) {
+func (u *UV) UVInformation() ([]UVIndexInfo, error) {
 	switch {
 	case u.Value != 0:
 		switch {
 		case u.Value < 2.9:
-			return []UVIndex{UVData[0]}, nil
+			return []UVIndexInfo{UVData[0]}, nil
 		case u.Value > 3 && u.Value < 5.9:
-			return []UVIndex{UVData[1]}, nil
+			return []UVIndexInfo{UVData[1]}, nil
 		case u.Value > 6 && u.Value < 7.9:
-			return []UVIndex{UVData[2]}, nil
+			return []UVIndexInfo{UVData[2]}, nil
 		case u.Value > 8 && u.Value < 10.9:
-			return []UVIndex{UVData[3]}, nil
+			return []UVIndexInfo{UVData[3]}, nil
 		case u.Value >= 11:
-			return []UVIndex{UVData[4]}, nil
+			return []UVIndexInfo{UVData[4]}, nil
 		default:
 			return nil, errInvalidUVIndex
 		}
 
 	case len(u.Data) > 0:
-		var uvi []*UVIndexInfo
+		var uvi []UVIndexInfo
 		for _, i := range u.Data {
 			switch {
 			case i.Value < 2.9:
