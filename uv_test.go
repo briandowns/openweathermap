@@ -1,12 +1,16 @@
 package openweathermap
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+	"time"
+)
 
 // TestCurrentUV
 func TestCurrentUV(t *testing.T) {
 	t.Parallel()
 
-	/*coord := &Coordinates{
+	coord := &Coordinates{
 		Longitude: 53.343497,
 		Latitude:  -6.288379,
 	}
@@ -18,14 +22,13 @@ func TestCurrentUV(t *testing.T) {
 
 	if reflect.TypeOf(c).String() != "*openweathermap.CurUV" {
 		t.Error("incorrect data type returned")
-	}*/
+	}
 }
 
 // TestHistoricalUV
 func TestHistoricalUV(t *testing.T) {
 	t.Parallel()
 
-	/*// 54.995656, -7.326834
 	coord := &Coordinates{
 		Longitude: 54.995656,
 		Latitude:  -7.326834,
@@ -41,5 +44,5 @@ func TestHistoricalUV(t *testing.T) {
 
 	if reflect.TypeOf(h).String() != "*openweathermap.CurUV" {
 		t.Error("incorrect data type returned")
-	}*/
+	}
 }
