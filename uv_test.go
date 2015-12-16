@@ -9,17 +9,18 @@ import (
 func TestCurrentUV(t *testing.T) {
 	t.Parallel()
 
+	uv := NewUV()
+
 	coord := &Coordinates{
 		Longitude: 53.343497,
 		Latitude:  -6.288379,
 	}
 
-	c, err := CurrentUV(coord)
-	if err != nil {
+	if err := uv.Current(coord); err != nil {
 		t.Error(err)
 	}
 
-	if reflect.TypeOf(c).String() != "*openweathermap.CurUV" {
+	if reflect.TypeOf(uv).String() != "*openweathermap.UV" {
 		t.Error("incorrect data type returned")
 	}
 }
@@ -28,7 +29,9 @@ func TestCurrentUV(t *testing.T) {
 func TestHistoricalUV(t *testing.T) {
 	t.Parallel()
 
-	/*coord := &Coordinates{
+	/*uv := NewUV()
+
+	coord := &Coordinates{
 		Longitude: 54.995656,
 		Latitude:  -7.326834,
 	}
@@ -36,12 +39,11 @@ func TestHistoricalUV(t *testing.T) {
 	end := time.Now().UTC()
 	start := time.Now().UTC().Add(-time.Hour * time.Duration(24))
 
-	h, err := HistoricalUV(coord, start, end)
-	if err != nil {
+	if err := uv.Historical(coord, start, end); err != nil {
 		t.Error(err)
 	}
 
-	if reflect.TypeOf(h).String() != "*openweathermap.CurUV" {
+	if reflect.TypeOf(uv).String() != "*openweathermap.UV" {
 		t.Error("incorrect data type returned")
 	}*/
 }

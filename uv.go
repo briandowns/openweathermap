@@ -7,52 +7,54 @@ import (
 	"time"
 )
 
-// CurUV holds the results of a call to the UV API
-type CurUV struct {
+// UVResult
+type UV struct {
 	Coord []float64 `json:"coord"`
-	DT    int64     `json:"dt"`
-	Value float64   `json:"value"`
-}
-
-// HistUV holds the results of a call to the UV API
-type HistUV struct {
-	Coord Coordinates `json:"coord"`
 	Data  []struct {
 		DT    int64   `json:"dt"`
 		Value float64 `json:"value"`
-	} `json:"data"`
+	} `json:"data,omitempty"`
+	DT    int64   `json:"dt,omitempty"`
+	Value float64 `json:"value,omitempty"`
 }
 
-// CurrentUV gets the current UV data for the given coordinates
-func CurrentUV(coord *Coordinates) (*CurUV, error) {
+// NewUV
+func NewUV() *UV {
+	return &UV{}
+}
+
+// Current gets the current UV data for the given coordinates
+func (u *UV) Current(coord *Coordinates) error {
 	response, err := http.Get(fmt.Sprintf("%scurrent?lat=%f&lon=%f&appid=%s", uvURL, coord.Latitude, coord.Longitude, getKey()))
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer response.Body.Close()
 
-	var cuv CurUV
-
-	if err = json.NewDecoder(response.Body).Decode(&cuv); err != nil {
-		return nil, err
+	if err = json.NewDecoder(response.Body).Decode(&u); err != nil {
+		return err
 	}
 
-	return &cuv, nil
+	return nil
 }
 
-// HistoricalUV gets the historical
-func HistoricalUV(coord *Coordinates, start, end time.Time) (*HistUV, error) {
+// Historical gets the historical UV data for the coordinates and times
+func (u *UV) Historical(coord *Coordinates, start, end time.Time) error {
 	response, err := http.Get(fmt.Sprintf("%slist?lat=%f&lon=%f&from=%d&to=%d&appid=%s", uvURL, coord.Latitude, coord.Longitude, start, end, getKey()))
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer response.Body.Close()
 
-	var hist HistUV
-
-	if err = json.NewDecoder(response.Body).Decode(&hist); err != nil {
-		return nil, err
+	if err = json.NewDecoder(response.Body).Decode(&u); err != nil {
+		return err
 	}
 
-	return &hist, nil
+	return nil
+}
+
+// UVInformation provides information on the given UV data which includes the severity
+// and "Recommended protection"
+func (u *UV) UVInformation() {
+
 }
