@@ -54,6 +54,11 @@ Gain access to OpenWeatherMap icons and condition codes.
 - Celcius (OpenWeatherMap API - metric)
 - Kelvin (OpenWeatherMap API - internal)
 
+### UV Index Data
+
+- Current
+- Historical
+
 ## Historical Conditions
 
 - ...still in the works...
@@ -152,5 +157,59 @@ func main() {
 
 	w.CurrentByZip(19125, "US")
 	fmt.Println(w)
+}
+```
+
+### Current UV conditions
+
+```Go
+func main() {
+    uv := NewUV()
+
+    coord := &Coordinates{
+        Longitude: 53.343497,
+        Latitude:  -6.288379,
+    }
+
+    if err := uv.Current(coord); err != nil {
+        t.Error(err)
+    }
+}
+```
+
+### (Not working yet...  OpenweatherMap Working out bugs) Historical UV conditions
+
+```Go
+func main() {
+    uv := NewUV()
+
+    coord := &Coordinates{
+        Longitude: 54.995656,
+        Latitude:  -7.326834,
+    }
+
+    end := time.Now().UTC()
+    start := time.Now().UTC().Add(-time.Hour * time.Duration(24))
+
+    if err := uv.Historical(coord, start, end); err != nil {
+        t.Error(err)
+    }
+}
+```
+
+### UV Information 
+
+```Go
+func main() {
+    uv := NewUV()
+
+    if err := uv.Current(coords); err != nil {
+        t.Error(err)
+    }
+
+    info, err := uv.UVInformation()
+    if err != nil {
+        t.Error(err)
+    }
 }
 ```
