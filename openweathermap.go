@@ -71,6 +71,7 @@ type Config struct {
 	Unit     string // measurement for results to be displayed.  F, C, or K
 	Lang     string // should reference a key in the LangCodes map
 	APIKey   string // API Key for connecting to the OWM
+	MMSIKey  string // MMSI key for using the AIS API
 	Username string // Username for posting data
 	Password string // Pasword for posting data
 }
@@ -186,4 +187,20 @@ func ValidAPIKey(key string) bool {
 }
 
 // CheckAPIKeyExists will see if an API key has been set.
-func (c *Config) CheckAPIKeyExists() bool { return len(c.APIKey) > 1 }
+func (c *Config) CheckAPIKeyExists() bool {
+	return len(c.APIKey) > 1
+}
+
+// ValidMMSIKey makes sure that the key given is a valid one
+func ValidMMSIKey(key string) bool {
+	if len(key) == 9 {
+		return true
+	}
+
+	return false
+}
+
+// CheckMMSIKeyExists will see if an MMSI key has been set.
+func (c *Config) CheckMMSIKeyExists() bool {
+	return len(c.MMSIKey) > 1
+}
