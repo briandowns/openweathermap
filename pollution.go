@@ -58,7 +58,6 @@ func (p *Pollution) PollutionByParams(params *PollutionParameters) error {
 		strconv.FormatFloat(params.Location.Longitude, 'f', -1, 64),
 		params.Datetime,
 		p.Key)
-	fmt.Println(url)
 	response, err := http.Get(url)
 	if err != nil {
 		return err
