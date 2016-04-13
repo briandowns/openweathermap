@@ -15,6 +15,7 @@ func TestPollutionByParams(t *testing.T) {
 		},
 		Datetime: "current",
 	}
-	p.PollutionByParams(params)
-	t.Logf("%+v\n", p)
+	if err := p.PollutionByParams(params); err != nil {
+		t.Error(err)
+	}
 }
