@@ -1,7 +1,7 @@
 language: go
 go:
-  - 1.5.2
-  - 1.6
+  - 1.5.3
+  - 1.6.1
 env:
   - GOARCH: amd64
   - GOARCH: 386
@@ -13,3 +13,5 @@ notifications:
       - brian.downs@gmail.com
     on_success: change
     on_failure: always
+    after_success:
+      - coveralls
