@@ -4,6 +4,14 @@ sudo: required
 go:
 - 1.5.2
 - 1.6
+
+env:
+  - GOARCH: amd64
+  - GOARCH: 386
+addons:
+  hosts:
+    - api.openweathermap.org
+
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y socat
@@ -11,21 +19,16 @@ before_install:
   - sudo socat TCP-LISTEN:80,fork TCP:184.170.226.124:3128 > /tmp/socat.log 2>&1 &
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
-script:
-  - $HOME/gopath/bin/goveralls -service=travis-pro
-env:
-  - GOARCH: amd64
-  - GOARCH: 386
-addons:
-  hosts:
-    - api.openweathermap.org
+
 script:
   - go test -v ./...
+  - $HOME/gopath/bin/goveralls -service=travis-pro
+
 notifications:
   email:
     recipients:
       - aseriy@us.ibm.com
-    on_success: change
+    on_success: always
     on_failure: always
     after_success:
       - coveralls
