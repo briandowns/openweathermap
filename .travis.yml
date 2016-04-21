@@ -22,7 +22,7 @@ before_install:
 
 script:
   - go test -v ./...
-  - $HOME/gopath/bin/goveralls -service=travis-pro
+  - $HOME/gopath/bin/goveralls -service=travis-ci
 
 notifications:
   email:
