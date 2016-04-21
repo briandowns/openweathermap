@@ -4,37 +4,29 @@ sudo: required
 go:
 - 1.5.2
 - 1.6
-
-env:
-  matrix:
-  - GOARCH: amd64
-  - GOARCH: 386
-  global:
-    secure: Lo2ADFBet1DVQkWTuUoZDHkhe2kwIS+PEv1KdEgzI9+OQNT23SDMiNRrJYLEVlxVDI8G4hUG5BFHtdMNGMbUq30fYRROobOgm193Uu1F2LNhro/cDsJto1YJAvxee6zaFzqaXg/R2MS/Go4XmFHQrlf47Nv/Mp47qGKOUd4uNHMaezlyblRqwPwf0LPBlbMBnKZcY211020cAb2YEBPQGdSHzqD3eg/Kev8RNEdkjy6kUDb8CsZlpiycfqwWinMYgM7s+fk2BGmyGEE4LN7ETiI5DAN7F+WuNPsmfK1WaPf7CCw23xmJsR7XXCNjx/Ci5DQxjuEtrdyVNmQmcMiarpJ8IsBskCSNPKOa7SrLpkk8ayKlfGHCkmSkm6qaHJebBtkknim7ZT9VhVKE6hxGvtYfNQCcLbEXtx7Wuzn6ef7LyLPBk8+jomZPPp7PTqwtChxskWp18b/4WywxSZXJjlPNEvaqRrN/8rJztJFaxZTgHJSrcKFS/J2rEXzCWP5vvF1DNPAJTsBWjsaZInOpVhi/AbPHAmfnK+1IDWgamtGYOxc8NnBFxh+mQvH75NVShlwkh4EDpRzepPfrNEzDW+7hGw+HQuEzi+vT2gXoWl5D9s4Ffm3TiX8YhwpOWI0t0quQvIdrT4U9kF+VeJWVGTtYLgD8CEB++RMfTJt6yhM=
-
-addons:
-  hosts:
-    - api.openweathermap.org
-
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y socat
   - cat /etc/hosts
   - sudo socat TCP-LISTEN:80,fork TCP:184.170.226.124:3128 > /tmp/socat.log 2>&1 &
-
-install:
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
-
+script:
+  - $HOME/gopath/bin/goveralls -service=travis-pro
+env:
+  matrix:
+  - GOARCH: amd64
+  - GOARCH: 386
+addons:
+  hosts:
+    - api.openweathermap.org
 script:
   - go test -v -coverprofile=cover.out ./...
-
-after_script:
-  - $GOPATH/bin/goveralls -service=travis-ci
-
 notifications:
   email:
     recipients:
     - aseriy@us.ibm.com
     on_success: change
     on_failure: always
+    after_success:
+      - coveralls

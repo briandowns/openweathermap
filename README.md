@@ -1,6 +1,6 @@
 # OpenWeatherMap Go API
 
-[![GoDoc](https://godoc.org/github.com/briandowns/openweathermap?status.svg)](https://godoc.org/github.com/briandowns/openweathermap) [![Build Status](https://travis-ci.org/briandowns/openweathermap.svg?branch=master)](https://travis-ci.org/briandowns/openweathermap)[![Coverage Status](https://coveralls.io/repos/github/aseriy/openweathermap/badge.svg?branch=master)](https://coveralls.io/github/aseriy/openweathermap?branch=master)
+[![GoDoc](https://godoc.org/github.com/briandowns/openweathermap?status.svg)](https://godoc.org/github.com/briandowns/openweathermap) [![Build Status](https://travis-ci.org/briandowns/openweathermap.svg?branch=master)](https://travis-ci.org/briandowns/openweathermap) [![Coverage Status](https://coveralls.io/repos/github/aseriy/openweathermap/badge.svg?branch=master)](https://coveralls.io/github/briandowns/openweathermap?branch=master)
 
 Go (golang) package for use with openweathermap.org's API.
 
@@ -58,6 +58,10 @@ Gain access to OpenWeatherMap icons and condition codes.
 
 - Current
 - Historical
+
+### Pollution Data
+
+- Current
 
 ## Historical Conditions
 
@@ -192,7 +196,7 @@ func main() {
     start := time.Now().UTC().Add(-time.Hour * time.Duration(24))
 
     if err := uv.Historical(coord, start, end); err != nil {
-        t.Error(err)
+        log.Fatalln(err)
     }
 }
 ```
@@ -209,7 +213,27 @@ func main() {
 
     info, err := uv.UVInformation()
     if err != nil {
-        t.Error(err)
+        log.Fatalln(err)
+    }
+}
+```
+
+### Pollution Information
+
+```Go
+func main() {
+    pollution := NewPollution()
+
+	params := &PollutionParameters{
+    	Location: Coordinates{
+        	Latitude:  0.0,
+            Longitude: 10.0,
+        },
+        Datetime: "current",
+    }
+
+    if err := pollution.PollutionByParams(params); err != nil {
+        log.Fatalln(err)    
     }
 }
 ```
