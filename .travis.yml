@@ -14,18 +14,17 @@ before_install:
 script:
   - $HOME/gopath/bin/goveralls -service=travis-pro
 env:
-  matrix:
   - GOARCH: amd64
   - GOARCH: 386
 addons:
   hosts:
     - api.openweathermap.org
 script:
-  - go test -v -coverprofile=cover.out ./...
+  - go test -v ./...
 notifications:
   email:
     recipients:
-    - aseriy@us.ibm.com
+      - aseriy@us.ibm.com
     on_success: change
     on_failure: always
     after_success:
