@@ -46,39 +46,53 @@ func TestNewCurrent(t *testing.T) {
 	}
 }
 
+type current_weather struct {
+	query		string
+	weather		CurrentWeatherData
+}
 // TestCurrentByName will verify that current data can be retrieved for a given
 // location by name
 func TestCurrentByName(t *testing.T) {
 	t.Parallel()
-	//testCities := []string{"Philadelphia", "Newark", "Helena", "San Diego"}
-
-	testCities := []CurrentWeatherData {
+	testCities := []current_weather {
 		{
-			ID:		4560349,
-			Name:	"Philadelphia",
-			Main: Main {
-				Temp:	35.6,
+			query:		"Philadelphia",
+			weather:	CurrentWeatherData {
+				ID:		4560349,
+				Name:	"Philadelphia",
+				Main: Main {
+					Temp:	35.6,
+				},
 			},
 		},
 		{
-			ID:		5101798,
-			Name:	"Newark",
-			Main: Main {
-				Temp:	36.36,
+			query:		"Newark",
+			weather:	CurrentWeatherData {
+				ID:		5101798,
+				Name:	"Newark",
+				Main: Main {
+					Temp:	36.36,
+				},
 			},
 		},
 		{
-			ID:		5656882,
-			Name:	"Helena",
-			Main: Main {
-				Temp:	42.8,
+			query:		"Helena",
+			weather:	CurrentWeatherData {
+				ID:		5656882,
+				Name:	"Helena",
+				Main: Main {
+					Temp:	42.8,
+				},
 			},
 		},
 		{
-			ID:		5391811,
-			Name:	"San Diego",
-			Main: Main {
-				Temp:	56.53,
+			query:		"San Diego, CA",
+			weather:	CurrentWeatherData {
+				ID:		5391811,
+				Name:	"San Diego",
+				Main: Main {
+					Temp:	56.53,
+				},
 			},
 		},
 	}
@@ -88,16 +102,16 @@ func TestCurrentByName(t *testing.T) {
 		t.Error(err)
 	}
 	for _, city := range testCities {
-		c.CurrentByName(city.Name)
+		c.CurrentByName(city.query)
 
-		if c.ID != city.ID {
-			t.Errorf("Excpect CityID %ld, got %ld", city.ID, c.ID)
+		if c.ID != city.weather.ID {
+			t.Errorf("Excpect CityID %ld, got %ld", city.weather.ID, c.ID)
 		}
-		if c.Name != city.Name {
-			t.Errorf("Excpect City %s, got %s", city.Name, c.Name)
+		if c.Name != city.weather.Name {
+			t.Errorf("Excpect City %s, got %s", city.weather.Name, c.Name)
 		}
-		if c.Main.Temp != city.Main.Temp {
-			t.Errorf("Excpect Temp %.2f, got %.2f", city.Main.Temp, c.Main.Temp)
+		if c.Main.Temp != city.weather.Main.Temp {
+			t.Errorf("Excpect Temp %.2f, got %.2f", city.weather.Main.Temp, c.Main.Temp)
 		}
 	}
 }
