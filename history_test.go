@@ -45,11 +45,9 @@ func TestNewHistory(t *testing.T) {
 	}
 }
 
-/*
 func TestHistoryByName(t *testing.T) {
 	t.Parallel()
 	h, err := NewHistorical("F")
-	fmt.Println(h)
 	if err != nil {
 		t.Error(err)
 	}
@@ -57,4 +55,19 @@ func TestHistoryByName(t *testing.T) {
 		t.Error(err)
 	}
 }
-*/
+
+func TestHistoryByID(t *testing.T) {
+	t.Parallel()
+	h, err := NewHistorical("F")
+	if err != nil {
+		t.Error(err)
+	}
+	hp := &HistoricalParameters{
+		Start: 1461598510,
+		End:   1461588510,
+		Cnt:   1,
+	}
+	if err := h.HistoryByID(5344157, hp); err != nil {
+		t.Error(err)
+	}
+}

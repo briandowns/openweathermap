@@ -29,18 +29,18 @@ func TestCurrentUV(t *testing.T) {
 func TestHistoricalUV(t *testing.T) {
 	t.Parallel()
 
-	/*uv := NewUV()
+	/*	uv := NewUV()
 
-	end := time.Now().UTC()
-	start := time.Now().UTC().Add(-time.Hour * time.Duration(24))
+		end := time.Now().UTC()
+		start := time.Now().UTC().Add(-time.Hour * time.Duration(24))
 
-	if err := uv.Historical(coords, start, end); err != nil {
-		t.Error(err)
-	}
+		if err := uv.Historical(coords, start, end); err != nil {
+			t.Error(err)
+		}
 
-	if reflect.TypeOf(uv).String() != "*openweathermap.UV" {
-		t.Error("incorrect data type returned")
-	}*/
+		if reflect.TypeOf(uv).String() != "*openweathermap.UV" {
+			t.Error("incorrect data type returned")
+		}*/
 }
 
 func TestUVInformation(t *testing.T) {
