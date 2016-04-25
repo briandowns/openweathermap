@@ -154,7 +154,7 @@ func main() {
 
 ```Go
 func main() {
-	w, err := owm.NewCurrent("F", "US")
+	w, err := owm.NewCurrent("F", "EN")
 	if err != nil {
 		log.Fatalln(err)
 	}
