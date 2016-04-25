@@ -19,6 +19,15 @@ import (
 	"testing"
 )
 
+func TestValidLanguageCode(t *testing.T) {
+	testCodes := []string{"EN", "DE", "blah"}
+	for _, i := range testCodes {
+		if !ValidLangCode(i) {
+			t.Log("received expected bad code")
+		}
+	}
+}
+
 // TestNewCurrent will verify that a new instance of CurrentWeatherData is created
 func TestNewCurrent(t *testing.T) {
 	t.Parallel()
