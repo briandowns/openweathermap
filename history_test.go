@@ -45,6 +45,7 @@ func TestNewHistory(t *testing.T) {
 	}
 }
 
+// TestHistoryByName
 func TestHistoryByName(t *testing.T) {
 	t.Parallel()
 	h, err := NewHistorical("F")
@@ -56,6 +57,7 @@ func TestHistoryByName(t *testing.T) {
 	}
 }
 
+// TestHistoryByID
 func TestHistoryByID(t *testing.T) {
 	t.Parallel()
 	h, err := NewHistorical("F")
@@ -68,6 +70,27 @@ func TestHistoryByID(t *testing.T) {
 		Cnt:   1,
 	}
 	if err := h.HistoryByID(5344157, hp); err != nil {
+		t.Error(err)
+	}
+}
+
+// TestHistoryByCoord
+func TestHistoryByCoord(t *testing.T) {
+	t.Parallel()
+	h, err := NewHistorical("F")
+	if err != nil {
+		t.Error(err)
+	}
+	coords := &Coordinates{
+		Longitude: -112.07,
+		Latitude:  33.45,
+	}
+	hp := &HistoricalParameters{
+		Start: 1461598510,
+		End:   1461588510,
+		Cnt:   1,
+	}
+	if err := h.HistoryByCoord(coords, hp); err != nil {
 		t.Error(err)
 	}
 }
