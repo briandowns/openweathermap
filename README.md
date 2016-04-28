@@ -65,7 +65,9 @@ Gain access to OpenWeatherMap icons and condition codes.
 
 ## Historical Conditions
 
-- ...still in the works...
+- By Name
+- By ID
+- By Coordinates
 
 ## Supported Languages
 
