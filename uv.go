@@ -10,13 +10,20 @@ import (
 
 var errInvalidUVIndex = errors.New("invalid UV index value")
 
+// UVDataPoints holds the UV specific data
+type UVDataPoints struct {
+	DT    int64   `json:"dt"`
+	Value float64 `json:"value"`
+}
+
 // UV contains the response from the OWM UV API
 type UV struct {
-	Coord []float64 `json:"coord"`
-	Data  []struct {
+	Coord []float64      `json:"coord"`
+	Data  []UVDataPoints `json:"data,omitempty"`
+	/*Data  []struct {
 		DT    int64   `json:"dt"`
 		Value float64 `json:"value"`
-	} `json:"data,omitempty"`
+	} `json:"data,omitempty"`*/
 	DT    int64   `json:"dt,omitempty"`
 	Value float64 `json:"value,omitempty"`
 }

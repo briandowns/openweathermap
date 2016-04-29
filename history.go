@@ -118,3 +118,18 @@ func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters)
 
 	return nil
 }
+
+// HistoryByCoord will return the history for the provided coordinates
+func (h *HistoricalWeatherData) HistoryByCoord(location *Coordinates, hp *HistoricalParameters) error {
+	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "appid=%s&lat=%f&lon=%f&start=%d&end=%d"), h.Key, location.Latitude, location.Longitude, hp.Start, hp.End))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
+		return err
+	}
+
+	return nil
+}

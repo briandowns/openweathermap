@@ -65,7 +65,9 @@ Gain access to OpenWeatherMap icons and condition codes.
 
 ## Historical Conditions
 
-- ...still in the works...
+- By Name
+- By ID
+- By Coordinates
 
 ## Supported Languages
 
@@ -154,7 +156,7 @@ func main() {
 
 ```Go
 func main() {
-	w, err := owm.NewCurrent("F", "US")
+	w, err := owm.NewCurrent("F", "EN")
 	if err != nil {
 		log.Fatalln(err)
 	}

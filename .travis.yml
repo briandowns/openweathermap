@@ -2,12 +2,20 @@ language: go
 sudo: required
 
 go:
-- 1.5.2
-- 1.6
+  - 1.5.4
+  - 1.6.2
+
+before_install:
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
+
+script:
+  - $HOME/gopath/bin/goveralls -service=travis-ci
 
 env:
   - GOARCH: amd64
   - GOARCH: 386
+
 addons:
   hosts:
     - api.openweathermap.org
@@ -32,3 +40,4 @@ notifications:
     on_failure: always
     after_success:
       - coveralls
+

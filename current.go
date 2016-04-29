@@ -67,18 +67,6 @@ func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 	return c, nil
 }
 
-// SetLang allows you to set the language responses will be displayed as.  This isn't part of the
-// NewCurrent call because it'd keep it easier to go with API defaults and
-// adjust if explicitly called.
-func (w *CurrentWeatherData) SetLang(lang string) error {
-	if !ValidLangCode(lang) {
-		return errLangUnavailable
-	}
-	w.Lang = lang
-
-	return nil
-}
-
 // CurrentByName will provide the current weather with the provided
 // location name.
 func (w *CurrentWeatherData) CurrentByName(location string) error {

@@ -15,9 +15,21 @@
 package openweathermap
 
 import (
+	"log"
 	"reflect"
 	"testing"
 )
+
+// TestValidLanguageCode will verify that the language code passed in is indeed
+// a valid one for use with the API
+func TestValidLanguageCode(t *testing.T) {
+	testCodes := []string{"EN", "DE", "blah"}
+	for _, i := range testCodes {
+		if !ValidLangCode(i) {
+			t.Log("received expected bad code")
+		}
+	}
+}
 
 // TestNewCurrent will verify that a new instance of CurrentWeatherData is created
 func TestNewCurrent(t *testing.T) {
@@ -30,6 +42,11 @@ func TestNewCurrent(t *testing.T) {
 			c, err := NewCurrent(d, "en")
 			if err != nil {
 				t.Error(err)
+			}
+
+			_, err = NewCurrent(d, "blah")
+			if err != nil {
+				t.Log("received expected bad language code error")
 			}
 
 			if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
@@ -54,6 +71,7 @@ type current_weather struct {
 // location by name
 func TestCurrentByName(t *testing.T) {
 	t.Parallel()
+
 	testCities := []current_weather {
 		{
 			query:		"Philadelphia",
@@ -97,10 +115,13 @@ func TestCurrentByName(t *testing.T) {
 		},
 	}
 
+	testBadCities := []string{"nowhere_", "somewhere_over_the_"}
+
 	c, err := NewCurrent("f", "ru")
 	if err != nil {
 		t.Error(err)
 	}
+
 	for _, city := range testCities {
 		c.CurrentByName(city.query)
 
@@ -114,6 +135,13 @@ func TestCurrentByName(t *testing.T) {
 			t.Errorf("Excpect Temp %.2f, got %.2f", city.weather.Main.Temp, c.Main.Temp)
 		}
 	}
+
+	for _, badCity := range testBadCities {
+		if err := c.CurrentByName(badCity); err != nil {
+			t.Log("received expected failure for bad city by name")
+		}
+	}
+
 }
 
 // TestCurrentByCoordinates will verify that current data can be retrieved for a
@@ -141,6 +169,17 @@ func TestCurrentByID(t *testing.T) {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
 	c.CurrentByID(5344157)
+}
+
+func TestCurrentByZip(t *testing.T) {
+	w, err := NewCurrent("F", "EN")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := w.CurrentByZip(19125, "US"); err != nil {
+		t.Error(err)
+	}
 }
 
 func TestCurrentByArea(t *testing.T) {}

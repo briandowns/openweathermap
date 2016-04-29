@@ -4,6 +4,16 @@ import (
 	"testing"
 )
 
+func TestValidAlias(t *testing.T) {
+	t.Parallel()
+	testAliases := []string{"now", "then", "current"}
+	for _, i := range testAliases {
+		if !ValidAlias(i) {
+			t.Log("received expected failure")
+		}
+	}
+}
+
 // TestPollutionByParams tests the call to the pollution API
 func TestPollutionByParams(t *testing.T) {
 	t.Parallel()
