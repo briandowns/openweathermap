@@ -35,8 +35,8 @@ script:
 notifications:
   email:
     recipients:
-      - aseriy@us.ibm.com
-    on_success: always
+      - brian.downs@gmail.com
+    on_success: change
     on_failure: always
     after_success:
       - coveralls
