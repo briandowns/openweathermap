@@ -21,12 +21,12 @@ addons:
     - api.openweathermap.org
 
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y socat
-  - cat /etc/hosts
-  - sudo socat TCP-LISTEN:80,fork TCP:${RTCP_HOST}:${RTCP_PORT} > /tmp/socat.log 2>&1 &
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
+  - test -v RTCP_PORT \
+    && sudo apt-get -qq update \
+    && sudo apt-get install -y socat \
+    && sudo socat TCP-LISTEN:80,fork TCP:${RTCP_HOST}:${RTCP_PORT} > /tmp/socat.log 2>&1 &
 
 script:
   - go test -v ./...
