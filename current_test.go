@@ -16,9 +16,16 @@ package openweathermap
 
 import (
 	"log"
+	"os"
 	"reflect"
 	"testing"
 )
+
+// currentWeather holds the query and response
+type currentWeather struct {
+	query   string
+	weather CurrentWeatherData
+}
 
 // TestValidLanguageCode will verify that the language code passed in is indeed
 // a valid one for use with the API
@@ -56,26 +63,77 @@ func TestNewCurrent(t *testing.T) {
 			t.Errorf("unusable data unit - %s", d)
 		}
 	}
-
-	_, err := NewCurrent("Philadelphia", "en")
-	if err == nil {
-		t.Error("created instance when it shouldn't have")
-	}
 }
 
 // TestCurrentByName will verify that current data can be retrieved for a give
 // location by name
 func TestCurrentByName(t *testing.T) {
 	t.Parallel()
-	testCities := []string{"Philadelphia", "Newark", "Helena", "San Diego, CA"}
+
+	testCities := []currentWeather{
+		{
+			query: "Philadelphia",
+			weather: CurrentWeatherData{
+				ID:   4560349,
+				Name: "Philadelphia",
+				Main: Main{
+					Temp: 35.6,
+				},
+			},
+		},
+		{
+			query: "Newark",
+			weather: CurrentWeatherData{
+				ID:   5101798,
+				Name: "Newark",
+				Main: Main{
+					Temp: 36.36,
+				},
+			},
+		},
+		{
+			query: "Helena",
+			weather: CurrentWeatherData{
+				ID:   5656882,
+				Name: "Helena",
+				Main: Main{
+					Temp: 42.8,
+				},
+			},
+		},
+		{
+			query: "San Diego, CA",
+			weather: CurrentWeatherData{
+				ID:   5391811,
+				Name: "San Diego",
+				Main: Main{
+					Temp: 56.53,
+				},
+			},
+		},
+	}
+
 	testBadCities := []string{"nowhere_", "somewhere_over_the_"}
+
 	c, err := NewCurrent("f", "ru")
 	if err != nil {
 		t.Error(err)
 	}
 
 	for _, city := range testCities {
-		c.CurrentByName(city)
+		c.CurrentByName(city.query)
+
+		if os.Getenv("RTCP_HOST") != "" {
+			if c.ID != city.weather.ID {
+				t.Errorf("Excpect CityID %ld, got %ld", city.weather.ID, c.ID)
+			}
+			if c.Name != city.weather.Name {
+				t.Errorf("Excpect City %s, got %s", city.weather.Name, c.Name)
+			}
+			if c.Main.Temp != city.weather.Main.Temp {
+				t.Errorf("Excpect Temp %.2f, got %.2f", city.weather.Main.Temp, c.Main.Temp)
+			}
+		}
 	}
 
 	for _, badCity := range testBadCities {
@@ -83,7 +141,6 @@ func TestCurrentByName(t *testing.T) {
 			t.Log("received expected failure for bad city by name")
 		}
 	}
-
 }
 
 // TestCurrentByCoordinates will verify that current data can be retrieved for a
