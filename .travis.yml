@@ -18,7 +18,7 @@ before_install:
   - go get golang.org/x/tools/cmd/cover
 script:
   - make test
-  - $HOME/gopath/bin/goveralls -service=travis-ci
+  - $HOME/gopath/bin/goveralls -service=travis-ci -repotoken $COVERALLS_TOKEN
 notifications:
   email:
     recipients:
