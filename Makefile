@@ -10,7 +10,7 @@ GOTEST = $(GOCMD) test
 all: test
 
 test:
-	$(GOTEST) -v -race -cover ./...
+	$(GOTEST) -v -race -covermode=count -coverprofile=coverage.out ./...
 
 build: test
 	$(GOBUILD)
