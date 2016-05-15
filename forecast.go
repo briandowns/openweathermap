@@ -105,7 +105,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 	var err error
 	var response *http.Response
 
-	response, err = http.Get(fmt.Sprintf(forecastBase, f.Key, "q", url.QueryEscape(location), f.Unit, f.Lang, days))
+	response, err = http.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s","q", url.QueryEscape(location)), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
@@ -121,7 +121,11 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 // DailyByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(forecastBase, "lat=%f&lon=%f&units=%s"), f.Key, location.Latitude, location.Longitude, f.Unit, f.Lang, days))
+ 	println(
+		string(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude), f.Unit, f.Lang, days)),
+	)
+
+	response, err := http.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
@@ -137,7 +141,7 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 // DailyByID will provide a forecast for the location ID give for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) error {
-	response, err := http.Get(fmt.Sprintf(forecastBase, f.Key, "id", strconv.Itoa(id), f.Unit, f.Lang, days))
+	response, err := http.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s","id", strconv.Itoa(id)), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
