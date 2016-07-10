@@ -19,6 +19,8 @@ import (
 	"os"
 	"reflect"
 	"testing"
+	"net/http"
+	"time"
 )
 
 // currentWeather holds the query and response
@@ -62,6 +64,27 @@ func TestNewCurrent(t *testing.T) {
 		} else {
 			t.Errorf("unusable data unit - %s", d)
 		}
+	}
+}
+
+// TestNewCurrentWithCustomHttpClient will verify that a new instance of CurrentWeatherData
+// is created with custom http client
+func TestNewCurrentWithCustomHttpClient(t *testing.T) {
+
+	hc := http.DefaultClient
+	hc.Timeout = time.Duration(1) * time.Second
+	c, err := NewCurrent("c", "en", WithHttpClient(hc))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := time.Duration(1) * time.Second
+	if c.client.Timeout != expected {
+		t.Errorf("Expect Duration %v, got %v", expected, c.client.Timeout)
 	}
 }
 

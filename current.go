@@ -41,14 +41,27 @@ type CurrentWeatherData struct {
 	Unit    string
 	Lang    string
 	Key     string
+	client  *http.Client
+}
+
+// Optional settings
+type Option func(w *CurrentWeatherData) error
+
+// Sets custom http client when creating a new CurrentWeatherData.
+func WithHttpClient(c *http.Client) Option {
+	return func(w *CurrentWeatherData) error {
+		w.client = c
+		return nil
+	}
 }
 
 // NewCurrent returns a new CurrentWeatherData pointer with the supplied parameters
-func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
+func NewCurrent(unit, lang string, options ...Option) (*CurrentWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
 
 	c := &CurrentWeatherData{}
+	c.client = http.DefaultClient
 
 	if ValidDataUnit(unitChoice) {
 		c.Unit = DataUnits[unitChoice]
@@ -64,6 +77,12 @@ func NewCurrent(unit, lang string) (*CurrentWeatherData, error) {
 
 	c.Key = getKey()
 
+	for _, option := range options {
+		err := option(c)
+		if err != nil {
+			return nil, err
+		}
+	}
 	return c, nil
 }
 
@@ -73,7 +92,7 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 	var err error
 	var response *http.Response
 
-	response, err = http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&q=%s&units=%s&lang=%s"), w.Key, url.QueryEscape(location), w.Unit, w.Lang))
+	response, err = w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&q=%s&units=%s&lang=%s"), w.Key, url.QueryEscape(location), w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
@@ -89,7 +108,7 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 // CurrentByCoordinates will provide the current weather with the
 // provided location coordinates.
 func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&lat=%f&lon=%f&units=%s&lang=%s"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&lat=%f&lon=%f&units=%s&lang=%s"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
@@ -105,7 +124,7 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 // CurrentByID will provide the current weather with the
 // provided location ID.
 func (w *CurrentWeatherData) CurrentByID(id int) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&id=%d&units=%s&lang=%s"), w.Key, id, w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&id=%d&units=%s&lang=%s"), w.Key, id, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
@@ -121,7 +140,7 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 // CurrentByZip will provide the current weather for the
 // provided zip code.
 func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
-	response, err := http.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
