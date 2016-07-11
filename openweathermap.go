@@ -17,6 +17,7 @@ package openweathermap
 import (
 	"errors"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -188,3 +189,19 @@ func ValidAPIKey(key string) bool {
 
 // CheckAPIKeyExists will see if an API key has been set.
 func (c *Config) CheckAPIKeyExists() bool { return len(c.APIKey) > 1 }
+
+// Settings holds the client settings
+type Settings struct {
+	client *http.Client
+}
+
+// Optional client settings
+type Option func(s Settings) error
+
+// WithHttpClient sets custom http client when creating a new Client.
+func WithHttpClient(c *http.Client) Option {
+	return func(s Settings) error {
+		s.client = c
+		return nil
+	}
+}

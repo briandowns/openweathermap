@@ -41,13 +41,23 @@ type Pollution struct {
 	Location Coordinates     `json:"location"`
 	Data     []PollutionData `json:"data"`
 	Key      string
+	Settings
 }
 
 // NewPollution creates a new reference to Pollution
-func NewPollution() *Pollution {
-	return &Pollution{
+func NewPollution(options ...Option) (*Pollution, error) {
+	p := &Pollution{
 		Key: getKey(),
 	}
+	p.client = http.DefaultClient
+
+	for _, option := range options {
+		err := option(p.Settings)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return p, nil
 }
 
 // PollutionByParams gets the pollution data based on the given parameters
@@ -58,7 +68,7 @@ func (p *Pollution) PollutionByParams(params *PollutionParameters) error {
 		strconv.FormatFloat(params.Location.Longitude, 'f', -1, 64),
 		params.Datetime,
 		p.Key)
-	response, err := http.Get(url)
+	response, err := p.client.Get(url)
 	if err != nil {
 		return err
 	}

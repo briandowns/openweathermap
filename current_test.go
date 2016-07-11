@@ -16,10 +16,10 @@ package openweathermap
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"reflect"
 	"testing"
-	"net/http"
 	"time"
 )
 
@@ -84,7 +84,7 @@ func TestNewCurrentWithCustomHttpClient(t *testing.T) {
 
 	expected := time.Duration(1) * time.Second
 	if c.client.Timeout != expected {
-		t.Errorf("Expect Duration %v, got %v", expected, c.client.Timeout)
+		t.Errorf("Expected Duration %v, but got %v", expected, c.client.Timeout)
 	}
 }
 

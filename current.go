@@ -41,18 +41,7 @@ type CurrentWeatherData struct {
 	Unit    string
 	Lang    string
 	Key     string
-	client  *http.Client
-}
-
-// Optional settings
-type Option func(w *CurrentWeatherData) error
-
-// Sets custom http client when creating a new CurrentWeatherData.
-func WithHttpClient(c *http.Client) Option {
-	return func(w *CurrentWeatherData) error {
-		w.client = c
-		return nil
-	}
+	Settings
 }
 
 // NewCurrent returns a new CurrentWeatherData pointer with the supplied parameters
@@ -78,7 +67,7 @@ func NewCurrent(unit, lang string, options ...Option) (*CurrentWeatherData, erro
 	c.Key = getKey()
 
 	for _, option := range options {
-		err := option(c)
+		err := option(c.Settings)
 		if err != nil {
 			return nil, err
 		}
@@ -145,7 +134,6 @@ func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
 		return err
 	}
 	defer response.Body.Close()
-
 	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
