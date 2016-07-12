@@ -85,9 +85,7 @@ func NewHistorical(unit string, options ...Option) (*HistoricalWeatherData, erro
 
 // HistoryByName will return the history for the provided location
 func (h *HistoricalWeatherData) HistoryByName(location string) error {
-	var err error
-	var response *http.Response
-	response, err = h.client.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&q=%s"), h.Key, url.QueryEscape(location)))
+	response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&q=%s"), h.Key, url.QueryEscape(location)))
 	if err != nil {
 		return err
 	}

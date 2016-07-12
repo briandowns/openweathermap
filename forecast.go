@@ -110,10 +110,7 @@ func NewForecast(unit, lang string, options ...Option) (*ForecastWeatherData, er
 // DailyByName will provide a forecast for the location given for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByName(location string, days int) error {
-	var err error
-	var response *http.Response
-
-	response, err = f.client.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s", "q", url.QueryEscape(location)), f.Unit, f.Lang, days))
+	response, err := f.client.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s", "q", url.QueryEscape(location)), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
