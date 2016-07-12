@@ -78,10 +78,7 @@ func NewCurrent(unit, lang string, options ...Option) (*CurrentWeatherData, erro
 // CurrentByName will provide the current weather with the provided
 // location name.
 func (w *CurrentWeatherData) CurrentByName(location string) error {
-	var err error
-	var response *http.Response
-
-	response, err = w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&q=%s&units=%s&lang=%s"), w.Key, url.QueryEscape(location), w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&q=%s&units=%s&lang=%s"), w.Key, url.QueryEscape(location), w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
