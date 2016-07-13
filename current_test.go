@@ -97,7 +97,7 @@ func TestNewCurrentWithInvalidHttpClient(t *testing.T) {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	}
 	if c != nil {
-		t.Log("Expected nil, but got %v", c)
+		t.Errorf("Expected nil, but got %v", c)
 	}
 }
 

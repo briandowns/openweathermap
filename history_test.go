@@ -77,7 +77,7 @@ func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	}
 	if h != nil {
-		t.Log("Expected nil, but got %v", h)
+		t.Errorf("Expected nil, but got %v", h)
 	}
 }
 

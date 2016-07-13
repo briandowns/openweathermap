@@ -54,7 +54,7 @@ func TestNewUVWithInvalidHttpClient(t *testing.T) {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	}
 	if uv != nil {
-		t.Log("Expected nil, but got %v", uv)
+		t.Errorf("Expected nil, but got %v", uv)
 	}
 }
 

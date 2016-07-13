@@ -80,7 +80,7 @@ func TestNewForecastWithInvalidHttpClient(t *testing.T) {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	}
 	if f != nil {
-		t.Log("Expected nil, but got %v", f)
+		t.Errorf("Expected nil, but got %v", f)
 	}
 }
 
