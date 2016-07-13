@@ -88,6 +88,19 @@ func TestNewCurrentWithCustomHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewCurrentWithInvalidHttpClient will verify that returns an error with
+// invalid http client
+func TestNewCurrentWithInvalidHttpClient(t *testing.T) {
+
+	c, err := NewCurrent("c", "en", WithHttpClient(nil))
+	if err != nil {
+		t.Logf("Received expected bad client error. message: %s", err.Error())
+	}
+	if c != nil {
+		t.Log("Expected nil, but got %v", c)
+	}
+}
+
 // TestCurrentByName will verify that current data can be retrieved for a give
 // location by name
 func TestCurrentByName(t *testing.T) {

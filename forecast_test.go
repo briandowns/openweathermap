@@ -71,6 +71,19 @@ func TestNewForecastWithCustomHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewForecastWithCustomHttpClient will verify that returns an error with
+// invalid http client
+func TestNewForecastWithInvalidHttpClient(t *testing.T) {
+
+	f, err := NewForecast("c", "en", WithHttpClient(nil))
+	if err != nil {
+		t.Logf("Received expected bad client error. message: %s", err.Error())
+	}
+	if f != nil {
+		t.Log("Expected nil, but got %v", f)
+	}
+}
+
 // TestDailyByName will verify that a daily forecast can be retrieved for
 // a given named location
 func TestDailyByName(t *testing.T) {

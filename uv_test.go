@@ -45,6 +45,19 @@ func TestNewUVWithCustomHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewUVWithInvalidHttpClient will verify that returns an error with
+// invalid http client
+func TestNewUVWithInvalidHttpClient(t *testing.T) {
+
+	uv, err := NewUV(WithHttpClient(nil))
+	if err != nil {
+		t.Logf("Received expected bad client error. message: %s", err.Error())
+	}
+	if uv != nil {
+		t.Log("Expected nil, but got %v", uv)
+	}
+}
+
 // TestCurrentUV
 func TestCurrentUV(t *testing.T) {
 	t.Parallel()

@@ -16,6 +16,7 @@ package openweathermap
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -195,12 +196,22 @@ type Settings struct {
 	client *http.Client
 }
 
+// NewSettings returns a new Setting pointer with default http client.
+func NewSettings() *Settings {
+	return &Settings{
+		client: http.DefaultClient,
+	}
+}
+
 // Optional client settings
-type Option func(s Settings) error
+type Option func(s *Settings) error
 
 // WithHttpClient sets custom http client when creating a new Client.
 func WithHttpClient(c *http.Client) Option {
-	return func(s Settings) error {
+	return func(s *Settings) error {
+		if c == nil {
+			return fmt.Errorf("invalid http client.")
+		}
 		s.client = c
 		return nil
 	}

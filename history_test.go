@@ -68,6 +68,19 @@ func TestNewHistoryWithCustomHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewHistoryWithInvalidHttpClient will verify that returns an error with
+// invalid http client
+func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
+
+	h, err := NewHistorical("c", WithHttpClient(nil))
+	if err != nil {
+		t.Logf("Received expected bad client error. message: %s", err.Error())
+	}
+	if h != nil {
+		t.Log("Expected nil, but got %v", h)
+	}
+}
+
 // TestHistoryByName
 func TestHistoryByName(t *testing.T) {
 	t.Parallel()

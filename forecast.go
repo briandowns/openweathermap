@@ -17,7 +17,6 @@ package openweathermap
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -72,7 +71,7 @@ type ForecastWeatherData struct {
 	Unit    string
 	Lang    string
 	Key     string
-	Settings
+	*Settings
 }
 
 // NewForecast returns a new HistoricalWeatherData pointer with
@@ -81,8 +80,9 @@ func NewForecast(unit, lang string, options ...Option) (*ForecastWeatherData, er
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
 
-	f := &ForecastWeatherData{}
-	f.client = http.DefaultClient
+	f := &ForecastWeatherData{
+		Settings: NewSettings(),
+	}
 
 	if ValidDataUnit(unitChoice) {
 		f.Unit = DataUnits[unitChoice]

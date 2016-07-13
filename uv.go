@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
 	"time"
 )
 
@@ -27,15 +26,15 @@ type UV struct {
 	DT    int64   `json:"dt,omitempty"`
 	Value float64 `json:"value,omitempty"`
 	Key   string
-	Settings
+	*Settings
 }
 
 // NewUV creates a new reference to UV
 func NewUV(options ...Option) (*UV, error) {
 	u := &UV{
-		Key: getKey(),
+		Key:      getKey(),
+		Settings: NewSettings(),
 	}
-	u.client = http.DefaultClient
 
 	for _, option := range options {
 		err := option(u.Settings)

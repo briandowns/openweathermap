@@ -40,6 +40,19 @@ func TestNewPollutionWithCustomHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewPollutionWithInvalidHttpClient will verify that returns an error with
+// invalid http client
+func TestNewPollutionWithInvalidHttpClient(t *testing.T) {
+
+	p, err := NewPollution(WithHttpClient(nil))
+	if err != nil {
+		t.Logf("Received expected bad client error. message: %s", err.Error())
+	}
+	if p != nil {
+		t.Log("Expected nil, but got %v", p)
+	}
+}
+
 func TestValidAlias(t *testing.T) {
 	t.Parallel()
 	testAliases := []string{"now", "then", "current"}

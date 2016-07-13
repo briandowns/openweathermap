@@ -17,7 +17,6 @@ package openweathermap
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 )
@@ -57,14 +56,15 @@ type HistoricalWeatherData struct {
 	List     []WeatherHistory `json:"list"`
 	Unit     string
 	Key      string
-	Settings
+	*Settings
 }
 
 // NewHistorical returns a new HistoricalWeatherData pointer with
 //the supplied arguments.
 func NewHistorical(unit string, options ...Option) (*HistoricalWeatherData, error) {
-	h := &HistoricalWeatherData{}
-	h.client = http.DefaultClient
+	h := &HistoricalWeatherData{
+		Settings: NewSettings(),
+	}
 
 	unitChoice := strings.ToUpper(unit)
 	if !ValidDataUnit(unitChoice) {

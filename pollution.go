@@ -3,7 +3,6 @@ package openweathermap
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"strconv"
 )
 
@@ -41,15 +40,15 @@ type Pollution struct {
 	Location Coordinates     `json:"location"`
 	Data     []PollutionData `json:"data"`
 	Key      string
-	Settings
+	*Settings
 }
 
 // NewPollution creates a new reference to Pollution
 func NewPollution(options ...Option) (*Pollution, error) {
 	p := &Pollution{
-		Key: getKey(),
+		Key:      getKey(),
+		Settings: NewSettings(),
 	}
-	p.client = http.DefaultClient
 
 	for _, option := range options {
 		err := option(p.Settings)
