@@ -17,7 +17,6 @@ package openweathermap
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -72,15 +71,18 @@ type ForecastWeatherData struct {
 	Unit    string
 	Lang    string
 	Key     string
+	*Settings
 }
 
 // NewForecast returns a new HistoricalWeatherData pointer with
 // the supplied arguments.
-func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
+func NewForecast(unit, lang string, options ...Option) (*ForecastWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
 
-	f := &ForecastWeatherData{}
+	f := &ForecastWeatherData{
+		Settings: NewSettings(),
+	}
 
 	if ValidDataUnit(unitChoice) {
 		f.Unit = DataUnits[unitChoice]
@@ -96,16 +98,19 @@ func NewForecast(unit, lang string) (*ForecastWeatherData, error) {
 
 	f.Key = getKey()
 
+	for _, option := range options {
+		err := option(f.Settings)
+		if err != nil {
+			return nil, err
+		}
+	}
 	return f, nil
 }
 
 // DailyByName will provide a forecast for the location given for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByName(location string, days int) error {
-	var err error
-	var response *http.Response
-
-	response, err = http.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s","q", url.QueryEscape(location)), f.Unit, f.Lang, days))
+	response, err := f.client.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s", "q", url.QueryEscape(location)), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
@@ -121,7 +126,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 // DailyByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
-	response, err := http.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude), f.Unit, f.Lang, days))
+	response, err := f.client.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}
@@ -137,7 +142,7 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 // DailyByID will provide a forecast for the location ID give for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) error {
-	response, err := http.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s","id", strconv.Itoa(id)), f.Unit, f.Lang, days))
+	response, err := f.client.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s", "id", strconv.Itoa(id)), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}

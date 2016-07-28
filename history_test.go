@@ -15,8 +15,10 @@
 package openweathermap
 
 import (
+	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 // TestNewHistory verifies NewHistorical does as advertised
@@ -42,6 +44,40 @@ func TestNewHistory(t *testing.T) {
 	_, err := NewHistorical("asdf")
 	if err == nil {
 		t.Error("created instance when it shouldn't have")
+	}
+}
+
+// TestNewHistoryWithCustomHttpClient will verify that a new instance of HistoricalWeatherData
+// is created with custom http client
+func TestNewHistoryWithCustomHttpClient(t *testing.T) {
+
+	hc := http.DefaultClient
+	hc.Timeout = time.Duration(1) * time.Second
+	h, err := NewHistorical("c", WithHttpClient(hc))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(h).String() != "*openweathermap.HistoricalWeatherData" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := time.Duration(1) * time.Second
+	if h.client.Timeout != expected {
+		t.Errorf("Expected Duration %v, but got %v", expected, h.client.Timeout)
+	}
+}
+
+// TestNewHistoryWithInvalidHttpClient will verify that returns an error with
+// invalid http client
+func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
+
+	h, err := NewHistorical("c", WithHttpClient(nil))
+	if err != nil {
+		t.Logf("Received expected bad client error. message: %s", err.Error())
+	}
+	if h != nil {
+		t.Errorf("Expected nil, but got %v", h)
 	}
 }
 

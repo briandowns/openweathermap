@@ -15,8 +15,10 @@
 package openweathermap
 
 import (
+	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 var forecastRange = []int{3, 7, 10}
@@ -45,6 +47,40 @@ func TestNewForecast(t *testing.T) {
 	_, err := NewForecast("asdf", "en")
 	if err == nil {
 		t.Error("created instance when it shouldn't have")
+	}
+}
+
+// TestNewForecastWithCustomHttpClient will verify that a new instance of ForecastWeatherData
+// is created with custom http client
+func TestNewForecastWithCustomHttpClient(t *testing.T) {
+
+	hc := http.DefaultClient
+	hc.Timeout = time.Duration(1) * time.Second
+	f, err := NewForecast("c", "en", WithHttpClient(hc))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(f).String() != "*openweathermap.ForecastWeatherData" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := time.Duration(1) * time.Second
+	if f.client.Timeout != expected {
+		t.Errorf("Expected Duration %v, but got %v", expected, f.client.Timeout)
+	}
+}
+
+// TestNewForecastWithCustomHttpClient will verify that returns an error with
+// invalid http client
+func TestNewForecastWithInvalidHttpClient(t *testing.T) {
+
+	f, err := NewForecast("c", "en", WithHttpClient(nil))
+	if err != nil {
+		t.Logf("Received expected bad client error. message: %s", err.Error())
+	}
+	if f != nil {
+		t.Errorf("Expected nil, but got %v", f)
 	}
 }
 

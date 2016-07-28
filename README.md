@@ -166,11 +166,26 @@ func main() {
 }
 ```
 
+### Initiate with custom http client
+
+```Go
+func main() {
+    client = &http.Client{}
+    w, err := owm.NewCurrent("F", "EN", owm.WithHttpClient(client))
+    if err != nil {
+        log.Fatalln(err)
+    }
+}
+```
+
 ### Current UV conditions
 
 ```Go
 func main() {
-    uv := NewUV()
+    uv, err := NewUV()
+    if err != nil {
+        log.Fatalln(err)
+    }
 
     coord := &Coordinates{
         Longitude: 53.343497,
@@ -187,7 +202,10 @@ func main() {
 
 ```Go
 func main() {
-    uv := NewUV()
+    uv, err := NewUV()
+    if err != nil {
+        log.Fatalln(err)
+    }
 
     coord := &Coordinates{
         Longitude: 54.995656,
@@ -207,7 +225,10 @@ func main() {
 
 ```Go
 func main() {
-    uv := NewUV()
+    uv, err := NewUV()
+    if err != nil {
+        log.Fatalln(err)
+    }
 
     if err := uv.Current(coords); err != nil {
         t.Error(err)
@@ -224,11 +245,14 @@ func main() {
 
 ```Go
 func main() {
-    pollution := NewPollution()
+    pollution, err := NewPollution()
+    if err != nil {
+        log.Fatalln(err)
+    }
 
-	params := &PollutionParameters{
-    	Location: Coordinates{
-        	Latitude:  0.0,
+    params := &PollutionParameters{
+        Location: Coordinates{
+            Latitude:  0.0,
             Longitude: 10.0,
         },
         Datetime: "current",

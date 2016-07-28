@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
 	"time"
 )
 
@@ -26,16 +25,29 @@ type UV struct {
 	} `json:"data,omitempty"`*/
 	DT    int64   `json:"dt,omitempty"`
 	Value float64 `json:"value,omitempty"`
+	Key   string
+	*Settings
 }
 
 // NewUV creates a new reference to UV
-func NewUV() *UV {
-	return &UV{}
+func NewUV(options ...Option) (*UV, error) {
+	u := &UV{
+		Key:      getKey(),
+		Settings: NewSettings(),
+	}
+
+	for _, option := range options {
+		err := option(u.Settings)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return u, nil
 }
 
 // Current gets the current UV data for the given coordinates
 func (u *UV) Current(coord *Coordinates) error {
-	response, err := http.Get(fmt.Sprintf("%scurrent?lat=%f&lon=%f&appid=%s", uvURL, coord.Latitude, coord.Longitude, getKey()))
+	response, err := u.client.Get(fmt.Sprintf("%scurrent?lat=%f&lon=%f&appid=%s", uvURL, coord.Latitude, coord.Longitude, u.Key))
 	if err != nil {
 		return err
 	}
@@ -50,7 +62,7 @@ func (u *UV) Current(coord *Coordinates) error {
 
 // Historical gets the historical UV data for the coordinates and times
 func (u *UV) Historical(coord *Coordinates, start, end time.Time) error {
-	response, err := http.Get(fmt.Sprintf("%slist?lat=%f&lon=%f&from=%d&to=%d&appid=%s", uvURL, coord.Latitude, coord.Longitude, start, end, getKey()))
+	response, err := u.client.Get(fmt.Sprintf("%slist?lat=%f&lon=%f&from=%d&to=%d&appid=%s", uvURL, coord.Latitude, coord.Longitude, start, end, u.Key))
 	if err != nil {
 		return err
 	}

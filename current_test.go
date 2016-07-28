@@ -16,9 +16,11 @@ package openweathermap
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"reflect"
 	"testing"
+	"time"
 )
 
 // currentWeather holds the query and response
@@ -62,6 +64,40 @@ func TestNewCurrent(t *testing.T) {
 		} else {
 			t.Errorf("unusable data unit - %s", d)
 		}
+	}
+}
+
+// TestNewCurrentWithCustomHttpClient will verify that a new instance of CurrentWeatherData
+// is created with custom http client
+func TestNewCurrentWithCustomHttpClient(t *testing.T) {
+
+	hc := http.DefaultClient
+	hc.Timeout = time.Duration(1) * time.Second
+	c, err := NewCurrent("c", "en", WithHttpClient(hc))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := time.Duration(1) * time.Second
+	if c.client.Timeout != expected {
+		t.Errorf("Expected Duration %v, but got %v", expected, c.client.Timeout)
+	}
+}
+
+// TestNewCurrentWithInvalidHttpClient will verify that returns an error with
+// invalid http client
+func TestNewCurrentWithInvalidHttpClient(t *testing.T) {
+
+	c, err := NewCurrent("c", "en", WithHttpClient(nil))
+	if err != nil {
+		t.Logf("Received expected bad client error. message: %s", err.Error())
+	}
+	if c != nil {
+		t.Errorf("Expected nil, but got %v", c)
 	}
 }
 
