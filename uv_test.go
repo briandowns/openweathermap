@@ -45,13 +45,39 @@ func TestNewUVWithCustomHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewUVWithInvalidOptions will verify that returns an error with
+// invalid option
+func TestNewUVWithInvalidOptions(t *testing.T) {
+
+	optionsPattern := [][]Option{
+		{nil},
+		{nil, nil},
+		{WithHttpClient(&http.Client{}), nil},
+		{nil, WithHttpClient(&http.Client{})},
+	}
+
+	for _, options := range optionsPattern {
+		c, err := NewUV(options...)
+		if err == errInvalidOption {
+			t.Logf("Received expected invalid option error. message: %s", err.Error())
+		} else if err != nil {
+			t.Errorf("Expected %v, but got %v", errInvalidOption, err)
+		}
+		if c != nil {
+			t.Errorf("Expected nil, but got %v", c)
+		}
+	}
+}
+
 // TestNewUVWithInvalidHttpClient will verify that returns an error with
 // invalid http client
 func TestNewUVWithInvalidHttpClient(t *testing.T) {
 
 	uv, err := NewUV(WithHttpClient(nil))
-	if err != nil {
+	if err == errInvalidHttpClient {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
+	} else if err != nil {
+		t.Errorf("Expected %v, but got %v", errInvalidHttpClient, err)
 	}
 	if uv != nil {
 		t.Errorf("Expected nil, but got %v", uv)

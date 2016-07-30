@@ -53,3 +53,13 @@ func TestCheckAPIKeyExists(t *testing.T) {
 		t.Error("Key not set")
 	}
 }
+
+// TestSetOptionsWithEmpty tests setOptions function will do nothing
+// when options are empty.
+func TestSetOptionsWithEmpty(t *testing.T) {
+	s := NewSettings()
+	err := setOptions(s, nil)
+	if err != nil {
+		t.Error(err)
+	}
+}

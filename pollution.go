@@ -50,11 +50,8 @@ func NewPollution(options ...Option) (*Pollution, error) {
 		Settings: NewSettings(),
 	}
 
-	for _, option := range options {
-		err := option(p.Settings)
-		if err != nil {
-			return nil, err
-		}
+	if err := setOptions(p.Settings, options); err != nil {
+		return nil, err
 	}
 	return p, nil
 }

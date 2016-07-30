@@ -68,13 +68,39 @@ func TestNewHistoryWithCustomHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewHistoryWithInvalidOptions will verify that returns an error with
+// invalid option
+func TestNewHistoryWithInvalidOptions(t *testing.T) {
+
+	optionsPattern := [][]Option{
+		{nil},
+		{nil, nil},
+		{WithHttpClient(&http.Client{}), nil},
+		{nil, WithHttpClient(&http.Client{})},
+	}
+
+	for _, options := range optionsPattern {
+		c, err := NewHistorical("c", options...)
+		if err == errInvalidOption {
+			t.Logf("Received expected invalid option error. message: %s", err.Error())
+		} else if err != nil {
+			t.Errorf("Expected %v, but got %v", errInvalidOption, err)
+		}
+		if c != nil {
+			t.Errorf("Expected nil, but got %v", c)
+		}
+	}
+}
+
 // TestNewHistoryWithInvalidHttpClient will verify that returns an error with
 // invalid http client
 func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
 
 	h, err := NewHistorical("c", WithHttpClient(nil))
-	if err != nil {
+	if err == errInvalidHttpClient {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
+	} else if err != nil {
+		t.Errorf("Expected %v, but got %v", errInvalidHttpClient, err)
 	}
 	if h != nil {
 		t.Errorf("Expected nil, but got %v", h)
