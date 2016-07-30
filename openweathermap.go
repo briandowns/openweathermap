@@ -16,7 +16,6 @@ package openweathermap
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -25,6 +24,8 @@ import (
 var errUnitUnavailable = errors.New("unit unavailable")
 var errLangUnavailable = errors.New("language unavailable")
 var errInvalidKey = errors.New("invalid api key")
+var errInvalidOption = errors.New("invalid option")
+var errInvalidHttpClient = errors.New("invalid http client")
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
@@ -210,9 +211,23 @@ type Option func(s *Settings) error
 func WithHttpClient(c *http.Client) Option {
 	return func(s *Settings) error {
 		if c == nil {
-			return fmt.Errorf("invalid http client.")
+			return errInvalidHttpClient
 		}
 		s.client = c
 		return nil
 	}
+}
+
+// setOptions sets Optional client settings to the Settings pointer
+func setOptions(settings *Settings, options []Option) error {
+	for _, option := range options {
+		if option == nil {
+			return errInvalidOption
+		}
+		err := option(settings)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

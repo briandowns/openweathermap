@@ -36,11 +36,8 @@ func NewUV(options ...Option) (*UV, error) {
 		Settings: NewSettings(),
 	}
 
-	for _, option := range options {
-		err := option(u.Settings)
-		if err != nil {
-			return nil, err
-		}
+	if err := setOptions(u.Settings, options); err != nil {
+		return nil, err
 	}
 	return u, nil
 }

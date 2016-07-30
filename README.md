@@ -166,11 +166,11 @@ func main() {
 }
 ```
 
-### Initiate with custom http client
+### Configure http client
 
 ```Go
 func main() {
-    client = &http.Client{}
+    client := &http.Client{}
     w, err := owm.NewCurrent("F", "EN", owm.WithHttpClient(client))
     if err != nil {
         log.Fatalln(err)

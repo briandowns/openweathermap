@@ -74,11 +74,8 @@ func NewHistorical(unit string, options ...Option) (*HistoricalWeatherData, erro
 
 	h.Key = getKey()
 
-	for _, option := range options {
-		err := option(h.Settings)
-		if err != nil {
-			return nil, err
-		}
+	if err := setOptions(h.Settings, options); err != nil {
+		return nil, err
 	}
 	return h, nil
 }

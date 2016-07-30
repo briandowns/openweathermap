@@ -98,11 +98,8 @@ func NewForecast(unit, lang string, options ...Option) (*ForecastWeatherData, er
 
 	f.Key = getKey()
 
-	for _, option := range options {
-		err := option(f.Settings)
-		if err != nil {
-			return nil, err
-		}
+	if err := setOptions(f.Settings, options); err != nil {
+		return nil, err
 	}
 	return f, nil
 }
