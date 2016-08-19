@@ -159,3 +159,53 @@ func TestDailyByID(t *testing.T) {
 		f.DailyByID(524901, d)
 	}
 }
+
+// TestForecastByName will verify that a daily forecast can be retrieved for
+// a given named location
+func TestForecastByName(t *testing.T) {
+	t.Parallel()
+
+	f, err := NewForecast("c", "fr")
+	if err != nil {
+		t.Error(err)
+	}
+
+	for _, d := range forecastRange {
+		f.ForecastByName("Lille", d)
+	}
+}
+
+// TestForecastByCooridinates will verify that a daily forecast can be retrieved
+// for a given set of coordinates
+func TestForecastByCoordinates(t *testing.T) {
+	t.Parallel()
+
+	f, err := NewForecast("f", "PL")
+	if err != nil {
+		t.Error(err)
+	}
+
+	for _, d := range forecastRange {
+		f.ForecastByCoordinates(
+			&Coordinates{
+				Longitude: -112.07,
+				Latitude:  33.45,
+			}, d,
+		)
+	}
+}
+
+// TestForecastByID will verify that a daily forecast can be retrieved for a
+// given location ID
+func TestForecastByID(t *testing.T) {
+	t.Parallel()
+
+	f, err := NewForecast("c", "fr")
+	if err != nil {
+		t.Error(err)
+	}
+
+	for _, d := range forecastRange {
+		f.ForecastByID(524901, d)
+	}
+}

@@ -104,7 +104,55 @@ func NewForecast(unit, lang string, options ...Option) (*ForecastWeatherData, er
 	return f, nil
 }
 
-// DailyByName will provide a forecast for the location given for the
+// ForecastByName will provide a forecast for the location given for the
+// number of days given.
+func (f *ForecastWeatherData) ForecastByName(location string, days int) error {
+	response, err := f.client.Get(fmt.Sprintf(forecastURL, f.Key, fmt.Sprintf("%s=%s", "q", url.QueryEscape(location)), f.Unit, f.Lang, days))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ForecastByCoordinates will provide a forecast for the coordinates ID give
+// for the number of days given.
+func (f *ForecastWeatherData) ForecastByCoordinates(location *Coordinates, days int) error {
+	response, err := f.client.Get(fmt.Sprintf(forecastURL, f.Key, fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude), f.Unit, f.Lang, days))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ForecastByID will provide a forecast for the location ID give for the
+// number of days given.
+func (f *ForecastWeatherData) ForecastByID(id, days int) error {
+	response, err := f.client.Get(fmt.Sprintf(forecastURL, f.Key, fmt.Sprintf("%s=%s", "id", strconv.Itoa(id)), f.Unit, f.Lang, days))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	if err = json.NewDecoder(response.Body).Decode(&f); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DailyByName will provide a daily forecast for the location given for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 	response, err := f.client.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s", "q", url.QueryEscape(location)), f.Unit, f.Lang, days))
@@ -120,7 +168,7 @@ func (f *ForecastWeatherData) DailyByName(location string, days int) error {
 	return nil
 }
 
-// DailyByCoordinates will provide a forecast for the coordinates ID give
+// DailyByCoordinates will provide a daily forecast for the coordinates ID give
 // for the number of days given.
 func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
 	response, err := f.client.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude), f.Unit, f.Lang, days))
@@ -136,7 +184,7 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 	return nil
 }
 
-// DailyByID will provide a forecast for the location ID give for the
+// DailyByID will provide a daily forecast for the location ID give for the
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) error {
 	response, err := f.client.Get(fmt.Sprintf(forecastBase, f.Key, fmt.Sprintf("%s=%s", "id", strconv.Itoa(id)), f.Unit, f.Lang, days))

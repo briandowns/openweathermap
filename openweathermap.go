@@ -34,6 +34,7 @@ var (
 	iconURL      = "http://openweathermap.org/img/w/%s"
 	stationURL   = "http://api.openweathermap.org/data/2.5/station?id=%d"
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+	forecastURL  = "http://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
 	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
 	pollutionURL = "http://api.openweathermap.org/pollution/v1/co/"
 	uvURL        = "http://api.owm.io/air/1.0/uvi/"
