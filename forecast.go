@@ -76,7 +76,7 @@ type ForecastWeatherData struct {
 
 // NewForecast returns a new HistoricalWeatherData pointer with
 // the supplied arguments.
-func NewForecast(unit, lang string, options ...Option) (*ForecastWeatherData, error) {
+func NewForecast(unit, lang, key string, options ...Option) (*ForecastWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
 
@@ -96,7 +96,7 @@ func NewForecast(unit, lang string, options ...Option) (*ForecastWeatherData, er
 		return nil, errLangUnavailable
 	}
 
-	f.Key = getKey()
+	f.Key = setKey(key)
 
 	if err := setOptions(f.Settings, options); err != nil {
 		return nil, err

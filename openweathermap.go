@@ -18,7 +18,6 @@ import (
 	"errors"
 	"log"
 	"net/http"
-	"os"
 )
 
 var errUnitUnavailable = errors.New("unit unavailable")
@@ -134,13 +133,19 @@ type Clouds struct {
 	All int `json:"all"`
 }
 
-func getKey() string {
-	key := os.Getenv("OWM_API_KEY")
+// func getKey() string {
+// 	key := os.Getenv("OWM_API_KEY")
 
+// 	if !ValidAPIKey(key) {
+// 		log.Fatalln(errInvalidKey)
+// 	}
+
+// 	return key
+// }
+func setKey(key string) string {
 	if !ValidAPIKey(key) {
 		log.Fatalln(errInvalidKey)
 	}
-
 	return key
 }
 

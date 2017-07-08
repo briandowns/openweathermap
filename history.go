@@ -61,7 +61,7 @@ type HistoricalWeatherData struct {
 
 // NewHistorical returns a new HistoricalWeatherData pointer with
 //the supplied arguments.
-func NewHistorical(unit string, options ...Option) (*HistoricalWeatherData, error) {
+func NewHistorical(unit, key string, options ...Option) (*HistoricalWeatherData, error) {
 	h := &HistoricalWeatherData{
 		Settings: NewSettings(),
 	}
@@ -72,7 +72,7 @@ func NewHistorical(unit string, options ...Option) (*HistoricalWeatherData, erro
 	}
 	h.Unit = DataUnits[unitChoice]
 
-	h.Key = getKey()
+	h.Key = setKey(key)
 
 	if err := setOptions(h.Settings, options); err != nil {
 		return nil, err

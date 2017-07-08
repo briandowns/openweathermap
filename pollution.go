@@ -44,9 +44,9 @@ type Pollution struct {
 }
 
 // NewPollution creates a new reference to Pollution
-func NewPollution(options ...Option) (*Pollution, error) {
+func NewPollution(key string, options ...Option) (*Pollution, error) {
 	p := &Pollution{
-		Key:      getKey(),
+		Key:      setKey(key),
 		Settings: NewSettings(),
 	}
 

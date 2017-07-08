@@ -30,9 +30,9 @@ type UV struct {
 }
 
 // NewUV creates a new reference to UV
-func NewUV(options ...Option) (*UV, error) {
+func NewUV(key string, options ...Option) (*UV, error) {
 	u := &UV{
-		Key:      getKey(),
+		Key:      setKey(key),
 		Settings: NewSettings(),
 	}
 
