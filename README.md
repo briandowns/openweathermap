@@ -51,7 +51,7 @@ Gain access to OpenWeatherMap icons and condition codes.
 ### Data Available in Multiple Measurement Systems
 
 - Fahrenheit (OpenWeatherMap API - imperial)
-- Celcius (OpenWeatherMap API - metric)
+- Celsius (OpenWeatherMap API - metric)
 - Kelvin (OpenWeatherMap API - internal)
 
 ### UV Index Data
@@ -198,7 +198,7 @@ func main() {
 }
 ```
 
-### (Not working yet...  OpenweatherMap Working out bugs) Historical UV conditions
+### Historical UV conditions
 
 ```Go
 func main() {

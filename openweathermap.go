@@ -36,7 +36,7 @@ var (
 	forecastBase = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
 	historyURL   = "http://api.openweathermap.org/data/2.5/history/%s"
 	pollutionURL = "http://api.openweathermap.org/pollution/v1/co/"
-	uvURL        = "http://api.owm.io/air/1.0/uvi/"
+	uvURL        = "http://api.openweathermap.org/data/2.5/"
 	dataPostURL  = "http://openweathermap.org/data/post"
 )
 
