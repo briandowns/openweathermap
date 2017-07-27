@@ -198,7 +198,7 @@ func main() {
 }
 ```
 
-### (Not working yet...  OpenweatherMap Working out bugs) Historical UV conditions
+### Historical UV conditions
 
 ```Go
 func main() {

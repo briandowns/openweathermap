@@ -44,7 +44,7 @@ func NewUV(options ...Option) (*UV, error) {
 
 // Current gets the current UV data for the given coordinates
 func (u *UV) Current(coord *Coordinates) error {
-	response, err := u.client.Get(fmt.Sprintf("%scurrent?lat=%f&lon=%f&appid=%s", uvURL, coord.Latitude, coord.Longitude, u.Key))
+	response, err := u.client.Get(fmt.Sprintf("%suvi?lat=%f&lon=%f&appid=%s", uvURL, coord.Latitude, coord.Longitude, u.Key))
 	if err != nil {
 		return err
 	}
@@ -59,7 +59,7 @@ func (u *UV) Current(coord *Coordinates) error {
 
 // Historical gets the historical UV data for the coordinates and times
 func (u *UV) Historical(coord *Coordinates, start, end time.Time) error {
-	response, err := u.client.Get(fmt.Sprintf("%slist?lat=%f&lon=%f&from=%d&to=%d&appid=%s", uvURL, coord.Latitude, coord.Longitude, start, end, u.Key))
+	response, err := u.client.Get(fmt.Sprintf("%shistory?lat=%f&lon=%f&start=%d&end=%d&appid=%s", uvURL, coord.Latitude, coord.Longitude, start.Unix(), end.Unix(), u.Key))
 	if err != nil {
 		return err
 	}
