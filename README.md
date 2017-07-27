@@ -51,7 +51,7 @@ Gain access to OpenWeatherMap icons and condition codes.
 ### Data Available in Multiple Measurement Systems
 
 - Fahrenheit (OpenWeatherMap API - imperial)
-- Celcius (OpenWeatherMap API - metric)
+- Celsius (OpenWeatherMap API - metric)
 - Kelvin (OpenWeatherMap API - internal)
 
 ### UV Index Data
