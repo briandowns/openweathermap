@@ -63,8 +63,8 @@ type ForecastWeatherList struct {
 
 // ForecastWeatherData will hold returned data from queries
 type ForecastWeatherData struct {
-	COD     string                `json:"cod"`
-	Message float64               `json:"message"`
+	COD     int                   `json:"cod"`
+	Message string                `json:"message"`
 	City    City                  `json:"city"`
 	Cnt     int                   `json:"cnt"`
 	List    []ForecastWeatherList `json:"list"`
