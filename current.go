@@ -44,7 +44,7 @@ type CurrentWeatherData struct {
 }
 
 // NewCurrent returns a new CurrentWeatherData pointer with the supplied parameters
-func NewCurrent(unit, lang string, options ...Option) (*CurrentWeatherData, error) {
+func NewCurrent(unit, lang, key string, options ...Option) (*CurrentWeatherData, error) {
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
 
@@ -64,7 +64,7 @@ func NewCurrent(unit, lang string, options ...Option) (*CurrentWeatherData, erro
 		return nil, errLangUnavailable
 	}
 
-	c.Key = getKey()
+	c.Key = setKey(key)
 
 	if err := setOptions(c.Settings, options); err != nil {
 		return nil, err
