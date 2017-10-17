@@ -121,7 +121,10 @@ func TestDailyByName(t *testing.T) {
 	}
 
 	for _, d := range forecastRange {
-		f.DailyByName("Dubai", d)
+		err = f.DailyByName("Dubai", d)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
 
@@ -136,12 +139,15 @@ func TestDailyByCoordinates(t *testing.T) {
 	}
 
 	for _, d := range forecastRange {
-		f.DailyByCoordinates(
+		err = f.DailyByCoordinates(
 			&Coordinates{
 				Longitude: -112.07,
 				Latitude:  33.45,
 			}, d,
 		)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
 
@@ -156,6 +162,9 @@ func TestDailyByID(t *testing.T) {
 	}
 
 	for _, d := range forecastRange {
-		f.DailyByID(524901, d)
+		err = f.DailyByID(524901, d)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
