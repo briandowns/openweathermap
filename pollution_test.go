@@ -2,6 +2,7 @@ package openweathermap
 
 import (
 	"net/http"
+	"os"
 	"reflect"
 	"testing"
 	"time"
@@ -10,7 +11,7 @@ import (
 // TestNewPollution
 func TestNewPollution(t *testing.T) {
 
-	p, err := NewPollution()
+	p, err := NewPollution(os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -25,7 +26,7 @@ func TestNewPollutionWithCustomHttpClient(t *testing.T) {
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
-	p, err := NewPollution(WithHttpClient(hc))
+	p, err := NewPollution(os.Getenv("OWM_API_KEY"), WithHttpClient(hc))
 	if err != nil {
 		t.Error(err)
 	}
@@ -52,7 +53,7 @@ func TestNewPollutionWithInvalidOptions(t *testing.T) {
 	}
 
 	for _, options := range optionsPattern {
-		c, err := NewPollution(options...)
+		c, err := NewPollution(os.Getenv("OWM_API_KEY"), options...)
 		if err == errInvalidOption {
 			t.Logf("Received expected invalid option error. message: %s", err.Error())
 		} else if err != nil {
@@ -68,7 +69,7 @@ func TestNewPollutionWithInvalidOptions(t *testing.T) {
 // invalid http client
 func TestNewPollutionWithInvalidHttpClient(t *testing.T) {
 
-	p, err := NewPollution(WithHttpClient(nil))
+	p, err := NewPollution(os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	} else if err != nil {
@@ -92,7 +93,7 @@ func TestValidAlias(t *testing.T) {
 // TestPollutionByParams tests the call to the pollution API
 func TestPollutionByParams(t *testing.T) {
 	t.Parallel()
-	p, err := NewPollution()
+	p, err := NewPollution(os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}

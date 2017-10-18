@@ -16,6 +16,7 @@ package openweathermap
 
 import (
 	"net/http"
+	"os"
 	"reflect"
 	"testing"
 	"time"
@@ -31,7 +32,7 @@ func TestNewForecast(t *testing.T) {
 		t.Logf("Data unit: %s", d)
 
 		if ValidDataUnit(d) {
-			c, err := NewForecast(d, "ru")
+			c, err := NewForecast(d, "ru", os.Getenv("OWM_API_KEY"))
 			if err != nil {
 				t.Error(err)
 			}
@@ -44,7 +45,7 @@ func TestNewForecast(t *testing.T) {
 		}
 	}
 
-	_, err := NewForecast("asdf", "en")
+	_, err := NewForecast("asdf", "en", os.Getenv("OWM_API_KEY"))
 	if err == nil {
 		t.Error("created instance when it shouldn't have")
 	}
@@ -56,7 +57,7 @@ func TestNewForecastWithCustomHttpClient(t *testing.T) {
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
-	f, err := NewForecast("c", "en", WithHttpClient(hc))
+	f, err := NewForecast("c", "en", os.Getenv("OWM_API_KEY"), WithHttpClient(hc))
 	if err != nil {
 		t.Error(err)
 	}
@@ -83,7 +84,7 @@ func TestNewForecastWithInvalidOptions(t *testing.T) {
 	}
 
 	for _, options := range optionsPattern {
-		c, err := NewForecast("c", "en", options...)
+		c, err := NewForecast("c", "en", os.Getenv("OWM_API_KEY"), options...)
 		if err == errInvalidOption {
 			t.Logf("Received expected invalid option error. message: %s", err.Error())
 		} else if err != nil {
@@ -99,7 +100,7 @@ func TestNewForecastWithInvalidOptions(t *testing.T) {
 // invalid http client
 func TestNewForecastWithInvalidHttpClient(t *testing.T) {
 
-	f, err := NewForecast("c", "en", WithHttpClient(nil))
+	f, err := NewForecast("c", "en", os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	} else if err != nil {
@@ -115,7 +116,7 @@ func TestNewForecastWithInvalidHttpClient(t *testing.T) {
 func TestDailyByName(t *testing.T) {
 	t.Parallel()
 
-	f, err := NewForecast("f", "fi")
+	f, err := NewForecast("f", "fi", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -133,7 +134,7 @@ func TestDailyByName(t *testing.T) {
 func TestDailyByCoordinates(t *testing.T) {
 	t.Parallel()
 
-	f, err := NewForecast("f", "PL")
+	f, err := NewForecast("f", "PL", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -156,7 +157,7 @@ func TestDailyByCoordinates(t *testing.T) {
 func TestDailyByID(t *testing.T) {
 	t.Parallel()
 
-	f, err := NewForecast("c", "fr")
+	f, err := NewForecast("c", "fr", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}

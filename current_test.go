@@ -48,12 +48,12 @@ func TestNewCurrent(t *testing.T) {
 		t.Logf("Data unit: %s", d)
 
 		if ValidDataUnit(d) {
-			c, err := NewCurrent(d, "en")
+			c, err := NewCurrent(d, "en", os.Getenv("OWM_API_KEY"))
 			if err != nil {
 				t.Error(err)
 			}
 
-			_, err = NewCurrent(d, "blah")
+			_, err = NewCurrent(d, "blah", os.Getenv("OWM_API_KEY"))
 			if err != nil {
 				t.Log("received expected bad language code error")
 			}
@@ -73,7 +73,7 @@ func TestNewCurrentWithCustomHttpClient(t *testing.T) {
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
-	c, err := NewCurrent("c", "en", WithHttpClient(hc))
+	c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"), WithHttpClient(hc))
 	if err != nil {
 		t.Error(err)
 	}
@@ -100,7 +100,7 @@ func TestNewCurrentWithInvalidOptions(t *testing.T) {
 	}
 
 	for _, options := range optionsPattern {
-		c, err := NewCurrent("c", "en", options...)
+		c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"), options...)
 		if err == errInvalidOption {
 			t.Logf("Received expected invalid option error. message: %s", err.Error())
 		} else if err != nil {
@@ -116,7 +116,7 @@ func TestNewCurrentWithInvalidOptions(t *testing.T) {
 // invalid http client
 func TestNewCurrentWithInvalidHttpClient(t *testing.T) {
 
-	c, err := NewCurrent("c", "en", WithHttpClient(nil))
+	c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	} else if err != nil {
@@ -177,7 +177,7 @@ func TestCurrentByName(t *testing.T) {
 
 	testBadCities := []string{"nowhere_", "somewhere_over_the_"}
 
-	c, err := NewCurrent("f", "ru")
+	c, err := NewCurrent("f", "ru", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -209,7 +209,7 @@ func TestCurrentByName(t *testing.T) {
 // given set of coordinates
 func TestCurrentByCoordinates(t *testing.T) {
 	t.Parallel()
-	c, err := NewCurrent("f", "DE")
+	c, err := NewCurrent("f", "DE", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
@@ -225,7 +225,7 @@ func TestCurrentByCoordinates(t *testing.T) {
 // location id
 func TestCurrentByID(t *testing.T) {
 	t.Parallel()
-	c, err := NewCurrent("c", "ZH")
+	c, err := NewCurrent("c", "ZH", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error("Error creating instance of CurrentWeatherData")
 	}
@@ -233,7 +233,7 @@ func TestCurrentByID(t *testing.T) {
 }
 
 func TestCurrentByZip(t *testing.T) {
-	w, err := NewCurrent("F", "EN")
+	w, err := NewCurrent("F", "EN", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		log.Fatalln(err)
 	}
