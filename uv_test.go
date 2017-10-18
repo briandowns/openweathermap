@@ -2,6 +2,7 @@ package openweathermap
 
 import (
 	"net/http"
+	"os"
 	"reflect"
 	"testing"
 	"time"
@@ -15,7 +16,7 @@ var coords = &Coordinates{
 // TestNewUV
 func TestNewUV(t *testing.T) {
 
-	uv, err := NewUV()
+	uv, err := NewUV(os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -30,7 +31,7 @@ func TestNewUVWithCustomHttpClient(t *testing.T) {
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
-	uv, err := NewUV(WithHttpClient(hc))
+	uv, err := NewUV(os.Getenv("OWM_API_KEY"), WithHttpClient(hc))
 	if err != nil {
 		t.Error(err)
 	}
@@ -57,7 +58,7 @@ func TestNewUVWithInvalidOptions(t *testing.T) {
 	}
 
 	for _, options := range optionsPattern {
-		c, err := NewUV(options...)
+		c, err := NewUV(os.Getenv("OWM_API_KEY"), options...)
 		if err == errInvalidOption {
 			t.Logf("Received expected invalid option error. message: %s", err.Error())
 		} else if err != nil {
@@ -73,7 +74,7 @@ func TestNewUVWithInvalidOptions(t *testing.T) {
 // invalid http client
 func TestNewUVWithInvalidHttpClient(t *testing.T) {
 
-	uv, err := NewUV(WithHttpClient(nil))
+	uv, err := NewUV(os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	} else if err != nil {
@@ -88,7 +89,7 @@ func TestNewUVWithInvalidHttpClient(t *testing.T) {
 func TestCurrentUV(t *testing.T) {
 	t.Parallel()
 
-	uv, err := NewUV()
+	uv, err := NewUV(os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -106,7 +107,7 @@ func TestCurrentUV(t *testing.T) {
 func TestHistoricalUV(t *testing.T) {
 	t.Parallel()
 
-	/*	uv := NewUV()
+	/*	uv := NewUV(os.Getenv("OWM_API_KEY"))
 
 		end := time.Now().UTC()
 		start := time.Now().UTC().Add(-time.Hour * time.Duration(24))
@@ -123,7 +124,7 @@ func TestHistoricalUV(t *testing.T) {
 func TestUVInformation(t *testing.T) {
 	t.Parallel()
 
-	uv, err := NewUV()
+	uv, err := NewUV(os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}

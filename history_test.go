@@ -16,6 +16,7 @@ package openweathermap
 
 import (
 	"net/http"
+	"os"
 	"reflect"
 	"testing"
 	"time"
@@ -29,7 +30,7 @@ func TestNewHistory(t *testing.T) {
 		t.Logf("Data unit: %s", d)
 
 		if ValidDataUnit(d) {
-			c, err := NewHistorical(d)
+			c, err := NewHistorical(d, os.Getenv("OWM_API_KEY"))
 			if err != nil {
 				t.Error(err)
 			}
@@ -41,7 +42,7 @@ func TestNewHistory(t *testing.T) {
 		}
 	}
 
-	_, err := NewHistorical("asdf")
+	_, err := NewHistorical("asdf", os.Getenv("OWM_API_KEY"))
 	if err == nil {
 		t.Error("created instance when it shouldn't have")
 	}
@@ -53,7 +54,7 @@ func TestNewHistoryWithCustomHttpClient(t *testing.T) {
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
-	h, err := NewHistorical("c", WithHttpClient(hc))
+	h, err := NewHistorical("c", os.Getenv("OWM_API_KEY"), WithHttpClient(hc))
 	if err != nil {
 		t.Error(err)
 	}
@@ -80,7 +81,7 @@ func TestNewHistoryWithInvalidOptions(t *testing.T) {
 	}
 
 	for _, options := range optionsPattern {
-		c, err := NewHistorical("c", options...)
+		c, err := NewHistorical("c", os.Getenv("OWM_API_KEY"), options...)
 		if err == errInvalidOption {
 			t.Logf("Received expected invalid option error. message: %s", err.Error())
 		} else if err != nil {
@@ -96,7 +97,7 @@ func TestNewHistoryWithInvalidOptions(t *testing.T) {
 // invalid http client
 func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
 
-	h, err := NewHistorical("c", WithHttpClient(nil))
+	h, err := NewHistorical("c", os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	} else if err != nil {
@@ -110,7 +111,7 @@ func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
 // TestHistoryByName
 func TestHistoryByName(t *testing.T) {
 	t.Parallel()
-	h, err := NewHistorical("F")
+	h, err := NewHistorical("F", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -122,7 +123,7 @@ func TestHistoryByName(t *testing.T) {
 // TestHistoryByID
 func TestHistoryByID(t *testing.T) {
 	t.Parallel()
-	h, err := NewHistorical("F")
+	h, err := NewHistorical("F", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -139,7 +140,7 @@ func TestHistoryByID(t *testing.T) {
 // TestHistoryByCoord
 func TestHistoryByCoord(t *testing.T) {
 	t.Parallel()
-	h, err := NewHistorical("F")
+	h, err := NewHistorical("F", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)
 	}
