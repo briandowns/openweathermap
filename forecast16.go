@@ -26,7 +26,6 @@ type Forecast16WeatherData struct {
 	City    City                    `json:"city"`
 	Cnt     int                     `json:"cnt"`
 	List    []Forecast16WeatherList `json:"list"`
-	// ForecastWeatherData
 }
 
 func (f *Forecast16WeatherData) Decode(r io.Reader) error {
