@@ -31,7 +31,12 @@ type HistoricalParameters struct {
 
 // Rain struct contains 3 hour data
 type Rain struct {
-	ThreeH int `json:"3h"`
+	ThreeH float64 `json:"3h"`
+}
+
+// Snow struct contains 3 hour data
+type Snow struct {
+	ThreeH float64 `json:"3h"`
 }
 
 // WeatherHistory struct contains aggregate fields from the above
