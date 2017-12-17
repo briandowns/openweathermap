@@ -11,12 +11,12 @@ package main
 import (
 	"encoding/json"
 	"html/template"
-	"os"
 
 	owm "github.com/briandowns/openweathermap"
 	//	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 // URL is a constant that contains where to find the IP locale info
