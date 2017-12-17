@@ -16,6 +16,7 @@ import (
 	//	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 // URL is a constant that contains where to find the IP locale info
@@ -59,7 +60,7 @@ func getLocation() (*Data, error) {
 // getCurrent gets the current weather for the provided location in
 // the units provided.
 func getCurrent(l, u, lang string) *owm.CurrentWeatherData {
-	w, err := owm.NewCurrent(u, lang) // Create the instance with the given unit
+	w, err := owm.NewCurrent(u, lang, os.Getenv("OWM_API_KEY")) // Create the instance with the given unit
 	if err != nil {
 		log.Fatal(err)
 	}
