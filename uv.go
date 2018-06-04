@@ -31,8 +31,12 @@ type UV struct {
 
 // NewUV creates a new reference to UV
 func NewUV(key string, options ...Option) (*UV, error) {
+	k, err := setKey(key)
+	if err != nil {
+		return nil, err
+	}
 	u := &UV{
-		Key:      setKey(key),
+		Key:      k,
 		Settings: NewSettings(),
 	}
 

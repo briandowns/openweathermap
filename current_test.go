@@ -15,7 +15,6 @@
 package openweathermap
 
 import (
-	"log"
 	"net/http"
 	"os"
 	"reflect"
@@ -187,7 +186,7 @@ func TestCurrentByName(t *testing.T) {
 
 		if os.Getenv("RTCP_HOST") != "" {
 			if c.ID != city.weather.ID {
-				t.Errorf("Excpect CityID %ld, got %ld", city.weather.ID, c.ID)
+				t.Errorf("Excpect CityID %d, got %d", city.weather.ID, c.ID)
 			}
 			if c.Name != city.weather.Name {
 				t.Errorf("Excpect City %s, got %s", city.weather.Name, c.Name)
@@ -235,7 +234,7 @@ func TestCurrentByID(t *testing.T) {
 func TestCurrentByZip(t *testing.T) {
 	w, err := NewCurrent("F", "EN", os.Getenv("OWM_API_KEY"))
 	if err != nil {
-		log.Fatalln(err)
+		t.Error(err)
 	}
 
 	if err := w.CurrentByZip(19125, "US"); err != nil {

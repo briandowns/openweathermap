@@ -77,7 +77,11 @@ func NewHistorical(unit, key string, options ...Option) (*HistoricalWeatherData,
 	}
 	h.Unit = DataUnits[unitChoice]
 
-	h.Key = setKey(key)
+	var err error
+	h.Key, err = setKey(key)
+	if err != nil {
+		return nil, err
+	}
 
 	if err := setOptions(h.Settings, options); err != nil {
 		return nil, err

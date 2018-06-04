@@ -10,11 +10,12 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 
 	owm "github.com/briandowns/openweathermap"
 	//	"io/ioutil"
-	"log"
+
 	"net/http"
 	"os"
 )
@@ -47,7 +48,7 @@ type Data struct {
 func getLocation() (*Data, error) {
 	response, err := http.Get(URL)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer response.Body.Close()
 	r := &Data{}
@@ -59,27 +60,32 @@ func getLocation() (*Data, error) {
 
 // getCurrent gets the current weather for the provided location in
 // the units provided.
-func getCurrent(l, u, lang string) *owm.CurrentWeatherData {
+func getCurrent(l, u, lang string) (*owm.CurrentWeatherData, error) {
 	w, err := owm.NewCurrent(u, lang, os.Getenv("OWM_API_KEY")) // Create the instance with the given unit
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	w.CurrentByName(l) // Get the actual data for the given location
-	return w
+	return w, nil
 }
 
 // hereHandler will take are of requests coming in for the "/here" route.
 func hereHandler(w http.ResponseWriter, r *http.Request) {
 	location, err := getLocation()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprint(w, http.StatusInternalServerError)
+		return
 	}
-	wd := getCurrent(location.City, "F", "en")
-
+	wd, err := getCurrent(location.City, "F", "en")
+	if err != nil {
+		fmt.Fprint(w, http.StatusInternalServerError)
+		return
+	}
 	// Process our template
 	t, err := template.ParseFiles("templates/here.html")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprint(w, http.StatusInternalServerError)
+		return
 	}
 	// We're doin' naughty things below... Ignoring icon file size and possible errors.
 	_, _ = owm.RetrieveIcon("static/img", wd.Weather[0].Icon+".png")

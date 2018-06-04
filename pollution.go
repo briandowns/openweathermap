@@ -45,8 +45,12 @@ type Pollution struct {
 
 // NewPollution creates a new reference to Pollution
 func NewPollution(key string, options ...Option) (*Pollution, error) {
+	k, err := setKey(key)
+	if err != nil {
+		return nil, err
+	}
 	p := &Pollution{
-		Key:      setKey(key),
+		Key:      k,
 		Settings: NewSettings(),
 	}
 
