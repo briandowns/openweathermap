@@ -90,7 +90,7 @@ import (
     "log"
     "fmt"
 
-	// Shortening the import reference name seems to make it a bit easier
+    // Shortening the import reference name seems to make it a bit easier
     owm "github.com/briandowns/openweathermap"
 )
 
@@ -129,10 +129,10 @@ func main() {
     }
 
     w.DailyByCoordinates(
-    		&Coordinates{
-    			Longitude: -112.07,
-    			Latitude: 33.45,
-    		},
+        &Coordinates{
+                Longitude: -112.07,
+                Latitude: 33.45,
+        },
     )
     fmt.Println(w)
 }
@@ -156,13 +156,13 @@ func main() {
 
 ```Go
 func main() {
-	w, err := owm.NewCurrent("F", "EN")
-	if err != nil {
-		log.Fatalln(err)
-	}
+    w, err := owm.NewCurrent("F", "EN")
+    if err != nil {
+        log.Fatalln(err)
+    }
 
-	w.CurrentByZip(19125, "US")
-	fmt.Println(w)
+    w.CurrentByZip(19125, "US")
+    fmt.Println(w)
 }
 ```
 
@@ -221,7 +221,7 @@ func main() {
 }
 ```
 
-### UV Information 
+### UV Information
 
 ```Go
 func main() {
@@ -259,7 +259,7 @@ func main() {
     }
 
     if err := pollution.PollutionByParams(params); err != nil {
-        log.Fatalln(err)    
+        log.Fatalln(err)
     }
 }
 ```

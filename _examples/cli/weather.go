@@ -81,35 +81,34 @@ type Data struct {
 
 // getLocation will get the location details for where this
 // application has been run from.
-func getLocation() *Data {
+func getLocation() (*Data, error) {
 	response, err := http.Get(URL)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	defer response.Body.Close()
 
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 
 	r := &Data{}
-	err = json.Unmarshal(result, &r)
-	if err != nil {
-		log.Fatalln(err)
+	if err = json.Unmarshal(result, &r); err != nil {
+		return nil, err
 	}
-	return r
+	return r, nil
 }
 
 // getCurrent gets the current weather for the provided
 // location in the units provided.
-func getCurrent(l, u, lang string) *owm.CurrentWeatherData {
+func getCurrent(l, u, lang string) (*owm.CurrentWeatherData, error) {
 	w, err := owm.NewCurrent(u, lang, os.Getenv("OWM_API_KEY"))
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	w.CurrentByName(l)
-	return w
+	return w, nil
 }
 
 func main() {
@@ -123,7 +122,14 @@ func main() {
 
 	// Process request for location of "here"
 	if strings.ToLower(*whereFlag) == "here" {
-		w := getCurrent(getLocation().City, *unitFlag, *langFlag)
+		loc, err := getLocation()
+		if err != nil {
+			log.Fatalln(err)
+		}
+		w, err := getCurrent(loc.City, *unitFlag, *langFlag)
+		if err != nil {
+			log.Fatalln(err)
+		}
 		tmpl, err := template.New("weather").Parse(weatherTemplate)
 		if err != nil {
 			log.Fatalln(err)
@@ -138,15 +144,17 @@ func main() {
 	}
 
 	// Process request for the given location
-	w := getCurrent(*whereFlag, *unitFlag, *langFlag)
+	w, err := getCurrent(*whereFlag, *unitFlag, *langFlag)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	tmpl, err := template.New("weather").Parse(weatherTemplate)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	// Render the template and display
-	err = tmpl.Execute(os.Stdout, w)
-	if err != nil {
+	if err = tmpl.Execute(os.Stdout, w); err != nil {
 		log.Fatalln(err)
 	}
 	os.Exit(0)

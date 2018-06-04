@@ -16,7 +16,6 @@ package openweathermap
 
 import (
 	"errors"
-	"log"
 	"net/http"
 )
 
@@ -135,20 +134,13 @@ type Clouds struct {
 	All int `json:"all"`
 }
 
-// func getKey() string {
-// 	key := os.Getenv("OWM_API_KEY")
-
-// 	if !ValidAPIKey(key) {
-// 		log.Fatalln(errInvalidKey)
-// 	}
-
 // 	return key
 // }
-func setKey(key string) string {
-	if !ValidAPIKey(key) {
-		log.Fatalln(errInvalidKey)
+func setKey(key string) (string, error) {
+	if err := ValidAPIKey(key); err != nil {
+		return "", err
 	}
-	return key
+	return key, nil
 }
 
 // ValidDataUnit makes sure the string passed in is an accepted
@@ -159,7 +151,6 @@ func ValidDataUnit(u string) bool {
 			return true
 		}
 	}
-
 	return false
 }
 
@@ -171,7 +162,6 @@ func ValidLangCode(c string) bool {
 			return true
 		}
 	}
-
 	return false
 }
 
@@ -183,17 +173,15 @@ func ValidDataUnitSymbol(u string) bool {
 			return true
 		}
 	}
-
 	return false
 }
 
 // ValidAPIKey makes sure that the key given is a valid one
-func ValidAPIKey(key string) bool {
+func ValidAPIKey(key string) error {
 	if len(key) == 32 {
-		return true
+		return errors.New("invalid key")
 	}
-
-	return false
+	return nil
 }
 
 // CheckAPIKeyExists will see if an API key has been set.

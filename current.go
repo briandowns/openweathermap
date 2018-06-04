@@ -63,8 +63,11 @@ func NewCurrent(unit, lang, key string, options ...Option) (*CurrentWeatherData,
 	} else {
 		return nil, errLangUnavailable
 	}
-
-	c.Key = setKey(key)
+	var err error
+	c.Key, err = setKey(key)
+	if err != nil {
+		return nil, err
+	}
 
 	if err := setOptions(c.Settings, options); err != nil {
 		return nil, err

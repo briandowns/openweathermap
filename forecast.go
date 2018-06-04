@@ -91,10 +91,15 @@ func NewForecast(forecastType, unit, lang, key string, options ...Option) (*Fore
 		return nil, err
 	}
 
+	var err error
+	k, err := setKey(key)
+	if err != nil {
+		return nil, err
+	}
 	forecastData := ForecastWeatherData{
 		Unit:     DataUnits[unitChoice],
 		Lang:     langChoice,
-		Key:      setKey(key),
+		Key:      k,
 		Settings: settings,
 	}
 
