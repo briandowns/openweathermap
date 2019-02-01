@@ -178,8 +178,32 @@ func ValidDataUnitSymbol(u string) bool {
 
 // ValidAPIKey makes sure that the key given is a valid one
 func ValidAPIKey(key string) error {
+	var keyBytes [16]byte
+	var ok bool
+
 	if len(key) != 32 {
-		return errors.New("invalid key")
+		return errInvalidKey
+	}
+	var table = map[byte]byte{
+		'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6,
+		'7': 7, '8': 8, '9': 9, 'a': 0xa, 'b': 0xb, 'c': 0xc,
+		'd': 0xd, 'e': 0xe, 'f': 0xf,
+	}
+	var hexToByte = func(first, second byte) (byte, bool) {
+		var b1, b2 byte = 255, 255
+		if v, ok := table[first]; ok {
+			b1 = v
+		}
+		if v, ok := table[second]; ok {
+			b2 = v
+		}
+		return (b1 << 4) | b2, b1 != 255 && b2 != 255
+	}
+	for i := range keyBytes {
+		keyBytes[i], ok = hexToByte(key[i*2], key[i*2+1])
+		if !ok {
+			return errInvalidKey
+		}
 	}
 	return nil
 }
