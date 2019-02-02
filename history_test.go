@@ -24,6 +24,10 @@ import (
 
 // TestNewHistory verifies NewHistorical does as advertised
 func TestNewHistory(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	for d := range DataUnits {
@@ -51,6 +55,9 @@ func TestNewHistory(t *testing.T) {
 // TestNewHistoryWithCustomHttpClient will verify that a new instance of HistoricalWeatherData
 // is created with custom http client
 func TestNewHistoryWithCustomHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
@@ -72,6 +79,9 @@ func TestNewHistoryWithCustomHttpClient(t *testing.T) {
 // TestNewHistoryWithInvalidOptions will verify that returns an error with
 // invalid option
 func TestNewHistoryWithInvalidOptions(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	optionsPattern := [][]Option{
 		{nil},
@@ -96,6 +106,9 @@ func TestNewHistoryWithInvalidOptions(t *testing.T) {
 // TestNewHistoryWithInvalidHttpClient will verify that returns an error with
 // invalid http client
 func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	h, err := NewHistorical("c", os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
@@ -110,6 +123,10 @@ func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
 
 // TestHistoryByName
 func TestHistoryByName(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 	h, err := NewHistorical("F", os.Getenv("OWM_API_KEY"))
 	if err != nil {
@@ -122,6 +139,10 @@ func TestHistoryByName(t *testing.T) {
 
 // TestHistoryByID
 func TestHistoryByID(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 	h, err := NewHistorical("F", os.Getenv("OWM_API_KEY"))
 	if err != nil {
@@ -139,6 +160,10 @@ func TestHistoryByID(t *testing.T) {
 
 // TestHistoryByCoord
 func TestHistoryByCoord(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 	h, err := NewHistorical("F", os.Getenv("OWM_API_KEY"))
 	if err != nil {

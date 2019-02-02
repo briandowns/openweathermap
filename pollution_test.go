@@ -10,6 +10,9 @@ import (
 
 // TestNewPollution
 func TestNewPollution(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	p, err := NewPollution(os.Getenv("OWM_API_KEY"))
 	if err != nil {
@@ -22,7 +25,10 @@ func TestNewPollution(t *testing.T) {
 }
 
 // TestNewPollution with custom http client
-func TestNewPollutionWithCustomHttpClient(t *testing.T) {
+func WithCustomHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
@@ -44,6 +50,9 @@ func TestNewPollutionWithCustomHttpClient(t *testing.T) {
 // TestNewPollutionWithInvalidOptions will verify that returns an error with
 // invalid option
 func TestNewPollutionWithInvalidOptions(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	optionsPattern := [][]Option{
 		{nil},
@@ -68,6 +77,9 @@ func TestNewPollutionWithInvalidOptions(t *testing.T) {
 // TestNewPollutionWithInvalidHttpClient will verify that returns an error with
 // invalid http client
 func TestNewPollutionWithInvalidHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	p, err := NewPollution(os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
@@ -92,6 +104,10 @@ func TestValidAlias(t *testing.T) {
 
 // TestPollutionByParams tests the call to the pollution API
 func TestPollutionByParams(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 	p, err := NewPollution(os.Getenv("OWM_API_KEY"))
 	if err != nil {

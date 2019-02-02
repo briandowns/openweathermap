@@ -26,6 +26,10 @@ var forecastRange = []int{3, 7, 10}
 
 // TestNewForecast will make sure the a new instance of Forecast is returned
 func TestNewForecast(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	for d := range DataUnits {
@@ -63,6 +67,9 @@ func TestNewForecast(t *testing.T) {
 // TestNewForecastWithCustomHttpClient will verify that a new instance of ForecastWeatherData
 // is created with custom http client
 func TestNewForecastWithCustomHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
@@ -108,6 +115,9 @@ func TestNewForecastWithInvalidOptions(t *testing.T) {
 // TestNewForecastWithCustomHttpClient will verify that returns an error with
 // invalid http client
 func TestNewForecastWithInvalidHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	f, err := NewForecast("5", "c", "en", os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
@@ -123,6 +133,10 @@ func TestNewForecastWithInvalidHttpClient(t *testing.T) {
 // TestDailyByName will verify that a daily forecast can be retrieved for
 // a given named location
 func TestDailyByName(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	f, err := NewForecast("5", "f", "fi", os.Getenv("OWM_API_KEY"))
@@ -138,9 +152,13 @@ func TestDailyByName(t *testing.T) {
 	}
 }
 
-// TestDailyByCooridinates will verify that a daily forecast can be retrieved
+// TestDailyByCoordinates will verify that a daily forecast can be retrieved
 // for a given set of coordinates
 func TestDailyByCoordinates(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	f, err := NewForecast("5", "f", "PL", os.Getenv("OWM_API_KEY"))
@@ -164,6 +182,10 @@ func TestDailyByCoordinates(t *testing.T) {
 // TestDailyByID will verify that a daily forecast can be retrieved for a
 // given location ID
 func TestDailyByID(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	f, err := NewForecast("5", "c", "fr", os.Getenv("OWM_API_KEY"))

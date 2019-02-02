@@ -41,6 +41,10 @@ func TestValidLanguageCode(t *testing.T) {
 
 // TestNewCurrent will verify that a new instance of CurrentWeatherData is created
 func TestNewCurrent(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	for d := range DataUnits {
@@ -66,18 +70,22 @@ func TestNewCurrent(t *testing.T) {
 	}
 }
 
-// TestNewCurrentWithCustomHttpClient will verify that a new instance of CurrentWeatherData
-// is created with custom http client
+// TestNewCurrentWithCustomHttpClient will verify that a new instance of
+// CurrentWeatherData is created with custom http client
 func TestNewCurrentWithCustomHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
-	c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"), WithHttpClient(hc))
+	c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"),
+		WithHttpClient(hc))
 	if err != nil {
 		t.Error(err)
 	}
 
-	if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
+	if reflect.TypeOf(c) != reflect.TypeOf(&CurrentWeatherData{}) {
 		t.Error("incorrect data type returned")
 	}
 
@@ -90,6 +98,9 @@ func TestNewCurrentWithCustomHttpClient(t *testing.T) {
 // TestNewCurrentWithInvalidOptions will verify that returns an error with
 // invalid option
 func TestNewCurrentWithInvalidOptions(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	optionsPattern := [][]Option{
 		{nil},
@@ -114,6 +125,9 @@ func TestNewCurrentWithInvalidOptions(t *testing.T) {
 // TestNewCurrentWithInvalidHttpClient will verify that returns an error with
 // invalid http client
 func TestNewCurrentWithInvalidHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
@@ -129,6 +143,10 @@ func TestNewCurrentWithInvalidHttpClient(t *testing.T) {
 // TestCurrentByName will verify that current data can be retrieved for a give
 // location by name
 func TestCurrentByName(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	testCities := []currentWeather{
@@ -207,6 +225,10 @@ func TestCurrentByName(t *testing.T) {
 // TestCurrentByCoordinates will verify that current data can be retrieved for a
 // given set of coordinates
 func TestCurrentByCoordinates(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 	c, err := NewCurrent("f", "DE", os.Getenv("OWM_API_KEY"))
 	if err != nil {
@@ -223,6 +245,10 @@ func TestCurrentByCoordinates(t *testing.T) {
 // TestCurrentByID will verify that current data can be retrieved for a given
 // location id
 func TestCurrentByID(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 	c, err := NewCurrent("c", "ZH", os.Getenv("OWM_API_KEY"))
 	if err != nil {
@@ -232,6 +258,10 @@ func TestCurrentByID(t *testing.T) {
 }
 
 func TestCurrentByZip(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	w, err := NewCurrent("F", "EN", os.Getenv("OWM_API_KEY"))
 	if err != nil {
 		t.Error(err)

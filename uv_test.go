@@ -15,6 +15,9 @@ var coords = &Coordinates{
 
 // TestNewUV
 func TestNewUV(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	uv, err := NewUV(os.Getenv("OWM_API_KEY"))
 	if err != nil {
@@ -28,6 +31,9 @@ func TestNewUV(t *testing.T) {
 
 // TestNewUV with custom http client
 func TestNewUVWithCustomHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
@@ -49,6 +55,9 @@ func TestNewUVWithCustomHttpClient(t *testing.T) {
 // TestNewUVWithInvalidOptions will verify that returns an error with
 // invalid option
 func TestNewUVWithInvalidOptions(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	optionsPattern := [][]Option{
 		{nil},
@@ -73,6 +82,9 @@ func TestNewUVWithInvalidOptions(t *testing.T) {
 // TestNewUVWithInvalidHttpClient will verify that returns an error with
 // invalid http client
 func TestNewUVWithInvalidHttpClient(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
 
 	uv, err := NewUV(os.Getenv("OWM_API_KEY"), WithHttpClient(nil))
 	if err == errInvalidHttpClient {
@@ -87,6 +99,10 @@ func TestNewUVWithInvalidHttpClient(t *testing.T) {
 
 // TestCurrentUV
 func TestCurrentUV(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	uv, err := NewUV(os.Getenv("OWM_API_KEY"))
@@ -122,6 +138,10 @@ func TestHistoricalUV(t *testing.T) {
 }
 
 func TestUVInformation(t *testing.T) {
+	if os.Getenv("OWM_API_KEY") == "" {
+		t.Skip("OWM_API_KEY environment variable not set, skipping test")
+	}
+
 	t.Parallel()
 
 	uv, err := NewUV(os.Getenv("OWM_API_KEY"))
