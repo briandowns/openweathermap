@@ -52,8 +52,7 @@ func TestNewCurrent(t *testing.T) {
 				t.Error(err)
 			}
 
-			_, err = NewCurrent(d, "blah", os.Getenv("OWM_API_KEY"))
-			if err != nil {
+			if _, err := NewCurrent(d, "blah", os.Getenv("OWM_API_KEY")); err != nil {
 				t.Log("received expected bad language code error")
 			}
 
@@ -69,7 +68,6 @@ func TestNewCurrent(t *testing.T) {
 // TestNewCurrentWithCustomHttpClient will verify that a new instance of CurrentWeatherData
 // is created with custom http client
 func TestNewCurrentWithCustomHttpClient(t *testing.T) {
-
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
 	c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"), WithHttpClient(hc))
@@ -90,7 +88,6 @@ func TestNewCurrentWithCustomHttpClient(t *testing.T) {
 // TestNewCurrentWithInvalidOptions will verify that returns an error with
 // invalid option
 func TestNewCurrentWithInvalidOptions(t *testing.T) {
-
 	optionsPattern := [][]Option{
 		{nil},
 		{nil, nil},

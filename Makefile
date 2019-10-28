@@ -9,11 +9,14 @@ GOTEST = $(GOCMD) test
 
 all: test
 
+.PHONY: test
 test:
 	$(GOTEST) -v -covermode=count -coverprofile=coverage.out ./...
 
+.PHONY: build
 build: test
 	$(GOBUILD)
 
+.PHONY: install
 install: test
 	$(GOINSTALL)
