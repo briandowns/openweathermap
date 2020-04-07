@@ -149,3 +149,14 @@ func (f *ForecastWeatherData) DailyByID(id, days int) error {
 
 	return f.ForecastWeatherJson.Decode(response.Body)
 }
+
+// DailyByZip will provide a forecast for the provided zip code.
+func (f *ForecastWeatherData) DailyByZip(zip int, countryCode string, days int) error {
+	response, err := f.client.Get(fmt.Sprintf(f.baseURL, f.Key, fmt.Sprintf("zip=%d,%s", zip, countryCode), f.Unit, f.Lang, days))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	return f.ForecastWeatherJson.Decode(response.Body)
+}
