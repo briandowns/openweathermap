@@ -19,18 +19,23 @@ import (
 	"net/http"
 )
 
-var errUnitUnavailable = errors.New("unit unavailable")
-var errLangUnavailable = errors.New("language unavailable")
-var errInvalidKey = errors.New("invalid api key")
-var errInvalidOption = errors.New("invalid option")
-var errInvalidHttpClient = errors.New("invalid http client")
-var errForecastUnavailable = errors.New("forecast unavailable")
+// predefined errors
+var (
+	errUnitUnavailable     = errors.New("unit unavailable")
+	errLangUnavailable     = errors.New("language unavailable")
+	errInvalidKey          = errors.New("invalid api key")
+	errInvalidOption       = errors.New("invalid option")
+	errInvalidHttpClient   = errors.New("invalid http client")
+	errForecastUnavailable = errors.New("forecast unavailable")
+	errCountOfCityIDs      = errors.New("count of ids should not be more than 20 per request")
+)
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
 	baseURL        = "http://api.openweathermap.org/data/2.5/weather?%s"
 	iconURL        = "http://openweathermap.org/img/w/%s"
+	groupURL       = "http://api.openweathermap.org/data/2.5/group?%s"
 	stationURL     = "http://api.openweathermap.org/data/2.5/station?id=%d"
 	forecast5Base  = "http://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
 	forecast16Base = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
