@@ -120,6 +120,58 @@ func TestNewForecastWithInvalidHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewForecast5WithApiURL  will verify that a new instance of ForecastWeatherData
+// is created with custom API url
+func TestNewForecast5WithApiURL(t *testing.T) {
+	c, err := NewForecast("5", "c", "en", os.Getenv("OWM_API_KEY"), WithApiURL("https://ru.openweathermap.org/"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(c).String() != "*openweathermap.ForecastWeatherData" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := "https://ru.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+	got := c.baseURL
+	if got != expected {
+		t.Errorf("Expected baseURL %v, but got %v", expected, got)
+	}
+}
+
+// TestNewForecast16WithApiURL  will verify that a new instance of ForecastWeatherData
+// is created with custom API url
+func TestNewForecast16WithApiURL(t *testing.T) {
+	c, err := NewForecast("16", "c", "en", os.Getenv("OWM_API_KEY"), WithApiURL("https://ru.openweathermap.org/"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(c).String() != "*openweathermap.ForecastWeatherData" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := "https://ru.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+	got := c.baseURL
+	if got != expected {
+		t.Errorf("Expected baseURL %v, but got %v", expected, got)
+	}
+}
+
+// TestNewForecastWithInvalidApiURL  will verify that returns an error with
+// invalid API url
+func TestNewForecastWithInvalidApiURL(t *testing.T) {
+	c, err := NewForecast("5", "c", "en", os.Getenv("OWM_API_KEY"), WithApiURL("somestring"))
+	if err == errInvalidApiURL {
+		t.Logf("Received expected invalid url error. message: %s", err.Error())
+	} else if err != nil {
+		t.Errorf("Expected %v, but got %v", errInvalidApiURL, err)
+	}
+	if c != nil {
+		t.Errorf("Expected nil, but got %v", c)
+	}
+}
+
 // TestDailyByName will verify that a daily forecast can be retrieved for
 // a given named location
 func TestDailyByName(t *testing.T) {

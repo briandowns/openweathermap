@@ -17,6 +17,7 @@ package openweathermap
 import (
 	"errors"
 	"net/http"
+	"net/url"
 )
 
 var errUnitUnavailable = errors.New("unit unavailable")
@@ -24,20 +25,14 @@ var errLangUnavailable = errors.New("language unavailable")
 var errInvalidKey = errors.New("invalid api key")
 var errInvalidOption = errors.New("invalid option")
 var errInvalidHttpClient = errors.New("invalid http client")
+var errInvalidApiURL = errors.New("invalid API url")
 var errForecastUnavailable = errors.New("forecast unavailable")
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
-	baseURL        = "http://api.openweathermap.org/data/2.5/weather?%s"
-	iconURL        = "http://openweathermap.org/img/w/%s"
-	stationURL     = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecast5Base  = "http://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-	forecast16Base = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-	historyURL     = "http://api.openweathermap.org/data/2.5/history/%s"
-	pollutionURL   = "http://api.openweathermap.org/pollution/v1/co/"
-	uvURL          = "http://api.openweathermap.org/data/2.5/"
-	dataPostURL    = "http://openweathermap.org/data/post"
+	iconURL     = "http://openweathermap.org/img/w/%s"
+	dataPostURL = "http://openweathermap.org/data/post"
 )
 
 // LangCodes holds all supported languages to be used
@@ -190,14 +185,28 @@ func (c *Config) CheckAPIKeyExists() bool { return len(c.APIKey) > 1 }
 
 // Settings holds the client settings
 type Settings struct {
-	client *http.Client
+	client         *http.Client
+	baseURL        string
+	iconURL        string
+	stationURL     string
+	forecast5Base  string
+	forecast16Base string
+	historyURL     string
+	pollutionURL   string
+	uvURL          string
+	dataPostURL    string
 }
 
 // NewSettings returns a new Setting pointer with default http client.
 func NewSettings() *Settings {
-	return &Settings{
+	s := &Settings{
 		client: http.DefaultClient,
 	}
+
+	// sets default API url
+	WithApiURL("http://api.openweathermap.org/")(s)
+
+	return s
 }
 
 // Optional client settings
@@ -210,6 +219,25 @@ func WithHttpClient(c *http.Client) Option {
 			return errInvalidHttpClient
 		}
 		s.client = c
+		return nil
+	}
+}
+
+// WithApiURL sets api base url
+func WithApiURL(apiURL string) Option {
+	return func(s *Settings) error {
+		if _, err := url.ParseRequestURI(apiURL); err != nil {
+			return errInvalidApiURL
+		}
+
+		s.baseURL = apiURL + "data/2.5/weather?%s"
+		s.stationURL = apiURL + "data/2.5/station?id=%d"
+		s.forecast5Base = apiURL + "data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+		s.forecast16Base = apiURL + "data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+		s.historyURL = apiURL + "data/2.5/history/%s"
+		s.pollutionURL = apiURL + "pollution/v1/co/"
+		s.uvURL = apiURL + "data/2.5/"
+
 		return nil
 	}
 }

@@ -123,6 +123,39 @@ func TestNewCurrentWithInvalidHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewCurrentWithApiURL  will verify that a new instance of CurrentWeatherData
+// is created with custom API url
+func TestNewCurrentWithApiURL(t *testing.T) {
+	c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"), WithApiURL("https://ru.openweathermap.org/"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(c).String() != "*openweathermap.CurrentWeatherData" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := "https://ru.openweathermap.org/data/2.5/weather?%s"
+	got := c.baseURL
+	if got != expected {
+		t.Errorf("Expected baseURL %v, but got %v", expected, got)
+	}
+}
+
+// TestNewCurrentWithInvalidApiURL  will verify that returns an error with
+// invalid API url
+func TestNewCurrentWithInvalidApiURL(t *testing.T) {
+	c, err := NewCurrent("c", "en", os.Getenv("OWM_API_KEY"), WithApiURL("somestring"))
+	if err == errInvalidApiURL {
+		t.Logf("Received expected invalid url error. message: %s", err.Error())
+	} else if err != nil {
+		t.Errorf("Expected %v, but got %v", errInvalidApiURL, err)
+	}
+	if c != nil {
+		t.Errorf("Expected nil, but got %v", c)
+	}
+}
+
 // TestCurrentByName will verify that current data can be retrieved for a give
 // location by name
 func TestCurrentByName(t *testing.T) {

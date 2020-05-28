@@ -108,6 +108,39 @@ func TestNewHistoryWithInvalidHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewHistorylWithApiURL  will verify that a new instance of HisoricalWeatherData
+// is created with custom API url
+func TestNewHistoryWithApiURL(t *testing.T) {
+	c, err := NewHistorical("c", os.Getenv("OWM_API_KEY"), WithApiURL("https://ru.openweathermap.org/"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(c).String() != "*openweathermap.HistoricalWeatherData" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := "https://ru.openweathermap.org/data/2.5/history/%s"
+	got := c.historyURL
+	if got != expected {
+		t.Errorf("Expected historyURL %v, but got %v", expected, got)
+	}
+}
+
+// TestNewHistoryWithInvalidApiURL  will verify that returns an error with
+// invalid API url
+func TestNewHistoryWithInvalidApiURL(t *testing.T) {
+	c, err := NewHistorical("c", os.Getenv("OWM_API_KEY"), WithApiURL("somestring"))
+	if err == errInvalidApiURL {
+		t.Logf("Received expected invalid url error. message: %s", err.Error())
+	} else if err != nil {
+		t.Errorf("Expected %v, but got %v", errInvalidApiURL, err)
+	}
+	if c != nil {
+		t.Errorf("Expected nil, but got %v", c)
+	}
+}
+
 // TestHistoryByName
 func TestHistoryByName(t *testing.T) {
 	t.Parallel()

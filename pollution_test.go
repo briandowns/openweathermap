@@ -80,6 +80,39 @@ func TestNewPollutionWithInvalidHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewPollutionWithApiURL  will verify that a new instance of PollutionWeatherData
+// is created with custom API url
+func TestNewPollutionWithApiURL(t *testing.T) {
+	c, err := NewPollution(os.Getenv("OWM_API_KEY"), WithApiURL("https://ru.openweathermap.org/"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(c).String() != "*openweathermap.Pollution" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := "https://ru.openweathermap.org/pollution/v1/co/"
+	got := c.pollutionURL
+	if got != expected {
+		t.Errorf("Expected pollutionURL %v, but got %v", expected, got)
+	}
+}
+
+// TestNewPollutionWithInvalidApiURL  will verify that returns an error with
+// invalid API url
+func TestNewPollutionWithInvalidApiURL(t *testing.T) {
+	c, err := NewPollution(os.Getenv("OWM_API_KEY"), WithApiURL("somestring"))
+	if err == errInvalidApiURL {
+		t.Logf("Received expected invalid url error. message: %s", err.Error())
+	} else if err != nil {
+		t.Errorf("Expected %v, but got %v", errInvalidApiURL, err)
+	}
+	if c != nil {
+		t.Errorf("Expected nil, but got %v", c)
+	}
+}
+
 func TestValidAlias(t *testing.T) {
 	t.Parallel()
 	testAliases := []string{"now", "then", "current"}

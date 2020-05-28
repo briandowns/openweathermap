@@ -104,10 +104,10 @@ func NewForecast(forecastType, unit, lang, key string, options ...Option) (*Fore
 	}
 
 	if forecastType == "16" {
-		forecastData.baseURL = forecast16Base
+		forecastData.baseURL = settings.forecast16Base
 		forecastData.ForecastWeatherJson = &Forecast16WeatherData{}
 	} else {
-		forecastData.baseURL = forecast5Base
+		forecastData.baseURL = settings.forecast5Base
 		forecastData.ForecastWeatherJson = &Forecast5WeatherData{}
 	}
 

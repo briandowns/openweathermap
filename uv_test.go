@@ -85,6 +85,39 @@ func TestNewUVWithInvalidHttpClient(t *testing.T) {
 	}
 }
 
+// TestNewUVWithApiURL  will verify that a new instance of UVWeatherData
+// is created with custom API url
+func TestNewUVWithApiURL(t *testing.T) {
+	c, err := NewUV(os.Getenv("OWM_API_KEY"), WithApiURL("https://ru.openweathermap.org/"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if reflect.TypeOf(c).String() != "*openweathermap.UV" {
+		t.Error("incorrect data type returned")
+	}
+
+	expected := "https://ru.openweathermap.org/data/2.5/"
+	got := c.uvURL
+	if got != expected {
+		t.Errorf("Expected buvURL %v, but got %v", expected, got)
+	}
+}
+
+// TestNewUVWithInvalidApiURL  will verify that returns an error with
+// invalid API url
+func TestNewUVWithInvalidApiURL(t *testing.T) {
+	c, err := NewUV(os.Getenv("OWM_API_KEY"), WithApiURL("somestring"))
+	if err == errInvalidApiURL {
+		t.Logf("Received expected invalid url error. message: %s", err.Error())
+	} else if err != nil {
+		t.Errorf("Expected %v, but got %v", errInvalidApiURL, err)
+	}
+	if c != nil {
+		t.Errorf("Expected nil, but got %v", c)
+	}
+}
+
 // TestCurrentUV
 func TestCurrentUV(t *testing.T) {
 	t.Parallel()

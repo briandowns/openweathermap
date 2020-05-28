@@ -93,7 +93,7 @@ func NewHistorical(unit, key string, options ...Option) (*HistoricalWeatherData,
 
 // HistoryByName will return the history for the provided location
 func (h *HistoricalWeatherData) HistoryByName(location string) error {
-	response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&q=%s"), h.Key, url.QueryEscape(location)))
+	response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(h.historyURL, "city?appid=%s&q=%s"), h.Key, url.QueryEscape(location)))
 	if err != nil {
 		return err
 	}
@@ -109,7 +109,7 @@ func (h *HistoricalWeatherData) HistoryByName(location string) error {
 // HistoryByID will return the history for the provided location ID
 func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters) error {
 	if len(hp) > 0 {
-		response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&id=%d&type=hour&start%d&end=%d&cnt=%d"), h.Key, id, hp[0].Start, hp[0].End, hp[0].Cnt))
+		response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(h.historyURL, "city?appid=%s&id=%d&type=hour&start%d&end=%d&cnt=%d"), h.Key, id, hp[0].Start, hp[0].End, hp[0].Cnt))
 		if err != nil {
 			return err
 		}
@@ -120,7 +120,7 @@ func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters)
 		}
 	}
 
-	response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&id=%d"), h.Key, id))
+	response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(h.historyURL, "city?appid=%s&id=%d"), h.Key, id))
 	if err != nil {
 		return err
 	}
@@ -135,7 +135,7 @@ func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters)
 
 // HistoryByCoord will return the history for the provided coordinates
 func (h *HistoricalWeatherData) HistoryByCoord(location *Coordinates, hp *HistoricalParameters) error {
-	response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "appid=%s&lat=%f&lon=%f&start=%d&end=%d"), h.Key, location.Latitude, location.Longitude, hp.Start, hp.End))
+	response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(h.historyURL, "appid=%s&lat=%f&lon=%f&start=%d&end=%d"), h.Key, location.Latitude, location.Longitude, hp.Start, hp.End))
 	if err != nil {
 		return err
 	}

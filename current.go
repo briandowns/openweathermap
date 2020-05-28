@@ -79,7 +79,7 @@ func NewCurrent(unit, lang, key string, options ...Option) (*CurrentWeatherData,
 // CurrentByName will provide the current weather with the provided
 // location name.
 func (w *CurrentWeatherData) CurrentByName(location string) error {
-	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&q=%s&units=%s&lang=%s"), w.Key, url.QueryEscape(location), w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(w.baseURL, "appid=%s&q=%s&units=%s&lang=%s"), w.Key, url.QueryEscape(location), w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
@@ -95,7 +95,7 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 // CurrentByCoordinates will provide the current weather with the
 // provided location coordinates.
 func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
-	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&lat=%f&lon=%f&units=%s&lang=%s"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(w.baseURL, "appid=%s&lat=%f&lon=%f&units=%s&lang=%s"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
@@ -111,7 +111,7 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 // CurrentByID will provide the current weather with the
 // provided location ID.
 func (w *CurrentWeatherData) CurrentByID(id int) error {
-	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&id=%d&units=%s&lang=%s"), w.Key, id, w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(w.baseURL, "appid=%s&id=%d&units=%s&lang=%s"), w.Key, id, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
@@ -127,7 +127,7 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 // CurrentByZip will provide the current weather for the
 // provided zip code.
 func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
-	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(w.baseURL, "appid=%s&zip=%d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}

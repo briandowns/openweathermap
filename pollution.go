@@ -63,7 +63,7 @@ func NewPollution(key string, options ...Option) (*Pollution, error) {
 // PollutionByParams gets the pollution data based on the given parameters
 func (p *Pollution) PollutionByParams(params *PollutionParameters) error {
 	url := fmt.Sprintf("%s%s,%s/%s.json?appid=%s",
-		pollutionURL,
+		p.pollutionURL,
 		strconv.FormatFloat(params.Location.Latitude, 'f', -1, 64),
 		strconv.FormatFloat(params.Location.Longitude, 'f', -1, 64),
 		params.Datetime,
