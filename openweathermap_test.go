@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2021 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,52 +14,52 @@
 
 package openweathermap
 
-import (
-	"testing"
-)
+// import (
+// 	"testing"
+// )
 
-// TestValidDataUnit tests whether or not ValidDataUnit provides
-// the correct assertion on provided data unit.
-func TestValidDataUnit(t *testing.T) {
-	for u := range DataUnits {
-		if !ValidDataUnit(u) {
-			t.Error("False positive on data unit")
-		}
-	}
+// // TestValidDataUnit tests whether or not ValidDataUnit provides
+// // the correct assertion on provided data unit.
+// func TestValidDataUnit(t *testing.T) {
+// 	for u := range DataUnits {
+// 		if !ValidDataUnit(u) {
+// 			t.Error("False positive on data unit")
+// 		}
+// 	}
 
-	if ValidDataUnit("anything") {
-		t.Error("Invalid data unit")
-	}
-}
+// 	if ValidDataUnit("anything") {
+// 		t.Error("Invalid data unit")
+// 	}
+// }
 
-func TestDataUnitValues(t *testing.T) {
-	for _, s := range DataUnits {
-		if !ValidDataUnitSymbol(s) {
-			t.Error("False positive on data unit symbol")
-		}
-	}
+// func TestDataUnitValues(t *testing.T) {
+// 	for _, s := range DataUnits {
+// 		if !ValidDataUnitSymbol(s) {
+// 			t.Error("False positive on data unit symbol")
+// 		}
+// 	}
 
-	if ValidDataUnitSymbol("X") {
-		t.Error("Invalid data unit symbol")
-	}
-}
+// 	if ValidDataUnitSymbol("X") {
+// 		t.Error("Invalid data unit symbol")
+// 	}
+// }
 
-func TestCheckAPIKeyExists(t *testing.T) {
-	c := &Config{
-		APIKey: "asdf1234",
-	}
+// func TestCheckAPIKeyExists(t *testing.T) {
+// 	c := &Config{
+// 		APIKey: "asdf1234",
+// 	}
 
-	if !c.CheckAPIKeyExists() {
-		t.Error("Key not set")
-	}
-}
+// 	if !c.CheckAPIKeyExists() {
+// 		t.Error("Key not set")
+// 	}
+// }
 
-// TestSetOptionsWithEmpty tests setOptions function will do nothing
-// when options are empty.
-func TestSetOptionsWithEmpty(t *testing.T) {
-	s := NewSettings()
-	err := setOptions(s, nil)
-	if err != nil {
-		t.Error(err)
-	}
-}
+// // TestSetOptionsWithEmpty tests setOptions function will do nothing
+// // when options are empty.
+// func TestSetOptionsWithEmpty(t *testing.T) {
+// 	s := NewSettings()
+// 	err := setOptions(s, nil)
+// 	if err != nil {
+// 		t.Error(err)
+// 	}
+// }

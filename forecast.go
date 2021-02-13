@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2021 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,18 +16,16 @@ package openweathermap
 
 import (
 	"fmt"
-	"io"
 	"net/url"
 	"strconv"
-	"strings"
 )
 
-// ForecastSys area population
+// ForecastSys area population.
 type ForecastSys struct {
 	Population int `json:"population"`
 }
 
-// Temperature holds returned termperate sure stats
+// Temperature holds returned termperate sure stats.
 type Temperature struct {
 	Day   float64 `json:"day"`
 	Min   float64 `json:"min"`
@@ -37,7 +35,7 @@ type Temperature struct {
 	Morn  float64 `json:"morn"`
 }
 
-// City data for given location
+// City data for given location.
 type City struct {
 	ID         int         `json:"id"`
 	Name       string      `json:"name"`
@@ -47,116 +45,57 @@ type City struct {
 	Sys        ForecastSys `json:"sys"`
 }
 
-type ForecastWeather interface {
-	DailyByName(location string, days int) error
-	DailyByCoordinates(location *Coordinates, days int) error
-	DailyByID(id, days int) error
-}
-
-// json served by OWM API can take different forms, so all of them must be matched
-// by corresponding data type and unmarshall method
-type ForecastWeatherJson interface {
-	Decode(r io.Reader) error
-}
-
-type ForecastWeatherData struct {
-	Unit    string
-	Lang    string
-	Key     string
-	baseURL string
-	*Settings
-	ForecastWeatherJson
-}
-
-// NewForecast returns a new HistoricalWeatherData pointer with
-// the supplied arguments.
-func NewForecast(forecastType, unit, lang, key string, options ...Option) (*ForecastWeatherData, error) {
-	unitChoice := strings.ToUpper(unit)
-	langChoice := strings.ToUpper(lang)
-
-	if forecastType != "16" && forecastType != "5" {
-		return nil, errForecastUnavailable
-	}
-
-	if !ValidDataUnit(unitChoice) {
-		return nil, errUnitUnavailable
-	}
-
-	if !ValidLangCode(langChoice) {
-		return nil, errLangUnavailable
-	}
-
-	settings := NewSettings()
-	if err := setOptions(settings, options); err != nil {
-		return nil, err
-	}
-
-	var err error
-	k, err := setKey(key)
-	if err != nil {
-		return nil, err
-	}
-	forecastData := ForecastWeatherData{
-		Unit:     DataUnits[unitChoice],
-		Lang:     langChoice,
-		Key:      k,
-		Settings: settings,
-	}
-
-	if forecastType == "16" {
-		forecastData.baseURL = forecast16Base
-		forecastData.ForecastWeatherJson = &Forecast16WeatherData{}
-	} else {
-		forecastData.baseURL = forecast5Base
-		forecastData.ForecastWeatherJson = &Forecast5WeatherData{}
-	}
-
-	return &forecastData, nil
-}
-
-// DailyByName will provide a forecast for the location given for the
+// DailyForecastByName will provide a forecast for the location given for the
 // number of days given.
-func (f *ForecastWeatherData) DailyByName(location string, days int) error {
-	response, err := f.client.Get(fmt.Sprintf(f.baseURL, f.Key, fmt.Sprintf("%s=%s", "q", url.QueryEscape(location)), f.Unit, f.Lang, days))
-	if err != nil {
-		return err
-	}
-	defer response.Body.Close()
+func (o *OWM) DailyForecastByName(location string, days int) (interface{}, error) {
+	base := fmt.Sprintf("%s=%s", "q", url.QueryEscape(location))
+	url := fmt.Sprintf(base, o.apiKey, o.unit, o.lang, days)
 
-	return f.ForecastWeatherJson.Decode(response.Body)
+	var fwd interface{}
+	if err := o.call(url, &fwd); err != nil {
+		return nil, err
+	}
+
+	return &fwd, nil
 }
 
-// DailyByCoordinates will provide a forecast for the coordinates ID give
+// DailyForecastByCoordinates will provide a forecast for the coordinates ID give
 // for the number of days given.
-func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int) error {
-	response, err := f.client.Get(fmt.Sprintf(f.baseURL, f.Key, fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude), f.Unit, f.Lang, days))
-	if err != nil {
-		return err
-	}
-	defer response.Body.Close()
+func (o *OWM) DailyForecastByCoordinates(location *Coordinates, days int) (interface{}, error) {
+	base := fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude)
+	url := fmt.Sprintf(base, o.apiKey, o.unit, o.lang, days)
 
-	return f.ForecastWeatherJson.Decode(response.Body)
+	var fwd interface{}
+	if err := o.call(url, &fwd); err != nil {
+		return nil, err
+	}
+
+	return &fwd, nil
 }
 
-// DailyByID will provide a forecast for the location ID give for the
+// DailyForecastByID will provide a forecast for the location ID give for the
 // number of days given.
-func (f *ForecastWeatherData) DailyByID(id, days int) error {
-	response, err := f.client.Get(fmt.Sprintf(f.baseURL, f.Key, fmt.Sprintf("%s=%s", "id", strconv.Itoa(id)), f.Unit, f.Lang, days))
-	if err != nil {
-		return err
-	}
-	defer response.Body.Close()
+func (o *OWM) DailyForecastByID(id, days int) (interface{}, error) {
+	base := fmt.Sprintf("%s=%s", "id", strconv.Itoa(id))
+	url := fmt.Sprintf(base, o.apiKey, o.unit, o.lang, days)
 
-	return f.ForecastWeatherJson.Decode(response.Body)
+	var fwd interface{}
+	if err := o.call(url, &fwd); err != nil {
+		return nil, err
+	}
+
+	return &fwd, nil
 }
 
-// DailyByZip will provide a forecast for the provided zip code.
-func (f *ForecastWeatherData) DailyByZip(zip int, countryCode string, days int) error {
-	response, err := f.client.Get(fmt.Sprintf(f.baseURL, f.Key, fmt.Sprintf("zip=%d,%s", zip, countryCode), f.Unit, f.Lang, days))
-	if err != nil {
-		return err
-	}
-	defer response.Body.Close()
+// DailyForecastByZip will provide a forecast for the provided zip code.
+func (o *OWM) DailyForecastByZip(zip, countryCode string, days int) (interface{}, error) {
+	base := fmt.Sprintf("zip=%s,%s", zip, countryCode)
+	url := fmt.Sprintf(base, o.apiKey, o.unit, o.lang, days)
 
-	return f.ForecastWeatherJson.Decode(response.Body)
+	var fwd interface{}
+	if err := o.call(url, &fwd); err != nil {
+		return nil, err
+	}
+
+	return &fwd, nil
 }

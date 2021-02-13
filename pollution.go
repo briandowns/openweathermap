@@ -1,7 +1,20 @@
+// Copyright 2021 Brian J. Downs
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package openweathermap
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 )
@@ -40,43 +53,21 @@ type Pollution struct {
 	Location Coordinates     `json:"location"`
 	Data     []PollutionData `json:"data"`
 	Key      string
-	*Settings
-}
-
-// NewPollution creates a new reference to Pollution
-func NewPollution(key string, options ...Option) (*Pollution, error) {
-	k, err := setKey(key)
-	if err != nil {
-		return nil, err
-	}
-	p := &Pollution{
-		Key:      k,
-		Settings: NewSettings(),
-	}
-
-	if err := setOptions(p.Settings, options); err != nil {
-		return nil, err
-	}
-	return p, nil
 }
 
 // PollutionByParams gets the pollution data based on the given parameters
-func (p *Pollution) PollutionByParams(params *PollutionParameters) error {
+func (o *OWM) PollutionByParams(params *PollutionParameters) (*Pollution, error) {
 	url := fmt.Sprintf("%s%s,%s/%s.json?appid=%s",
 		pollutionURL,
 		strconv.FormatFloat(params.Location.Latitude, 'f', -1, 64),
 		strconv.FormatFloat(params.Location.Longitude, 'f', -1, 64),
 		params.Datetime,
-		p.Key)
-	response, err := p.client.Get(url)
-	if err != nil {
-		return err
-	}
-	defer response.Body.Close()
+		o.apiKey)
 
-	if err = json.NewDecoder(response.Body).Decode(&p); err != nil {
-		return err
+	var p Pollution
+	if err := o.call(url, &p); err != nil {
+		return nil, err
 	}
 
-	return nil
+	return &p, nil
 }
