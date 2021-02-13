@@ -16,19 +16,22 @@ package openweathermap
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
+	"os"
+	"strings"
 )
 
-var errUnitUnavailable = errors.New("unit unavailable")
-var errLangUnavailable = errors.New("language unavailable")
-var errInvalidKey = errors.New("invalid api key")
-var errInvalidOption = errors.New("invalid option")
-var errInvalidHttpClient = errors.New("invalid http client")
-var errForecastUnavailable = errors.New("forecast unavailable")
-
-// DataUnits represents the character chosen to represent the temperature notation
-var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
+	errUnitUnavailable     = errors.New("unit unavailable")
+	errLangUnavailable     = errors.New("language unavailable")
+	errInvalidKey          = errors.New("invalid api key")
+	errInvalidOption       = errors.New("invalid option")
+	errInvalidHttpClient   = errors.New("invalid http client")
+	errForecastUnavailable = errors.New("forecast unavailable")
+)
+
+const (
 	baseURL        = "http://api.openweathermap.org/data/2.5/weather?%s"
 	iconURL        = "http://openweathermap.org/img/w/%s"
 	stationURL     = "http://api.openweathermap.org/data/2.5/station?id=%d"
@@ -39,6 +42,14 @@ var (
 	uvURL          = "http://api.openweathermap.org/data/2.5/"
 	dataPostURL    = "http://openweathermap.org/data/post"
 )
+
+// DataUnits represents the character chosen to represent
+// the temperature notation
+var DataUnits = map[string]string{
+	"C": "metric",
+	"F": "imperial",
+	"K": "internal",
+}
 
 // LangCodes holds all supported languages to be used
 // inspried and sourced from @bambocher (github.com/bambocher)
@@ -68,15 +79,78 @@ var LangCodes = map[string]string{
 	"ZH_CN": "Chinese Simplified",
 }
 
-// Config will hold default settings to be passed into the
+// Opts will hold default settings to be passed into the
 // "NewCurrent, NewForecast, etc}" functions.
-type Config struct {
-	Mode     string // user choice of JSON or XML
-	Unit     string // measurement for results to be displayed.  F, C, or K
-	Lang     string // should reference a key in the LangCodes map
-	APIKey   string // API Key for connecting to the OWM
-	Username string // Username for posting data
-	Password string // Pasword for posting data
+type Opts struct {
+	Mode     string       // user choice of JSON or XML
+	Unit     string       // measurement for results to be displayed.  F, C, or K
+	Lang     string       // should reference a key in the LangCodes map
+	APIKey   string       // API Key for connecting to the OWM
+	Username string       // Username for posting data
+	Password string       // Pasword for posting data
+	Client   *http.Client // HTTP client to use for calls to OWM
+}
+
+type OWM struct {
+	mode     string       // user choice of JSON or XML
+	unit     string       // measurement for results to be displayed.  F, C, or K
+	lang     string       // should reference a key in the LangCodes map
+	apiKey   string       // API Key for connecting to the OWM
+	username string       // Username for posting data
+	password string       // Pasword for posting data
+	client   *http.Client // HTTP client to use for calls to OWM
+}
+
+// NewOWM
+func NewOWM(opts *Opts) (*OWM, error) {
+	var owm OWM
+
+	switch opts.Mode {
+	case "JSON", "XML":
+		owm.mode = strings.ToLower(opts.Mode)
+	default:
+		return nil, fmt.Errorf("invalid serialization format: %s", opts.Mode)
+	}
+
+	switch {
+	case validDataUnit(opts.Unit):
+		owm.unit = opts.Unit
+	default:
+		return nil, fmt.Errorf("invalid unit: %s", opts.Unit)
+	}
+
+	switch {
+	case validLangCode(opts.Lang):
+	default:
+		return nil, fmt.Errorf("invalid language code: %s", opts.Lang)
+	}
+
+	switch {
+	case opts.APIKey != "":
+		if validAPIKey(opts.APIKey) {
+			owm.apiKey = opts.APIKey
+		}
+	default:
+		if apiKey := os.Getenv("OWM_API_KEY"); apiKey != "" {
+			if validAPIKey(apiKey) {
+				owm.apiKey = apiKey
+			} else {
+				return nil, errInvalidKey
+			}
+		} else {
+			return nil, errors.New("an API key is required for use of the OWM api")
+		}
+	}
+
+	switch {
+	case opts.Client != nil:
+		owm.client = opts.Client
+	default:
+		owm.client = http.DefaultClient
+	}
+
+	return &owm, nil
+
 }
 
 // APIError returned on failed API calls.
@@ -135,18 +209,9 @@ type Clouds struct {
 	All int `json:"all"`
 }
 
-// 	return key
-// }
-func setKey(key string) (string, error) {
-	if err := ValidAPIKey(key); err != nil {
-		return "", err
-	}
-	return key, nil
-}
-
-// ValidDataUnit makes sure the string passed in is an accepted
+// validDataUnit makes sure the string passed in is an accepted
 // unit of measure to be used for the return data.
-func ValidDataUnit(u string) bool {
+func validDataUnit(u string) bool {
 	for d := range DataUnits {
 		if u == d {
 			return true
@@ -155,9 +220,9 @@ func ValidDataUnit(u string) bool {
 	return false
 }
 
-// ValidLangCode makes sure the string passed in is an
+// validLangCode makes sure the string passed in is an
 // acceptable lang code.
-func ValidLangCode(c string) bool {
+func validLangCode(c string) bool {
 	for d := range LangCodes {
 		if c == d {
 			return true
@@ -166,9 +231,9 @@ func ValidLangCode(c string) bool {
 	return false
 }
 
-// ValidDataUnitSymbol makes sure the string passed in is an
+// validDataUnitSymbol makes sure the string passed in is an
 // acceptable data unit symbol.
-func ValidDataUnitSymbol(u string) bool {
+func validDataUnitSymbol(u string) bool {
 	for _, d := range DataUnits {
 		if u == d {
 			return true
@@ -177,53 +242,7 @@ func ValidDataUnitSymbol(u string) bool {
 	return false
 }
 
-// ValidAPIKey makes sure that the key given is a valid one
-func ValidAPIKey(key string) error {
-	if len(key) != 32 {
-		return errors.New("invalid key")
-	}
-	return nil
-}
-
-// CheckAPIKeyExists will see if an API key has been set.
-func (c *Config) CheckAPIKeyExists() bool { return len(c.APIKey) > 1 }
-
-// Settings holds the client settings
-type Settings struct {
-	client *http.Client
-}
-
-// NewSettings returns a new Setting pointer with default http client.
-func NewSettings() *Settings {
-	return &Settings{
-		client: http.DefaultClient,
-	}
-}
-
-// Optional client settings
-type Option func(s *Settings) error
-
-// WithHttpClient sets custom http client when creating a new Client.
-func WithHttpClient(c *http.Client) Option {
-	return func(s *Settings) error {
-		if c == nil {
-			return errInvalidHttpClient
-		}
-		s.client = c
-		return nil
-	}
-}
-
-// setOptions sets Optional client settings to the Settings pointer
-func setOptions(settings *Settings, options []Option) error {
-	for _, option := range options {
-		if option == nil {
-			return errInvalidOption
-		}
-		err := option(settings)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// validAPIKey makes sure that the key given is a valid one
+func validAPIKey(key string) bool {
+	return len(key) != 32
 }
