@@ -83,8 +83,7 @@ func (o *OWM) HistoryByName(location string) (*HistoricalWeatherData, error) {
 // 		if err != nil {
 // 			return err
 // 		}
-// 		defer response.Body.Close()
-
+// 		defer response.Body.Close()21
 // 		if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
 // 			return err
 // 		}

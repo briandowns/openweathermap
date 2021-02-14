@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2021 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 package openweathermap
 
 import (
+	"encoding/json"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"net/http"
@@ -82,6 +84,7 @@ var LangCodes = map[string]string{
 // Opts will hold default settings to be passed into the
 // "NewCurrent, NewForecast, etc}" functions.
 type Opts struct {
+	Host     string       //
 	Mode     string       // user choice of JSON or XML
 	Unit     string       // measurement for results to be displayed.  F, C, or K
 	Lang     string       // should reference a key in the LangCodes map
@@ -91,7 +94,9 @@ type Opts struct {
 	Client   *http.Client // HTTP client to use for calls to OWM
 }
 
+// OWM
 type OWM struct {
+	host     string       //
 	mode     string       // user choice of JSON or XML
 	unit     string       // measurement for results to be displayed.  F, C, or K
 	lang     string       // should reference a key in the LangCodes map
@@ -101,13 +106,22 @@ type OWM struct {
 	client   *http.Client // HTTP client to use for calls to OWM
 }
 
-// NewOWM
-func NewOWM(opts *Opts) (*OWM, error) {
+// New
+func New(opts *Opts) (*OWM, error) {
 	var owm OWM
+
+	switch {
+	case opts.Host != "":
+		owm.host = "http://" + opts.Host + "/data/2.5/weather?%s"
+	default:
+		owm.host = baseURL
+	}
 
 	switch opts.Mode {
 	case "JSON", "XML":
 		owm.mode = strings.ToLower(opts.Mode)
+	case "":
+		owm.mode = "json"
 	default:
 		return nil, fmt.Errorf("invalid serialization format: %s", opts.Mode)
 	}
@@ -153,10 +167,41 @@ func NewOWM(opts *Opts) (*OWM, error) {
 
 }
 
+// call
+func (o *OWM) call(url string, payload interface{}) error {
+	res, err := o.client.Get(url)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		var ae APIError
+		if err := json.NewDecoder(res.Body).Decode(&ae); err != nil {
+			return err
+		}
+		return ae
+	}
+
+	switch o.mode {
+	case "JSON":
+		return json.NewDecoder(res.Body).Decode(payload)
+	case "XML":
+		return xml.NewDecoder(res.Body).Decode(payload)
+	}
+
+	return nil
+}
+
 // APIError returned on failed API calls.
 type APIError struct {
 	Message string `json:"message"`
 	COD     string `json:"cod"`
+}
+
+// Error
+func (a APIError) Error() string {
+	return "message: " + a.Message + " - status: " + a.COD
 }
 
 // Coordinates struct holds longitude and latitude data in returned
@@ -244,5 +289,5 @@ func validDataUnitSymbol(u string) bool {
 
 // validAPIKey makes sure that the key given is a valid one
 func validAPIKey(key string) bool {
-	return len(key) != 32
+	return len(key) != 33
 }

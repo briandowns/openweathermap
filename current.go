@@ -15,7 +15,6 @@
 package openweathermap
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/url"
@@ -24,7 +23,7 @@ import (
 // CurrentWeatherData struct contains an aggregate view of the structs
 // defined above for JSON to be unmarshaled into.
 type CurrentWeatherData struct {
-	GeoPos   Coordinates `json:"coord"`
+	GeoPos   Coordinates `json:"coord" xml:"coord"`
 	Sys      Sys         `json:"sys"`
 	Base     string      `json:"base"`
 	Weather  []Weather   `json:"weather"`
@@ -33,14 +32,11 @@ type CurrentWeatherData struct {
 	Clouds   Clouds      `json:"clouds"`
 	Rain     Rain        `json:"rain"`
 	Snow     Snow        `json:"snow"`
-	Dt       int         `json:"dt"`
-	ID       int         `json:"id"`
+	Dt       int64       `json:"dt"`
+	ID       int64       `json:"id"`
 	Name     string      `json:"name"`
 	Cod      int         `json:"cod"`
 	Timezone int         `json:"timezone"`
-	Unit     string
-	Lang     string
-	Key      string
 }
 
 // CurrentByName will provide the current weather with
@@ -87,8 +83,8 @@ func (o *OWM) CurrentByID(id int) (*CurrentWeatherData, error) {
 
 // CurrentByZip will provide the current weather for the
 // provided zip code.
-func (o *OWM) CurrentByZip(zip int, countryCode string) (*CurrentWeatherData, error) {
-	base := fmt.Sprintf(baseURL, "appid=%s&zip=%d,%s&units=%s&lang=%s")
+func (o *OWM) CurrentByZip(zip, countryCode string) (*CurrentWeatherData, error) {
+	base := fmt.Sprintf(baseURL, "appid=%s&zip=%s,%s&units=%s&lang=%s")
 	url := fmt.Sprintf(base, o.apiKey, zip, countryCode, o.unit, o.lang)
 
 	var cwd CurrentWeatherData
@@ -103,13 +99,4 @@ func (o *OWM) CurrentByZip(zip int, countryCode string) (*CurrentWeatherData, er
 // provided area.
 func (o *OWM) CurrentByArea() (*CurrentWeatherData, error) {
 	return nil, errors.New("unimplemented")
-}
-
-func (o *OWM) call(url string, payload interface{}) error {
-	res, err := o.client.Get(url)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-	return json.NewDecoder(res.Body).Decode(payload)
 }

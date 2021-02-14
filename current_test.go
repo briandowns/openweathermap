@@ -14,6 +14,12 @@
 
 package openweathermap
 
+import (
+	"net/http"
+	"reflect"
+	"testing"
+)
+
 // import (
 // 	"net/http"
 // 	"os"
@@ -239,4 +245,47 @@ package openweathermap
 // 	}
 // }
 
-// func TestCurrentByArea(t *testing.T) {}
+func TestOWM_CurrentByName(t *testing.T) {
+	type fields struct {
+		mode     string
+		unit     string
+		lang     string
+		apiKey   string
+		username string
+		password string
+		client   *http.Client
+	}
+	type args struct {
+		location string
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *CurrentWeatherData
+		wantErr bool
+	}{
+		//
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			o := &OWM{
+				mode:     tt.fields.mode,
+				unit:     tt.fields.unit,
+				lang:     tt.fields.lang,
+				apiKey:   tt.fields.apiKey,
+				username: tt.fields.username,
+				password: tt.fields.password,
+				client:   tt.fields.client,
+			}
+			got, err := o.CurrentByName(tt.args.location)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("OWM.CurrentByName() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("OWM.CurrentByName() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

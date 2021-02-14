@@ -91,35 +91,29 @@ import (
 	"fmt"
 	"os"
 
-	// Shortening the import reference name seems to make it a bit easier
-	owm "github.com/briandowns/openweathermap"
+	"github.com/briandowns/openweathermap"
 )
 
 var apiKey = os.Getenv("OWM_API_KEY")
 
 func main() {
-	w, err := owm.NewCurrent("F", "ru", apiKey) // fahrenheit (imperial) with Russian output
+opts := openweathermap.Opts{
+		Lang: "EN",
+		Unit: "F",
+		Client: &http.Client{
+			Timeout: time.Second * 5,
+		},
+	}
+	owm, err := openweathermap.New(&opts)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	w.CurrentByName("Phoenix")
-	fmt.Println(w)
-}
-
-```
-
-### Current Conditions by location name
-
-```Go
-func main() {
-    w, err := owm.NewCurrent("K", "EN", apiKey) // (internal - OpenWeatherMap reference for kelvin) with English output
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    w.CurrentByName("Phoenix,AZ")
-    fmt.Println(w)
+	cbn, err := owm.CurrentByName("Philadelphia")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Printf("%#v\n", cbn)
 }
 ```
 
