@@ -97,7 +97,7 @@ import (
 var apiKey = os.Getenv("OWM_API_KEY")
 
 func main() {
-opts := openweathermap.Opts{
+    opts := openweathermap.Opts{
 		Lang: "EN",
 		Unit: "F",
 		Client: &http.Client{

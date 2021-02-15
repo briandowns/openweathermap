@@ -20,6 +20,10 @@ import (
 	"strconv"
 )
 
+const (
+	forecastBase = "https://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+)
+
 // ForecastSys area population.
 type ForecastSys struct {
 	Population int `json:"population"`
@@ -41,17 +45,41 @@ type City struct {
 	Name       string      `json:"name"`
 	Coord      Coordinates `json:"coord"`
 	Country    string      `json:"country"`
-	Population int         `json:"population"`
-	Sys        ForecastSys `json:"sys"`
+	Population int64       `json:"population"`
+	Timezone   int64       `json:"timezome"`
+	Sunrise    int64       `json:"sunrise"`
+	Sunset     int64       `json:"sunset"`
 }
 
-// DailyForecastByName will provide a forecast for the location given for the
-// number of days given.
-func (o *OWM) DailyForecastByName(location string, days int) (interface{}, error) {
-	base := fmt.Sprintf("%s=%s", "q", url.QueryEscape(location))
-	url := fmt.Sprintf(base, o.apiKey, o.unit, o.lang, days)
+// Forecast5Weather holds specific query data.
+type Forecast5Weather struct {
+	Dt         int64     `json:"dt"`
+	Main       Main      `json:"main"`
+	Weather    []Weather `json:"weather"`
+	Clouds     Clouds    `json:"clouds"`
+	Wind       Wind      `json:"wind"`
+	Visibility int64     `json:"visibility"`
+	Pop        float64   `json:"pop"`
+	Rain       Rain      `json:"rain"`
+	Sys        Sys       `json:"sys"`
+	Snow       Snow      `json:"snow"`
+	DtText     string    `json:"dt_text"`
+}
 
-	var fwd interface{}
+// Forecast5WeatherData will hold returned data from queries.
+type Forecast5WeatherData struct {
+	COD     string             `json:"cod"`
+	Message float64            `json:"message"`
+	Cnt     int64              `json:"cnt"`
+	List    []Forecast5Weather `json:"list"`
+	City    *City              `json:"city"`
+}
+
+// FiveDayForecastByName will provide a five day forecast for the given location.
+func (o *OWM) FiveDayForecastByName(location string, cnt int) (*Forecast5WeatherData, error) {
+	url := fmt.Sprintf(forecastBase, o.apiKey, "q="+url.QueryEscape(location), o.unit, o.lang, cnt)
+
+	var fwd Forecast5WeatherData
 	if err := o.call(url, &fwd); err != nil {
 		return nil, err
 	}
@@ -59,13 +87,12 @@ func (o *OWM) DailyForecastByName(location string, days int) (interface{}, error
 	return &fwd, nil
 }
 
-// DailyForecastByCoordinates will provide a forecast for the coordinates ID give
-// for the number of days given.
-func (o *OWM) DailyForecastByCoordinates(location *Coordinates, days int) (interface{}, error) {
-	base := fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude)
-	url := fmt.Sprintf(base, o.apiKey, o.unit, o.lang, days)
+// FiveDayForecastByCoordinates will provide a five day forecast for the given coordinates.
+func (o *OWM) FiveDayForecastByCoordinates(location *Coordinates, cnt int) (*Forecast5WeatherData, error) {
+	pos := fmt.Sprintf("lat=%f&lon=%f", location.Latitude, location.Longitude)
+	url := fmt.Sprintf(forecastBase, o.apiKey, pos, o.unit, o.lang, cnt)
 
-	var fwd interface{}
+	var fwd Forecast5WeatherData
 	if err := o.call(url, &fwd); err != nil {
 		return nil, err
 	}
@@ -75,11 +102,11 @@ func (o *OWM) DailyForecastByCoordinates(location *Coordinates, days int) (inter
 
 // DailyForecastByID will provide a forecast for the location ID give for the
 // number of days given.
-func (o *OWM) DailyForecastByID(id, days int) (interface{}, error) {
+func (o *OWM) DailyForecastByID(id, days int) (*Forecast5WeatherData, error) {
 	base := fmt.Sprintf("%s=%s", "id", strconv.Itoa(id))
 	url := fmt.Sprintf(base, o.apiKey, o.unit, o.lang, days)
 
-	var fwd interface{}
+	var fwd Forecast5WeatherData
 	if err := o.call(url, &fwd); err != nil {
 		return nil, err
 	}
@@ -88,11 +115,11 @@ func (o *OWM) DailyForecastByID(id, days int) (interface{}, error) {
 }
 
 // DailyForecastByZip will provide a forecast for the provided zip code.
-func (o *OWM) DailyForecastByZip(zip, countryCode string, days int) (interface{}, error) {
+func (o *OWM) DailyForecastByZip(zip, countryCode string, days int) (*Forecast5WeatherData, error) {
 	base := fmt.Sprintf("zip=%s,%s", zip, countryCode)
 	url := fmt.Sprintf(base, o.apiKey, o.unit, o.lang, days)
 
-	var fwd interface{}
+	var fwd Forecast5WeatherData
 	if err := o.call(url, &fwd); err != nil {
 		return nil, err
 	}

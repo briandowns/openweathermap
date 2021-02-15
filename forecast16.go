@@ -43,8 +43,5 @@ type Forecast16WeatherData struct {
 }
 
 func (f *Forecast16WeatherData) Decode(r io.Reader) error {
-	if err := json.NewDecoder(r).Decode(&f); err != nil {
-		return err
-	}
-	return nil
+	return json.NewDecoder(r).Decode(&f)
 }

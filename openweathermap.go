@@ -24,25 +24,15 @@ import (
 	"strings"
 )
 
-var (
-	errUnitUnavailable     = errors.New("unit unavailable")
-	errLangUnavailable     = errors.New("language unavailable")
-	errInvalidKey          = errors.New("invalid api key")
-	errInvalidOption       = errors.New("invalid option")
-	errInvalidHttpClient   = errors.New("invalid http client")
-	errForecastUnavailable = errors.New("forecast unavailable")
-)
-
 const (
-	baseURL        = "http://api.openweathermap.org/data/2.5/weather?%s"
-	iconURL        = "http://openweathermap.org/img/w/%s"
-	stationURL     = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecast5Base  = "http://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-	forecast16Base = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-	historyURL     = "http://api.openweathermap.org/data/2.5/history/%s"
-	pollutionURL   = "http://api.openweathermap.org/pollution/v1/co/"
-	uvURL          = "http://api.openweathermap.org/data/2.5/"
-	dataPostURL    = "http://openweathermap.org/data/post"
+	baseURL        = "https://api.openweathermap.org/data/2.5/weather?%s"
+	iconURL        = "https://openweathermap.org/img/w/%s"
+	stationURL     = "https://api.openweathermap.org/data/2.5/station?id=%d"
+	forecast16Base = "https://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+	historyURL     = "https://api.openweathermap.org/data/2.5/history/%s"
+	pollutionURL   = "https://api.openweathermap.org/pollution/v1/co/"
+	uvURL          = "https://api.openweathermap.org/data/2.5/"
+	dataPostURL    = "https://openweathermap.org/data/post"
 )
 
 // DataUnits represents the character chosen to represent
@@ -129,12 +119,17 @@ func New(opts *Opts) (*OWM, error) {
 	switch {
 	case validDataUnit(opts.Unit):
 		owm.unit = opts.Unit
+	case opts.Unit == "":
+		owm.unit = "F"
 	default:
 		return nil, fmt.Errorf("invalid unit: %s", opts.Unit)
 	}
 
 	switch {
 	case validLangCode(opts.Lang):
+		owm.lang = opts.Lang
+	case opts.Lang == "":
+		owm.lang = "EN"
 	default:
 		return nil, fmt.Errorf("invalid language code: %s", opts.Lang)
 	}
@@ -149,7 +144,7 @@ func New(opts *Opts) (*OWM, error) {
 			if validAPIKey(apiKey) {
 				owm.apiKey = apiKey
 			} else {
-				return nil, errInvalidKey
+				return nil, errors.New("invalid api key")
 			}
 		} else {
 			return nil, errors.New("an API key is required for use of the OWM api")
@@ -231,7 +226,7 @@ type Wind struct {
 // Weather struct holds high-level, basic info on the returned
 // data.
 type Weather struct {
-	ID          int    `json:"id"`
+	ID          int64  `json:"id"`
 	Main        string `json:"main"`
 	Description string `json:"description"`
 	Icon        string `json:"icon"`
@@ -246,12 +241,13 @@ type Main struct {
 	Pressure  float64 `json:"pressure"`
 	SeaLevel  float64 `json:"sea_level"`
 	GrndLevel float64 `json:"grnd_level"`
-	Humidity  int     `json:"humidity"`
+	Humidity  int64   `json:"humidity"`
+	TempKF    float64 `json:"tmep_kf"`
 }
 
 // Clouds struct holds data regarding cloud cover.
 type Clouds struct {
-	All int `json:"all"`
+	All int64 `json:"all"`
 }
 
 // validDataUnit makes sure the string passed in is an accepted
