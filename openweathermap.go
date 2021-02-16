@@ -179,9 +179,9 @@ func (o *OWM) call(url string, payload interface{}) error {
 	}
 
 	switch o.mode {
-	case "JSON":
+	case "json":
 		return json.NewDecoder(res.Body).Decode(payload)
-	case "XML":
+	case "xml":
 		return xml.NewDecoder(res.Body).Decode(payload)
 	}
 
