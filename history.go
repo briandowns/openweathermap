@@ -59,14 +59,12 @@ type HistoricalWeatherData struct {
 	CalcTime float64          `json:"calctime"`
 	Cnt      int              `json:"cnt"`
 	List     []WeatherHistory `json:"list"`
-	Unit     string
-	Key      string
 }
 
-// HistoryByName will return the history for the provided location
-func (o *OWM) HistoryByName(location string) (*HistoricalWeatherData, error) {
-	base := fmt.Sprintf(historyURL, "city?appid=%s&q=%s")
-	url := fmt.Sprintf(base, o.apiKey, url.QueryEscape(location))
+// HistoryByName will return the history for the provided location.
+func (o *OWM) HistoryByName(location string, hp *HistoricalParameters) (*HistoricalWeatherData, error) {
+	base := fmt.Sprintf(historyURL, "appid=%s&%s&type=hour&mode=json&units=%s&lang=%s&cnt=%d&start=%d&end=%d")
+	url := fmt.Sprintf(base, o.apiKey, "q="+url.QueryEscape(location), o.unit, o.lang, hp.Cnt, hp.Start, hp.End)
 
 	var hwd HistoricalWeatherData
 	if err := o.call(url, &hwd); err != nil {
@@ -76,29 +74,18 @@ func (o *OWM) HistoryByName(location string) (*HistoricalWeatherData, error) {
 	return &hwd, nil
 }
 
-// HistoryByID will return the history for the provided location ID
-// func (o *OWM) HistoryByID(id int, hp ...*HistoricalParameters) (*HistoricalWeatherData, error) {
-// 	if len(hp) > 0 {
-// 		response, err := h.client.Get(fmt.Sprintf(fmt.Sprintf(historyURL, "city?appid=%s&id=%d&type=hour&start%d&end=%d&cnt=%d"), h.Key, id, hp[0].Start, hp[0].End, hp[0].Cnt))
-// 		if err != nil {
-// 			return err
-// 		}
-// 		defer response.Body.Close()21
-// 		if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
-// 			return err
-// 		}
-// 	}
+// HistoryByID will return the history for the provided id.
+func (o *OWM) HistoryByID(id int, hp *HistoricalParameters) (*HistoricalWeatherData, error) {
+	base := fmt.Sprintf(historyURL, "appid=%s&id=%d&type=hour&mode=json&units=%s&lang=%s&cnt=%d&start=%d&end=%d")
+	url := fmt.Sprintf(base, o.apiKey, id, o.unit, o.lang, hp.Cnt, hp.Start, hp.End)
 
-// 	base := fmt.Sprintf(historyURL, "city?appid=%s&id=%d")
-// 	url := fmt.Sprintf(base, o.apiKey, id)
+	var hwd HistoricalWeatherData
+	if err := o.call(url, &hwd); err != nil {
+		return nil, err
+	}
 
-// 	var hwd HistoricalWeatherData
-// 	if err := o.call(url, &hwd); err != nil {
-// 		return nil, err
-// 	}
-
-// 	return &hwd, nil
-// }
+	return &hwd, nil
+}
 
 // HistoryByCoord will return the history for the provided coordinates
 func (o *OWM) HistoryByCoord(location *Coordinates, hp *HistoricalParameters) (*HistoricalWeatherData, error) {

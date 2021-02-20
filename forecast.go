@@ -20,11 +20,6 @@ import (
 	"strconv"
 )
 
-const (
-	forecastFiveBase    = "https://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-	forecastSixteenBase = "https://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-)
-
 // ForecastSys area population.
 type ForecastSys struct {
 	Population int `json:"population"`

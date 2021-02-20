@@ -19,25 +19,27 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 )
 
 const (
-	baseURL        = "https://api.openweathermap.org/data/2.5/weather?%s"
-	iconURL        = "https://openweathermap.org/img/w/%s"
-	stationURL     = "https://api.openweathermap.org/data/2.5/station?id=%d"
-	forecast16Base = "https://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-	historyURL     = "https://api.openweathermap.org/data/2.5/history/%s"
-	pollutionURL   = "https://api.openweathermap.org/pollution/v1/co/"
-	uvURL          = "https://api.openweathermap.org/data/2.5/"
-	dataPostURL    = "https://openweathermap.org/data/post"
+	baseURL             = "https://api.openweathermap.org/data/2.5/weather?%s"
+	iconURL             = "https://openweathermap.org/img/w/%s"
+	stationURL          = "https://api.openweathermap.org/data/2.5/station?id=%d"
+	forecastFiveBase    = "https://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+	forecastSixteenBase = "https://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+	historyURL          = "https://api.openweathermap.org/data/2.5/history/city?%s"
+	pollutionURL        = "https://api.openweathermap.org/pollution/v1/co/"
+	uvURL               = "https://api.openweathermap.org/data/2.5/"
+	dataPostURL         = "https://openweathermap.org/data/post"
 )
 
-// DataUnits represents the character chosen to represent
+// dataUnits represents the character chosen to represent
 // the temperature notation
-var DataUnits = map[string]string{
+var dataUnits = map[string]string{
 	"C": "metric",
 	"F": "imperial",
 	"K": "internal",
@@ -171,11 +173,11 @@ func (o *OWM) call(url string, payload interface{}) error {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		var ae APIError
-		if err := json.NewDecoder(res.Body).Decode(&ae); err != nil {
+		b, err := ioutil.ReadAll(res.Body)
+		if err != nil {
 			return err
 		}
-		return ae
+		return errors.New(string(b))
 	}
 
 	switch o.mode {
@@ -186,17 +188,6 @@ func (o *OWM) call(url string, payload interface{}) error {
 	}
 
 	return nil
-}
-
-// APIError returned on failed API calls.
-type APIError struct {
-	Message string `json:"message"`
-	COD     string `json:"cod"`
-}
-
-// Error
-func (a APIError) Error() string {
-	return "message: " + a.Message + " - status: " + a.COD
 }
 
 // Coordinates struct holds longitude and latitude data in returned
@@ -253,7 +244,7 @@ type Clouds struct {
 // validDataUnit makes sure the string passed in is an accepted
 // unit of measure to be used for the return data.
 func validDataUnit(u string) bool {
-	for d := range DataUnits {
+	for d := range dataUnits {
 		if u == d {
 			return true
 		}
@@ -275,7 +266,7 @@ func validLangCode(c string) bool {
 // validDataUnitSymbol makes sure the string passed in is an
 // acceptable data unit symbol.
 func validDataUnitSymbol(u string) bool {
-	for _, d := range DataUnits {
+	for _, d := range dataUnits {
 		if u == d {
 			return true
 		}
