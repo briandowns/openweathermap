@@ -19,13 +19,13 @@ import (
 	"strconv"
 )
 
-// DateTimeAliases holds the alias the pollution API supports in lieu
+// dateTimeAliases holds the alias the pollution API supports in lieu.
 // of an ISO 8601 timestamp
-var DateTimeAliases = []string{"current"}
+var dateTimeAliases = []string{"current"}
 
-// ValidAlias checks to make sure the given alias is a valid one
+// ValidAlias checks to make sure the given alias is a valid one.
 func ValidAlias(alias string) bool {
-	for _, i := range DateTimeAliases {
+	for _, i := range dateTimeAliases {
 		if i == alias {
 			return true
 		}
@@ -33,36 +33,32 @@ func ValidAlias(alias string) bool {
 	return false
 }
 
-// PollutionData holds the pollution specific data from the call
+// PollutionData holds the pollution specific data from the call.
 type PollutionData struct {
 	Precision float64 `json:"precision"`
 	Pressure  float64 `json:"pressure"`
 	Value     float64 `json:"value"`
 }
 
-// PollutionParameters holds the parameters needed to make
+// PollutionParameters holds the parameters needed to make.
 // a call to the pollution API
 type PollutionParameters struct {
 	Location Coordinates
 	Datetime string // this should be either ISO 8601 or an alias
 }
 
-// Pollution holds the data returnd from the pollution API
+// Pollution holds the data returnd from the pollution API.
 type Pollution struct {
 	Time     string          `json:"time"`
 	Location Coordinates     `json:"location"`
 	Data     []PollutionData `json:"data"`
-	Key      string
 }
 
-// PollutionByParams gets the pollution data based on the given parameters
+// PollutionByParams gets the pollution data based on the given parameters.
 func (o *OWM) PollutionByParams(params *PollutionParameters) (*Pollution, error) {
-	url := fmt.Sprintf("%s%s,%s/%s.json?appid=%s",
-		pollutionURL,
-		strconv.FormatFloat(params.Location.Latitude, 'f', -1, 64),
-		strconv.FormatFloat(params.Location.Longitude, 'f', -1, 64),
-		params.Datetime,
-		o.apiKey)
+	lat := strconv.FormatFloat(params.Location.Latitude, 'f', -1, 64)
+	lon := strconv.FormatFloat(params.Location.Longitude, 'f', -1, 64)
+	url := fmt.Sprintf("%s%s,%s/%s.json?appid=%s", pollutionURL, lat, lon, params.Datetime, o.apiKey)
 
 	var p Pollution
 	if err := o.call(url, &p); err != nil {

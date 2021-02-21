@@ -92,6 +92,7 @@ type Alert struct {
 	Start       int64  `json:"start"`
 	End         int64  `json:"end"`
 	Description string `json:"description"`
+	EventLeve   string `json:"event_level"`
 }
 
 // OneCallData

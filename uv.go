@@ -20,24 +20,21 @@ import (
 	"time"
 )
 
-var errInvalidUVIndex = errors.New("invalid UV index value")
-
-// UVDataPoints holds the UV specific data
+// UVDataPoints holds the UV specific data.
 type UVDataPoints struct {
 	DT    int64   `json:"dt"`
 	Value float64 `json:"value"`
 }
 
-// UV contains the response from the OWM UV API
+// UV contains the response from the OWM UV API.
 type UV struct {
-	Coord []float64      `json:"coord"`
-	Data  []UVDataPoints `json:"data,omitempty"`
-	DT    int64          `json:"dt,omitempty"`
-	Value float64        `json:"value,omitempty"`
-	Key   string
+	Coordinates
+	DateISO string  `json:"date_iso"`
+	Date    int64   `json:"date,omitempty"`
+	Value   float64 `json:"value,omitempty"`
 }
 
-// UVCurrent gets the current UV data for the given coordinates
+// UVCurrent gets the current UV data for the given coordinates.
 func (o *OWM) UVCurrent(coord *Coordinates) (*UV, error) {
 	url := fmt.Sprintf("%suvi?lat=%f&lon=%f&appid=%s", uvURL, coord.Latitude, coord.Longitude, o.apiKey)
 
@@ -49,7 +46,7 @@ func (o *OWM) UVCurrent(coord *Coordinates) (*UV, error) {
 	return &uv, nil
 }
 
-// UVHistorical gets the historical UV data for the coordinates and times
+// UVHistorical gets the historical UV data for the coordinates and times.
 func (o *OWM) UVHistorical(coord *Coordinates, start, end time.Time) (*UV, error) {
 	url := fmt.Sprintf("%shistory?lat=%f&lon=%f&start=%d&end=%d&appid=%s", uvURL, coord.Latitude, coord.Longitude, start.Unix(), end.Unix(), o.apiKey)
 
@@ -77,7 +74,7 @@ type UVIndexInfo struct {
 	RecommendedProtection string
 }
 
-// UVData contains data in regards to UV index ranges, rankings, and steps for protection
+// UVData contains data in regards to UV index ranges, rankings, and steps for protection.
 var UVData = []UVIndexInfo{
 	{
 		UVIndex:               []float64{0, 2.9},
@@ -128,25 +125,7 @@ func (u *UV) UVInformation() ([]UVIndexInfo, error) {
 		case u.Value >= 11:
 			return []UVIndexInfo{UVData[4]}, nil
 		default:
-			return nil, errInvalidUVIndex
-		}
-	case len(u.Data) > 0:
-		var uvi []UVIndexInfo
-		for _, i := range u.Data {
-			switch {
-			case i.Value < 2.9:
-				uvi = append(uvi, UVData[0])
-			case i.Value > 3 && u.Value < 5.9:
-				uvi = append(uvi, UVData[1])
-			case i.Value > 6 && u.Value < 7.9:
-				uvi = append(uvi, UVData[2])
-			case i.Value > 8 && u.Value < 10.9:
-				uvi = append(uvi, UVData[3])
-			case i.Value >= 11:
-				uvi = append(uvi, UVData[4])
-			default:
-				return nil, errInvalidUVIndex
-			}
+			return nil, errors.New("invalid UV index value")
 		}
 	}
 

@@ -71,7 +71,25 @@ Gain access to OpenWeatherMap icons and condition codes.
 
 ## Supported Languages
 
-English - en, Russian - ru, Italian - it, Spanish - es (or sp), Ukrainian - uk (or ua), German - de, Portuguese - pt, Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw, Chinese Simplified - zh (or zh_cn), Turkish - tr, Croatian - hr, Catalan - ca
+- English - en
+- Russian - ru
+- Italian - it
+- Spanish - es (or sp)
+- Ukrainian - uk (or ua)
+- German - de
+- Portuguese - pt
+- Romanian - ro
+- Polish - pl
+- Finnish - fi
+- Dutch - nl
+- French - fr
+- Bulgarian - bg
+- Swedish - sv (or se)
+- Chinese Traditional - zh_tw
+- Chinese Simplified - zh (or zh_cn)
+- Turkish - tr
+- Croatian - hr
+- Catalan - ca
 
 ## Installation
 
@@ -81,7 +99,7 @@ go get github.com/briandowns/openweathermap
 
 ## Examples
 
-There are a few full examples in the examples directory that can be referenced.  1 is a command line application and 1 is a simple web application.
+Full, simple example.
 
 ```Go
 package main
@@ -93,8 +111,6 @@ import (
 
 	"github.com/briandowns/openweathermap"
 )
-
-var apiKey = os.Getenv("OWM_API_KEY")
 
 func main() {
     opts := openweathermap.Opts{
@@ -120,154 +136,73 @@ func main() {
 ### Forecast Conditions in imperial (fahrenheit) by coordinates
 
 ```Go
-func main() {
-    w, err := owm.NewForecast("5", "F", "FI", apiKey) // valid options for first parameter are "5" and "16"
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    w.DailyByCoordinates(
-        &owm.Coordinates{
-                Longitude: -112.07,
-                Latitude: 33.45,
-        },
-        5 // five days forecast
-    )
-    fmt.Println(w)
+fdfbc, err := owm.FiveDayForecastByCoordinates(&openweathermap.Coordinates{Longitude: -75.1638, Latitude: 39.9523}, 10)
+if err != nil {
+    log.Fatalln(err)
 }
+fmt.Printf("%#v\n", fdfbc)
 ```
 
 ### Current conditions in metric (celsius) by location ID
 
 ```Go
-func main() {
-    w, err := owm.NewCurrent("C", "PL", apiKey)
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    w.CurrentByID(2172797)
-    fmt.Println(w)
+owm.Unit = "C"
+cbi, err := owm.CurrentByID(4560349)
+if err != nil {
+    log.Fatalln(err)
 }
+fmt.Printf("%#v\n", cbi)
 ```
 
 ### Current conditions by zip code. 2 character country code required
 
 ```Go
-func main() {
-    w, err := owm.NewCurrent("F", "EN", apiKey)
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    w.CurrentByZip(19125, "US")
-    fmt.Println(w)
+cbz, err := owm.CurrentByZip("19127", "")
+if err != nil {
+    log.Fatalln(err)
 }
+fmt.Printf("%#v\n", cbz)
 ```
 
-### Configure http client
+### History by Name
 
 ```Go
-func main() {
-    client := &http.Client{}
-    w, err := owm.NewCurrent("F", "EN", apiKey, owm.WithHttpClient(client))
-    if err != nil {
-        log.Fatalln(err)
-    }
+hbn, err := owm.HistoryByName("Philadelphia", &openweathermap.HistoricalParameters{
+    Start: 1369728000,
+    End:   1369789200,
+    Cnt:   4,
+})
+if err != nil {
+    log.Fatalln(err)
 }
+fmt.Printf("%#v\n", hbn)
 ```
 
 ### Current UV conditions
 
 ```Go
-func main() {
-    uv, err := owm.NewUV(apiKey)
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    coord := &owm.Coordinates{
-        Longitude: 53.343497,
-        Latitude:  -6.288379,
-    }
-
-    if err := uv.Current(coord); err != nil {
-        log.Fatalln(err)
-    }
-    
-    fmt.Println(coord)
+uv, err := owm.UVCurrent(&openweathermap.Coordinates{
+    Latitude:  39.9523,
+    Longitude: -75.1638,
+})
+if err != nil {
+    log.Fatalln(err)
 }
-```
-
-### Historical UV conditions
-
-```Go
-func main() {
-    uv, err := owm.NewUV(apiKey)
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    coord := &owm.Coordinates{
-        Longitude: 54.995656,
-        Latitude:  -7.326834,
-    }
-
-    end := time.Now().UTC()
-    start := time.Now().UTC().Add(-time.Hour * time.Duration(24))
-
-    if err := uv.Historical(coord, start, end); err != nil {
-        log.Fatalln(err)
-    }
-}
-```
-
-### UV Information
-
-```Go
-func main() {
-    uv, err := owm.NewUV(apiKey)
-    if err != nil {
-        log.Fatalln(err)
-    }
-    
-    coord := &owm.Coordinates{
-    	Longitude: 53.343497,
-    	Latitude:  -6.288379,
-    }
-    
-    if err := uv.Current(coord); err != nil {
-    	log.Fatalln(err)
-    }
-
-    info, err := uv.UVInformation()
-    if err != nil {
-        log.Fatalln(err)
-    }
-    
-    fmt.Println(info)
-}
+fmt.Printf("%#v\n", uv)
 ```
 
 ### Pollution Information
 
 ```Go
-func main() {
-    pollution, err := owm.NewPollution(apiKey)
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    params := &owm.PollutionParameters{
-        Location: owm.Coordinates{
-            Latitude:  0.0,
-            Longitude: 10.0,
-        },
-        Datetime: "current",
-    }
-
-    if err := pollution.PollutionByParams(params); err != nil {
-        log.Fatalln(err)
-    }
+p, err := owm.PollutionByParams(&openweathermap.PollutionParameters{
+    Location: openweathermap.Coordinates{
+        Latitude:  39.9523,
+        Longitude: -75.1638,
+    },
+    Datetime: "2006-01-02T15:04:05-0700",
+})
+if err != nil {
+    log.Fatalln(err)
 }
+fmt.Printf("%#v\n", p)
 ```
