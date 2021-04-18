@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2021 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -66,8 +66,8 @@ func RetrieveIcon(destination, iconFile string) (int64, error) {
 	return 0, nil
 }
 
-// IconList is a slice of IconData pointers
-var IconList = []*IconData{
+// IconList is a slice of IconData.
+var IconList = []IconData{
 	{Condition: "clear sky", Day: "01d.png", Night: "01n.png"},
 	{Condition: "few clouds", Day: "02d.png", Night: "02n.png"},
 	{Condition: "scattered clouds", Day: "03d.png", Night: "03n.png"},
@@ -79,8 +79,8 @@ var IconList = []*IconData{
 	{Condition: "mist", Day: "50d.png", Night: "50n.png"},
 }
 
-// ThunderstormConditions is a slice of ConditionData pointers
-var ThunderstormConditions = []*ConditionData{
+// ThunderstormConditions is a slice of ConditionData.
+var ThunderstormConditions = []ConditionData{
 	{ID: 200, Meaning: "thunderstorm with light rain", Icon1: "11d.png"},
 	{ID: 201, Meaning: "thunderstorm with rain", Icon1: "11d.png"},
 	{ID: 202, Meaning: "thunderstorm with heavy rain", Icon1: "11d.png"},
@@ -93,8 +93,8 @@ var ThunderstormConditions = []*ConditionData{
 	{ID: 232, Meaning: "thunderstorm with heavy drizzle", Icon1: "11d.png"},
 }
 
-// DrizzleConditions is a slice of ConditionData pointers
-var DrizzleConditions = []*ConditionData{
+// DrizzleConditions is a slice of ConditionData.
+var DrizzleConditions = []ConditionData{
 	{ID: 300, Meaning: "light intensity drizzle", Icon1: "09d.png"},
 	{ID: 301, Meaning: "drizzle", Icon1: "09d.png"},
 	{ID: 302, Meaning: "heavy intensity drizzle", Icon1: "09d.png"},
@@ -106,8 +106,8 @@ var DrizzleConditions = []*ConditionData{
 	{ID: 321, Meaning: "shower drizzle", Icon1: "09d.png"},
 }
 
-// RainConditions is a slice of ConditionData pointers
-var RainConditions = []*ConditionData{
+// RainConditions is a slice of ConditionData.
+var RainConditions = []ConditionData{
 	{ID: 500, Meaning: "light rain", Icon1: "09d.png"},
 	{ID: 501, Meaning: "moderate rain", Icon1: "09d.png"},
 	{ID: 502, Meaning: "heavy intensity rain", Icon1: "09d.png"},
@@ -120,8 +120,8 @@ var RainConditions = []*ConditionData{
 	{ID: 531, Meaning: "ragged shower rain", Icon1: "09d.png"},
 }
 
-// SnowConditions is a slice of ConditionData pointers
-var SnowConditions = []*ConditionData{
+// SnowConditions is a slice of ConditionData.
+var SnowConditions = []ConditionData{
 	{ID: 600, Meaning: "light snow", Icon1: "13d.png"},
 	{ID: 601, Meaning: "snow", Icon1: "13d.png"},
 	{ID: 602, Meaning: "heavy snow", Icon1: "13d.png"},
@@ -134,8 +134,8 @@ var SnowConditions = []*ConditionData{
 	{ID: 622, Meaning: "heavy shower snow", Icon1: "13d.png"},
 }
 
-// AtmosphereConditions is a slice of ConditionData pointers
-var AtmosphereConditions = []*ConditionData{
+// AtmosphereConditions is a slice of ConditionData.
+var AtmosphereConditions = []ConditionData{
 	{ID: 701, Meaning: "mist", Icon1: "50d.png"},
 	{ID: 711, Meaning: "smoke", Icon1: "50d.png"},
 	{ID: 721, Meaning: "haze", Icon1: "50d.png"},
@@ -148,8 +148,8 @@ var AtmosphereConditions = []*ConditionData{
 	{ID: 781, Meaning: "tornado", Icon1: "50d.png"},
 }
 
-// CloudConditions is a slice of ConditionData pointers
-var CloudConditions = []*ConditionData{
+// CloudConditions is a slice of ConditionData.
+var CloudConditions = []ConditionData{
 	{ID: 800, Meaning: "clear sky", Icon1: "01d.png", Icon2: "01n.png"},
 	{ID: 801, Meaning: "few clouds", Icon1: "02d.png", Icon2: " 02n.png"},
 	{ID: 802, Meaning: "scattered clouds", Icon1: "03d.png", Icon2: "03d.png"},
@@ -157,8 +157,8 @@ var CloudConditions = []*ConditionData{
 	{ID: 804, Meaning: "overcast clouds", Icon1: "04d.png", Icon2: "04d.png"},
 }
 
-// ExtremeConditions is a slice of ConditionData pointers
-var ExtremeConditions = []*ConditionData{
+// ExtremeConditions is a slice of ConditionData.
+var ExtremeConditions = []ConditionData{
 	{ID: 900, Meaning: "tornado", Icon1: ""},
 	{ID: 901, Meaning: "tropical storm", Icon1: ""},
 	{ID: 902, Meaning: "hurricane", Icon1: ""},
@@ -168,8 +168,8 @@ var ExtremeConditions = []*ConditionData{
 	{ID: 906, Meaning: "hail", Icon1: ""},
 }
 
-// AdditionalConditions is a slive of ConditionData pointers
-var AdditionalConditions = []*ConditionData{
+// AdditionalConditions is a slicee of ConditionData.
+var AdditionalConditions = []ConditionData{
 	{ID: 951, Meaning: "calm", Icon1: ""},
 	{ID: 952, Meaning: "light breeze", Icon1: ""},
 	{ID: 953, Meaning: "gentle breeze", Icon1: ""},

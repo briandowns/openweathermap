@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2021 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package openweathermap
 
 import (
 	"reflect"
+	"strconv"
 	"testing"
 )
 
@@ -46,11 +47,11 @@ func TestValidateStationDataParameter(t *testing.T) {
 func TestConvertToURLValues(t *testing.T) {
 	t.Parallel()
 
-	var count = 1
-	var urlData = make(map[string]string)
+	count := 1
+	urlData := make(map[string]string)
 
 	for _, s := range StationDataParameters {
-		urlData[s] = string(count)
+		urlData[s] = strconv.Itoa(count)
 		count++
 	}
 

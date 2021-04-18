@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2021 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import (
 	"net/url"
 )
 
-// Slice of type string of the valid parameters to be sent from a station.
-// The API refers to this data as the "Weather station data transmission protocol"
+// StationDataParameters is a slice of valid parameters to be sent from a station.
+// The API refers to this data as the "Weather station data transmission protocol".
 var StationDataParameters = []string{
 	"wind_dir",   // Wind direction
 	"wind_speed", // Wind speed
