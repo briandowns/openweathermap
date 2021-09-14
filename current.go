@@ -126,17 +126,28 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 
 // CurrentByZip will provide the current weather for the
 // provided zip code.
+//
+// Deprecated: Use CurrentByZipcode instead.
 func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
-	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%05d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
-	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
+
+	return json.NewDecoder(response.Body).Decode(&w)
+}
+
+// CurrentByZipcode will provide the current weather for the
+// provided zip code.
+func (w *CurrentWeatherData) CurrentByZipcode(zip string, countryCode string) error {
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%s,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
+	if err != nil {
 		return err
 	}
+	defer response.Body.Close()
 
-	return nil
+	return json.NewDecoder(response.Body).Decode(&w)
 }
 
 // CurrentByArea will provide the current weather for the
