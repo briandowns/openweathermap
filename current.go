@@ -29,6 +29,7 @@ type CurrentWeatherData struct {
 	Base     string      `json:"base"`
 	Weather  []Weather   `json:"weather"`
 	Main     Main        `json:"main"`
+	Visibility int       `json:"visibility"`
 	Wind     Wind        `json:"wind"`
 	Clouds   Clouds      `json:"clouds"`
 	Rain     Rain        `json:"rain"`
