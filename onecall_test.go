@@ -30,12 +30,12 @@ func TestNewOneCall(t *testing.T) {
 		t.Logf("Data unit: %s", d)
 
 		if ValidDataUnit(d) {
-			c, err := NewOneCall(d, "en", os.Getenv("OWM_API_KEY"), []exclude{})
+			c, err := NewOneCall(d, "en", os.Getenv("OWM_API_KEY"), []string{})
 			if err != nil {
 				t.Error(err)
 			}
 
-			if _, err := NewOneCall(d, "blah", os.Getenv("OWM_API_KEY"), []exclude{}); err != nil {
+			if _, err := NewOneCall(d, "blah", os.Getenv("OWM_API_KEY"), []string{}); err != nil {
 				t.Log("received expected bad language code error")
 			}
 
@@ -53,7 +53,7 @@ func TestNewOneCall(t *testing.T) {
 func TestNewOneCallWithCustomHttpClient(t *testing.T) {
 	hc := http.DefaultClient
 	hc.Timeout = time.Duration(1) * time.Second
-	c, err := NewOneCall("c", "en", os.Getenv("OWM_API_KEY"), []exclude{}, WithHttpClient(hc))
+	c, err := NewOneCall("c", "en", os.Getenv("OWM_API_KEY"), []string{}, WithHttpClient(hc))
 	if err != nil {
 		t.Error(err)
 	}
@@ -79,7 +79,7 @@ func TestNewOneCallWithInvalidOptions(t *testing.T) {
 	}
 
 	for _, options := range optionsPattern {
-		c, err := NewOneCall("c", "en", os.Getenv("OWM_API_KEY"), []exclude{}, options...)
+		c, err := NewOneCall("c", "en", os.Getenv("OWM_API_KEY"), []string{}, options...)
 		if err == errInvalidOption {
 			t.Logf("Received expected invalid option error. message: %s", err.Error())
 		} else if err != nil {
@@ -95,7 +95,7 @@ func TestNewOneCallWithInvalidOptions(t *testing.T) {
 // invalid http client
 func TestNewOneCallWithInvalidHttpClient(t *testing.T) {
 
-	c, err := NewOneCall("c", "en", os.Getenv("OWM_API_KEY"), []exclude{}, WithHttpClient(nil))
+	c, err := NewOneCall("c", "en", os.Getenv("OWM_API_KEY"), []string{}, WithHttpClient(nil))
 	if err == errInvalidHttpClient {
 		t.Logf("Received expected bad client error. message: %s", err.Error())
 	} else if err != nil {
@@ -110,7 +110,7 @@ func TestNewOneCallWithInvalidHttpClient(t *testing.T) {
 // given set of coordinates
 func TestOneCallByCoordinates(t *testing.T) {
 	t.Parallel()
-	c, err := NewOneCall("f", "DE", os.Getenv("OWM_API_KEY"), []exclude{})
+	c, err := NewOneCall("f", "DE", os.Getenv("OWM_API_KEY"), []string{})
 	if err != nil {
 		t.Error("Error creating instance of OneCallData")
 	}
@@ -126,7 +126,7 @@ func TestOneCallByCoordinates(t *testing.T) {
 }
 
 func TestNewOneCallWithOneExclude(t *testing.T) {
-	c, err := NewOneCall("f", "en", os.Getenv("OWM_API_KEY"), []exclude{ExcludeAlerts})
+	c, err := NewOneCall("f", "en", os.Getenv("OWM_API_KEY"), []string{ExcludeAlerts})
 	if err != nil {
 		t.Error(err)
 	}
@@ -147,7 +147,7 @@ func TestNewOneCallWithOneExclude(t *testing.T) {
 }
 
 func TestNewOneCallWithTwoExcludes(t *testing.T) {
-	c, err := NewOneCall("f", "en", os.Getenv("OWM_API_KEY"), []exclude{ExcludeAlerts, ExcludeDaily})
+	c, err := NewOneCall("f", "en", os.Getenv("OWM_API_KEY"), []string{ExcludeAlerts, ExcludeDaily})
 	if err != nil {
 		t.Error(err)
 	}

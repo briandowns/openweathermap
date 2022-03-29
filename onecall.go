@@ -121,7 +121,7 @@ type OneCallAlertData struct {
 }
 
 // NewCurrent returns a new OneCallData pointer with the supplied parameters
-func NewOneCall(unit, lang, key string, excludes []exclude, options ...Option) (*OneCallData, error) {
+func NewOneCall(unit, lang, key string, excludes []string, options ...Option) (*OneCallData, error) {
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
 
