@@ -15,6 +15,7 @@
 package openweathermap
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -50,7 +51,7 @@ func TestConvertToURLValues(t *testing.T) {
 	var urlData = make(map[string]string)
 
 	for _, s := range StationDataParameters {
-		urlData[s] = string(count)
+		urlData[s] = fmt.Sprint(count)
 		count++
 	}
 

@@ -17,6 +17,7 @@ package openweathermap
 import (
 	"errors"
 	"net/http"
+	"strings"
 )
 
 var errUnitUnavailable = errors.New("unit unavailable")
@@ -25,11 +26,13 @@ var errInvalidKey = errors.New("invalid api key")
 var errInvalidOption = errors.New("invalid option")
 var errInvalidHttpClient = errors.New("invalid http client")
 var errForecastUnavailable = errors.New("forecast unavailable")
+var errExcludesUnavailable = errors.New("onecall excludes unavailable")
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
 	baseURL        = "https://api.openweathermap.org/data/2.5/weather?%s"
+	onecallURL     = "https://api.openweathermap.org/data/2.5/onecall?%s"
 	iconURL        = "https://openweathermap.org/img/w/%s"
 	stationURL     = "https://api.openweathermap.org/data/2.5/station?id=%d"
 	forecast5Base  = "https://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
@@ -67,6 +70,17 @@ var LangCodes = map[string]string{
 	"ZH":    "Chinese Simplified",
 	"ZH_CN": "Chinese Simplified",
 }
+
+// Exclude holds all supported excludes option to be used
+type Exclude string
+
+const (
+	ExcludeCurrent  Exclude = "current"
+	ExcludeMinutely Exclude = "minutely"
+	ExcludeHourly   Exclude = "hourly"
+	ExcludeDaily    Exclude = "daily"
+	ExcludeAlerts   Exclude = "alerts"
+)
 
 // Config will hold default settings to be passed into the
 // "NewCurrent, NewForecast, etc}" functions.
@@ -175,6 +189,16 @@ func ValidDataUnitSymbol(u string) bool {
 		}
 	}
 	return false
+}
+
+// ValidExcludes makes sure the string passed in is an
+// acceptable excludes options.
+func ValidExcludes(e []Exclude) (string, error) {
+	list := make([]string, 0)
+	for _, d := range e {
+		list = append(list, string(d))
+	}
+	return strings.Join(list, ","), nil
 }
 
 // ValidAPIKey makes sure that the key given is a valid one

@@ -32,13 +32,13 @@ type HistoricalParameters struct {
 // Rain struct contains 3 hour data
 type Rain struct {
 	OneH   float64 `json:"1h,omitempty"`
-	ThreeH float64 `json:"3h"`
+	ThreeH float64 `json:"3h,omitempty"`
 }
 
 // Snow struct contains 3 hour data
 type Snow struct {
 	OneH   float64 `json:"1h,omitempty"`
-	ThreeH float64 `json:"3h"`
+	ThreeH float64 `json:"3h,omitempty"`
 }
 
 // WeatherHistory struct contains aggregate fields from the above
