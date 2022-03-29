@@ -72,14 +72,14 @@ var LangCodes = map[string]string{
 }
 
 // Exclude holds all supported excludes option to be used
-type Exclude string
+type exclude string
 
 const (
-	ExcludeCurrent  Exclude = "current"
-	ExcludeMinutely Exclude = "minutely"
-	ExcludeHourly   Exclude = "hourly"
-	ExcludeDaily    Exclude = "daily"
-	ExcludeAlerts   Exclude = "alerts"
+	ExcludeCurrent  exclude = "current"
+	ExcludeMinutely exclude = "minutely"
+	ExcludeHourly   exclude = "hourly"
+	ExcludeDaily    exclude = "daily"
+	ExcludeAlerts   exclude = "alerts"
 )
 
 // Config will hold default settings to be passed into the
@@ -193,7 +193,7 @@ func ValidDataUnitSymbol(u string) bool {
 
 // ValidExcludes makes sure the string passed in is an
 // acceptable excludes options.
-func ValidExcludes(e []Exclude) (string, error) {
+func ValidExcludes(e []exclude) (string, error) {
 	list := make([]string, 0)
 	for _, d := range e {
 		list = append(list, string(d))

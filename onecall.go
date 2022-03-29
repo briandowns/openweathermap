@@ -1,4 +1,4 @@
-// Copyright 2022 Brian J. Downs
+// Copyright 2022 Giuseppe Silvestro
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package openweathermap
 
 import (
@@ -122,7 +121,7 @@ type OneCallAlertData struct {
 }
 
 // NewCurrent returns a new OneCallData pointer with the supplied parameters
-func NewOneCall(unit, lang, key string, excludes []Exclude, options ...Option) (*OneCallData, error) {
+func NewOneCall(unit, lang, key string, excludes []exclude, options ...Option) (*OneCallData, error) {
 	unitChoice := strings.ToUpper(unit)
 	langChoice := strings.ToUpper(lang)
 
@@ -130,17 +129,15 @@ func NewOneCall(unit, lang, key string, excludes []Exclude, options ...Option) (
 		Settings: NewSettings(),
 	}
 
-	if ValidDataUnit(unitChoice) {
-		c.Unit = DataUnits[unitChoice]
-	} else {
+	if !ValidDataUnit(unitChoice) {
 		return nil, errUnitUnavailable
 	}
+	c.Unit = DataUnits[unitChoice]
 
-	if ValidLangCode(langChoice) {
-		c.Lang = langChoice
-	} else {
+	if !ValidLangCode(langChoice) {
 		return nil, errLangUnavailable
 	}
+	c.Lang = langChoice
 
 	var err error
 	c.Excludes, err = ValidExcludes(excludes)
@@ -153,9 +150,11 @@ func NewOneCall(unit, lang, key string, excludes []Exclude, options ...Option) (
 		return nil, err
 	}
 
-	if err := setOptions(c.Settings, options); err != nil {
+	err = setOptions(c.Settings, options)
+	if err != nil {
 		return nil, err
 	}
+
 	return c, nil
 }
 
@@ -168,7 +167,8 @@ func (w *OneCallData) OneCallByCoordinates(location *Coordinates) error {
 	}
 	defer response.Body.Close()
 
-	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
+	err = json.NewDecoder(response.Body).Decode(&w)
+	if err != nil {
 		return err
 	}
 
