@@ -282,7 +282,7 @@ func main() {
 
 ```Go
 func main() {
-    // Possibility to exclude information. For example exclude daily information []string{ExcludeDaily}
+	// Possibility to exclude information. For example exclude daily information []string{ExcludeDaily}
 	w, err := owm.NewOneCall("F", "EN", apiKey, []string{})
 	if err != nil {
 		log.Fatalln(err)
