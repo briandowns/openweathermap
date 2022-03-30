@@ -142,7 +142,7 @@ func NewOneCall(unit, lang, key string, excludes []string, options ...Option) (*
 	var err error
 	c.Excludes, err = ValidExcludes(excludes)
 	if err != nil {
-		return nil, errExcludesUnavailable
+		return nil, err
 	}
 
 	c.Key, err = setKey(key)
@@ -167,10 +167,5 @@ func (w *OneCallData) OneCallByCoordinates(location *Coordinates) error {
 	}
 	defer response.Body.Close()
 
-	err = json.NewDecoder(response.Body).Decode(&w)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return json.NewDecoder(response.Body).Decode(&w)
 }

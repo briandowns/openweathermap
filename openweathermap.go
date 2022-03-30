@@ -195,12 +195,20 @@ func ValidDataUnitSymbol(u string) bool {
 // acceptable excludes options.
 func ValidExcludes(e []string) (string, error) {
 	list := make([]string, 0)
-	for _, d := range Excludes {
-		for _, v := range e {
-			if d == v {
+	for _, v := range e {
+		vl := strings.ToLower(v)
+		notFound := true
+
+		for _, d := range Excludes {
+			if d == vl {
 				list = append(list, v)
+				notFound = false
 				break
 			}
+		}
+
+		if notFound {
+			return "", errExcludesUnavailable
 		}
 	}
 	return strings.Join(list, ","), nil

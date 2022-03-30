@@ -277,3 +277,26 @@ func main() {
     }
 }
 ```
+
+### One Call Information
+
+```Go
+func main() {
+    // Possibility to exclude information. For example exclude daily information []string{ExcludeDaily}
+    w, err := owm.NewOneCall(d, "en", os.Getenv("OWM_API_KEY"), []string{})
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    err = w.OneCallByCoordinates(
+		&Coordinates{
+			Longitude: -112.07,
+			Latitude:  33.45,
+		},
+	)
+	if err != nil {
+		t.Error(err)
+	}
+    fmt.Println(w)
+}
+```
