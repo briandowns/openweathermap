@@ -40,23 +40,23 @@ type OneCallData struct {
 }
 
 type OneCallCurrentData struct {
-	Dt          int       `json:"dt"`
-	Sunrise     int       `json:"sunrise"`
-	Sunset      int       `json:"sunset"`
-	Temperature float64   `json:"temp"`
-	FeelsLike   float64   `json:"feels_like"`
-	Pressure    int       `json:"pressure"`
-	Humidity    int       `json:"humidity"`
-	DewPoint    float64   `json:"dew_point"`
-	Clouds      int       `json:"clouds"`
-	UVI         float64   `json:"uvi"`
-	Visibility  int       `json:"visibility"`
-	WindSpeed   float64   `json:"wind_speed"`
-	WindGust    float64   `json:"wind_gust,omitempty"`
-	WindDeg     float64   `json:"wind_deg"`
-	Rain        Rain      `json:"rain,omitempty"`
-	Snow        Snow      `json:"snow,omitempty"`
-	Weather     []Weather `json:"weather"`
+	Dt         int       `json:"dt"`
+	Sunrise    int       `json:"sunrise"`
+	Sunset     int       `json:"sunset"`
+	Temp       float64   `json:"temp"`
+	FeelsLike  float64   `json:"feels_like"`
+	Pressure   int       `json:"pressure"`
+	Humidity   int       `json:"humidity"`
+	DewPoint   float64   `json:"dew_point"`
+	Clouds     int       `json:"clouds"`
+	UVI        float64   `json:"uvi"`
+	Visibility int       `json:"visibility"`
+	WindSpeed  float64   `json:"wind_speed"`
+	WindGust   float64   `json:"wind_gust,omitempty"`
+	WindDeg    float64   `json:"wind_deg"`
+	Rain       Rain      `json:"rain,omitempty"`
+	Snow       Snow      `json:"snow,omitempty"`
+	Weather    []Weather `json:"weather"`
 }
 
 type OneCallMinutelyData struct {
@@ -65,22 +65,22 @@ type OneCallMinutelyData struct {
 }
 
 type OneCallHourlyData struct {
-	Dt          int       `json:"dt"`
-	Temperature float64   `json:"temp"`
-	FeelsLike   float64   `json:"feels_like"`
-	Pressure    int       `json:"pressure"`
-	Humidity    int       `json:"humidity"`
-	DewPoint    float64   `json:"dew_point"`
-	Uvi         float64   `json:"uvi"`
-	Clouds      int       `json:"clouds"`
-	Visibility  int       `json:"visibility"`
-	WindSpeed   float64   `json:"wind_speed"`
-	WindGust    float64   `json:"wind_gust,omitempty"`
-	WindDeg     float64   `json:"wind_deg"`
-	Pop         float64   `json:"pop"`
-	Rain        Rain      `json:"rain,omitempty"`
-	Snow        Snow      `json:"snow,omitempty"`
-	Weather     []Weather `json:"weather"`
+	Dt         int       `json:"dt"`
+	Temp       float64   `json:"temp"`
+	FeelsLike  float64   `json:"feels_like"`
+	Pressure   int       `json:"pressure"`
+	Humidity   int       `json:"humidity"`
+	DewPoint   float64   `json:"dew_point"`
+	UVI        float64   `json:"uvi"`
+	Clouds     int       `json:"clouds"`
+	Visibility int       `json:"visibility"`
+	WindSpeed  float64   `json:"wind_speed"`
+	WindGust   float64   `json:"wind_gust,omitempty"`
+	WindDeg    float64   `json:"wind_deg"`
+	Pop        float64   `json:"pop"`
+	Rain       Rain      `json:"rain,omitempty"`
+	Snow       Snow      `json:"snow,omitempty"`
+	Weather    []Weather `json:"weather"`
 }
 
 type OneCallDailyData struct {
@@ -104,7 +104,7 @@ type OneCallDailyData struct {
 	WindGust  float64   `json:"wind_gust,omitempty"`
 	WindDeg   float64   `json:"wind_deg"`
 	Clouds    int       `json:"clouds"`
-	Uvi       float64   `json:"uvi"`
+	UVI       float64   `json:"uvi"`
 	Pop       float64   `json:"pop"`
 	Rain      float64   `json:"rain,omitempty"`
 	Snow      float64   `json:"snow,omitempty"`
