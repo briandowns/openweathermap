@@ -27,6 +27,7 @@ var errInvalidOption = errors.New("invalid option")
 var errInvalidHttpClient = errors.New("invalid http client")
 var errForecastUnavailable = errors.New("forecast unavailable")
 var errExcludesUnavailable = errors.New("onecall excludes unavailable")
+var errCountOfCityIDs      = errors.New("count of ids should not be more than 20 per request")
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
@@ -34,6 +35,7 @@ var (
 	baseURL        = "https://api.openweathermap.org/data/2.5/weather?%s"
 	onecallURL     = "https://api.openweathermap.org/data/2.5/onecall?%s"
 	iconURL        = "https://openweathermap.org/img/w/%s"
+  groupURL       = "http://api.openweathermap.org/data/2.5/group?%s"
 	stationURL     = "https://api.openweathermap.org/data/2.5/station?id=%d"
 	forecast5Base  = "https://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
 	forecast16Base = "https://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
