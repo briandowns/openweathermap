@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2022 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ type CurrentWeatherData struct {
 	Base     string      `json:"base"`
 	Weather  []Weather   `json:"weather"`
 	Main     Main        `json:"main"`
+	Visibility int       `json:"visibility"`
 	Wind     Wind        `json:"wind"`
 	Clouds   Clouds      `json:"clouds"`
 	Rain     Rain        `json:"rain"`
@@ -126,17 +127,28 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 
 // CurrentByZip will provide the current weather for the
 // provided zip code.
+//
+// Deprecated: Use CurrentByZipcode instead.
 func (w *CurrentWeatherData) CurrentByZip(zip int, countryCode string) error {
-	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%05d,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
-	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
+
+	return json.NewDecoder(response.Body).Decode(&w)
+}
+
+// CurrentByZipcode will provide the current weather for the
+// provided zip code.
+func (w *CurrentWeatherData) CurrentByZipcode(zip string, countryCode string) error {
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(baseURL, "appid=%s&zip=%s,%s&units=%s&lang=%s"), w.Key, zip, countryCode, w.Unit, w.Lang))
+	if err != nil {
 		return err
 	}
+	defer response.Body.Close()
 
-	return nil
+	return json.NewDecoder(response.Body).Decode(&w)
 }
 
 // CurrentByArea will provide the current weather for the

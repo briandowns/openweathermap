@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2022 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -142,6 +142,30 @@ func (f *ForecastWeatherData) DailyByCoordinates(location *Coordinates, days int
 // number of days given.
 func (f *ForecastWeatherData) DailyByID(id, days int) error {
 	response, err := f.client.Get(fmt.Sprintf(f.baseURL, f.Key, fmt.Sprintf("%s=%s", "id", strconv.Itoa(id)), f.Unit, f.Lang, days))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	return f.ForecastWeatherJson.Decode(response.Body)
+}
+
+// DailyByZip will provide a forecast for the provided zip code.
+//
+// Deprecated: use DailyByZipcode instead.
+func (f *ForecastWeatherData) DailyByZip(zip int, countryCode string, days int) error {
+	response, err := f.client.Get(fmt.Sprintf(f.baseURL, f.Key, fmt.Sprintf("zip=%05d,%s", zip, countryCode), f.Unit, f.Lang, days))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	return f.ForecastWeatherJson.Decode(response.Body)
+}
+
+// DailyByZipcode will provide a forecast for the provided zip code.
+func (f *ForecastWeatherData) DailyByZipcode(zip string, countryCode string, days int) error {
+	response, err := f.client.Get(fmt.Sprintf(f.baseURL, f.Key, fmt.Sprintf("zip=%s,%s", zip, countryCode), f.Unit, f.Lang, days))
 	if err != nil {
 		return err
 	}

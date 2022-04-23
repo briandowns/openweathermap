@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2022 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -235,6 +235,22 @@ func TestCurrentByZip(t *testing.T) {
 	}
 
 	if err := w.CurrentByZip(19125, "US"); err != nil {
+		t.Error(err)
+	}
+
+	// 02134 is a valid zip code in the US
+	if err := w.CurrentByZip(2134, "US"); err != nil {
+		t.Error(err)
+	}
+}
+
+func TestCurrentByZipcode(t *testing.T) {
+	w, err := NewCurrent("F", "EN", os.Getenv("OWM_API_KEY"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if err := w.CurrentByZipcode("19125", "US"); err != nil {
 		t.Error(err)
 	}
 }

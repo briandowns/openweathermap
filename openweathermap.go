@@ -1,4 +1,4 @@
-// Copyright 2015 Brian J. Downs
+// Copyright 2022 Brian J. Downs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,32 +17,32 @@ package openweathermap
 import (
 	"errors"
 	"net/http"
+	"strings"
 )
 
-// predefined errors
-var (
-	errUnitUnavailable     = errors.New("unit unavailable")
-	errLangUnavailable     = errors.New("language unavailable")
-	errInvalidKey          = errors.New("invalid api key")
-	errInvalidOption       = errors.New("invalid option")
-	errInvalidHttpClient   = errors.New("invalid http client")
-	errForecastUnavailable = errors.New("forecast unavailable")
-	errCountOfCityIDs      = errors.New("count of ids should not be more than 20 per request")
-)
+var errUnitUnavailable = errors.New("unit unavailable")
+var errLangUnavailable = errors.New("language unavailable")
+var errInvalidKey = errors.New("invalid api key")
+var errInvalidOption = errors.New("invalid option")
+var errInvalidHttpClient = errors.New("invalid http client")
+var errForecastUnavailable = errors.New("forecast unavailable")
+var errExcludesUnavailable = errors.New("onecall excludes unavailable")
+var errCountOfCityIDs      = errors.New("count of ids should not be more than 20 per request")
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
-	baseURL        = "http://api.openweathermap.org/data/2.5/weather?%s"
-	iconURL        = "http://openweathermap.org/img/w/%s"
-	groupURL       = "http://api.openweathermap.org/data/2.5/group?%s"
-	stationURL     = "http://api.openweathermap.org/data/2.5/station?id=%d"
-	forecast5Base  = "http://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-	forecast16Base = "http://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
-	historyURL     = "http://api.openweathermap.org/data/2.5/history/%s"
-	pollutionURL   = "http://api.openweathermap.org/pollution/v1/co/"
-	uvURL          = "http://api.openweathermap.org/data/2.5/"
-	dataPostURL    = "http://openweathermap.org/data/post"
+	baseURL        = "https://api.openweathermap.org/data/2.5/weather?%s"
+	onecallURL     = "https://api.openweathermap.org/data/2.5/onecall?%s"
+	iconURL        = "https://openweathermap.org/img/w/%s"
+  groupURL       = "http://api.openweathermap.org/data/2.5/group?%s"
+	stationURL     = "https://api.openweathermap.org/data/2.5/station?id=%d"
+	forecast5Base  = "https://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+	forecast16Base = "https://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
+	historyURL     = "https://api.openweathermap.org/data/2.5/history/%s"
+	pollutionURL   = "https://api.openweathermap.org/pollution/v1/co/"
+	uvURL          = "https://api.openweathermap.org/data/2.5/"
+	dataPostURL    = "https://openweathermap.org/data/post"
 )
 
 // LangCodes holds all supported languages to be used
@@ -72,6 +72,17 @@ var LangCodes = map[string]string{
 	"ZH":    "Chinese Simplified",
 	"ZH_CN": "Chinese Simplified",
 }
+
+// Exclude holds all supported excludes option to be used
+const (
+	ExcludeCurrent  = "current"
+	ExcludeMinutely = "minutely"
+	ExcludeHourly   = "hourly"
+	ExcludeDaily    = "daily"
+	ExcludeAlerts   = "alerts"
+)
+
+var Excludes []string = []string{ExcludeCurrent, ExcludeMinutely, ExcludeHourly, ExcludeDaily, ExcludeAlerts}
 
 // Config will hold default settings to be passed into the
 // "NewCurrent, NewForecast, etc}" functions.
@@ -128,6 +139,7 @@ type Main struct {
 	Temp      float64 `json:"temp"`
 	TempMin   float64 `json:"temp_min"`
 	TempMax   float64 `json:"temp_max"`
+	FeelsLike float64 `json:"feels_like"`
 	Pressure  float64 `json:"pressure"`
 	SeaLevel  float64 `json:"sea_level"`
 	GrndLevel float64 `json:"grnd_level"`
@@ -181,9 +193,32 @@ func ValidDataUnitSymbol(u string) bool {
 	return false
 }
 
+// ValidExcludes makes sure the string passed in is an
+// acceptable excludes options.
+func ValidExcludes(e []string) (string, error) {
+	list := make([]string, 0)
+	for _, v := range e {
+		vl := strings.ToLower(v)
+		notFound := true
+
+		for _, d := range Excludes {
+			if d == vl {
+				list = append(list, v)
+				notFound = false
+				break
+			}
+		}
+
+		if notFound {
+			return "", errExcludesUnavailable
+		}
+	}
+	return strings.Join(list, ","), nil
+}
+
 // ValidAPIKey makes sure that the key given is a valid one
 func ValidAPIKey(key string) error {
-	if len(key) != 32 {
+	if len(key) > 64 {
 		return errors.New("invalid key")
 	}
 	return nil
