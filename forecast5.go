@@ -3,23 +3,7 @@ package openweathermap
 import (
 	"encoding/json"
 	"io"
-	"strings"
-	"time"
 )
-
-type DtTxt struct {
-	time.Time
-}
-
-func (dt *DtTxt) UnmarshalJSON(b []byte) error {
-	t, err := time.Parse("2006-01-02 15:04:05", strings.Trim(string(b), "\""))
-	dt.Time = t
-	return err
-}
-
-func (t *DtTxt) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
 
 // Forecast5WeatherList holds specific query data
 type Forecast5WeatherList struct {
@@ -30,7 +14,6 @@ type Forecast5WeatherList struct {
 	Wind    Wind      `json:"wind"`
 	Rain    Rain      `json:"rain"`
 	Snow    Snow      `json:"snow"`
-	DtTxt   DtTxt     `json:"dt_txt"`
 }
 
 // Forecast5WeatherData will hold returned data from queries
