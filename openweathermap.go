@@ -17,6 +17,7 @@ package openweathermap
 import (
 	"errors"
 	"net/http"
+	"strings"
 )
 
 var errUnitUnavailable = errors.New("unit unavailable")
@@ -25,11 +26,13 @@ var errInvalidKey = errors.New("invalid api key")
 var errInvalidOption = errors.New("invalid option")
 var errInvalidHttpClient = errors.New("invalid http client")
 var errForecastUnavailable = errors.New("forecast unavailable")
+var errExcludesUnavailable = errors.New("onecall excludes unavailable")
 
 // DataUnits represents the character chosen to represent the temperature notation
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
 	baseURL        = "https://api.openweathermap.org/data/2.5/weather?%s"
+	onecallURL     = "https://api.openweathermap.org/data/2.5/onecall?%s"
 	iconURL        = "https://openweathermap.org/img/w/%s"
 	stationURL     = "https://api.openweathermap.org/data/2.5/station?id=%d"
 	forecast5Base  = "https://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
@@ -67,6 +70,17 @@ var LangCodes = map[string]string{
 	"ZH":    "Chinese Simplified",
 	"ZH_CN": "Chinese Simplified",
 }
+
+// Exclude holds all supported excludes option to be used
+const (
+	ExcludeCurrent  = "current"
+	ExcludeMinutely = "minutely"
+	ExcludeHourly   = "hourly"
+	ExcludeDaily    = "daily"
+	ExcludeAlerts   = "alerts"
+)
+
+var Excludes []string = []string{ExcludeCurrent, ExcludeMinutely, ExcludeHourly, ExcludeDaily, ExcludeAlerts}
 
 // Config will hold default settings to be passed into the
 // "NewCurrent, NewForecast, etc}" functions.
@@ -175,6 +189,29 @@ func ValidDataUnitSymbol(u string) bool {
 		}
 	}
 	return false
+}
+
+// ValidExcludes makes sure the string passed in is an
+// acceptable excludes options.
+func ValidExcludes(e []string) (string, error) {
+	list := make([]string, 0)
+	for _, v := range e {
+		vl := strings.ToLower(v)
+		notFound := true
+
+		for _, d := range Excludes {
+			if d == vl {
+				list = append(list, v)
+				notFound = false
+				break
+			}
+		}
+
+		if notFound {
+			return "", errExcludesUnavailable
+		}
+	}
+	return strings.Join(list, ","), nil
 }
 
 // ValidAPIKey makes sure that the key given is a valid one
