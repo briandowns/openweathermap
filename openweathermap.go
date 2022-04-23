@@ -216,7 +216,7 @@ func ValidExcludes(e []string) (string, error) {
 
 // ValidAPIKey makes sure that the key given is a valid one
 func ValidAPIKey(key string) error {
-	if len(key) != 64 {
+	if len(key) > 64 {
 		return errors.New("invalid key")
 	}
 	return nil
