@@ -42,7 +42,7 @@ var (
 	forecast5Base  = "https://api.openweathermap.org/data/2.5/forecast?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
 	forecast16Base = "https://api.openweathermap.org/data/2.5/forecast/daily?appid=%s&%s&mode=json&units=%s&lang=%s&cnt=%d"
 	historyURL     = "https://api.openweathermap.org/data/2.5/history/%s"
-	pollutionURL   = "https://api.openweathermap.org/pollution/v1/co/"
+	pollutionURL   = "https://api.openweathermap.org/data/2.5/air_pollution?appid=%s&lat=%s&lon=%s"
 	uvURL          = "https://api.openweathermap.org/data/2.5/"
 	dataPostURL    = "https://openweathermap.org/data/post"
 )
