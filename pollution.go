@@ -3,6 +3,7 @@ package openweathermap
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strconv"
 )
 
@@ -86,6 +87,10 @@ func (p *Pollution) PollutionByParams(params *PollutionParameters) error {
 		return err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
 
 	if err = json.NewDecoder(response.Body).Decode(&p); err != nil {
 		return err

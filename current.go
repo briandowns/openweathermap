@@ -17,6 +17,7 @@ package openweathermap
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strings"
 )
@@ -86,6 +87,10 @@ func (w *CurrentWeatherData) CurrentByName(location string) error {
 	}
 	defer response.Body.Close()
 
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
+
 	if err := json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
@@ -102,6 +107,10 @@ func (w *CurrentWeatherData) CurrentByCoordinates(location *Coordinates) error {
 	}
 	defer response.Body.Close()
 
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
+
 	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
 	}
@@ -117,6 +126,10 @@ func (w *CurrentWeatherData) CurrentByID(id int) error {
 		return err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
 
 	if err = json.NewDecoder(response.Body).Decode(&w); err != nil {
 		return err
@@ -147,6 +160,10 @@ func (w *CurrentWeatherData) CurrentByZipcode(zip string, countryCode string) er
 		return err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
 
 	return json.NewDecoder(response.Body).Decode(&w)
 }

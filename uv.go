@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -52,7 +53,12 @@ func (u *UV) Current(coord *Coordinates) error {
 	if err != nil {
 		return err
 	}
+
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
 
 	if err = json.NewDecoder(response.Body).Decode(&u); err != nil {
 		return err
@@ -67,7 +73,12 @@ func (u *UV) Historical(coord *Coordinates, start, end time.Time) error {
 	if err != nil {
 		return err
 	}
+
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
 
 	if err = json.NewDecoder(response.Body).Decode(&u); err != nil {
 		return err
