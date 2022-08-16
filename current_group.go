@@ -3,6 +3,7 @@ package openweathermap
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 )
@@ -77,6 +78,10 @@ func (g *CurrentWeatherGroup) CurrentByIDs(ids ...int) error {
 		return err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
 
 	if err = json.NewDecoder(response.Body).Decode(&g); err != nil {
 		return err
