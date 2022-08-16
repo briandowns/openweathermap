@@ -17,6 +17,7 @@ package openweathermap
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strings"
 )
@@ -99,6 +100,10 @@ func (h *HistoricalWeatherData) HistoryByName(location string) error {
 	}
 	defer response.Body.Close()
 
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
+
 	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
 		return err
 	}
@@ -115,6 +120,10 @@ func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters)
 		}
 		defer response.Body.Close()
 
+		if response.StatusCode == http.StatusUnauthorized {
+			return errInvalidKey
+		}
+
 		if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
 			return err
 		}
@@ -125,6 +134,10 @@ func (h *HistoricalWeatherData) HistoryByID(id int, hp ...*HistoricalParameters)
 		return err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
 
 	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
 		return err
@@ -140,6 +153,10 @@ func (h *HistoricalWeatherData) HistoryByCoord(location *Coordinates, hp *Histor
 		return err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusUnauthorized {
+		return errInvalidKey
+	}
 
 	if err = json.NewDecoder(response.Body).Decode(&h); err != nil {
 		return err
