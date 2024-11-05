@@ -180,7 +180,7 @@ func TestOneCallTimeMachine(t *testing.T) {
 			Longitude: -112.07,
 			Latitude:  33.45,
 		},
-		time.Now().AddDate(0, 0, 1),
+		time.Now().AddDate(0, 0, -1),
 	)
 	if err != nil {
 		t.Error(err)
