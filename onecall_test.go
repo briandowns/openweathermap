@@ -166,3 +166,23 @@ func TestNewOneCallWithTwoExcludes(t *testing.T) {
 		t.Error("exclude alerts and daily fails")
 	}
 }
+
+// TestOneCallTimeMachine will verify that onecall data can be retrieved for a
+// given set of coordinates and a time
+func TestOneCallTimeMachine(t *testing.T) {
+	t.Parallel()
+	c, err := NewOneCall("f", "DE", os.Getenv("OWM_API_KEY"), []string{})
+	if err != nil {
+		t.Error("Error creating instance of OneCallData")
+	}
+	err = c.OneCallTimeMachine(
+		&Coordinates{
+			Longitude: -112.07,
+			Latitude:  33.45,
+		},
+		time.Now().AddDate(0, 0, -1),
+	)
+	if err != nil {
+		t.Error(err)
+	}
+}

@@ -17,26 +17,46 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 )
 
 // OneCallData struct contains an aggregate view of the structs
 // defined above for JSON to be unmarshaled into.
 type OneCallData struct {
-	Latitude       float64               `json:"lat"`
-	Longitude      float64               `json:"lon"`
-	Timezone       string                `json:"timezone"`
-	TimezoneOffset int                   `json:"timezone_offset"`
-	Current        OneCallCurrentData    `json:"current,omitempty"`
-	Minutely       []OneCallMinutelyData `json:"minutely,omitempty"`
-	Hourly         []OneCallHourlyData   `json:"hourly,omitempty"`
-	Daily          []OneCallDailyData    `json:"daily,omitempty"`
-	Alerts         []OneCallAlertData    `json:"alerts,omitempty"`
+	Latitude       float64                  `json:"lat"`
+	Longitude      float64                  `json:"lon"`
+	Timezone       string                   `json:"timezone"`
+	TimezoneOffset int                      `json:"timezone_offset"`
+	Current        OneCallCurrentData       `json:"current,omitempty"`
+	Minutely       []OneCallMinutelyData    `json:"minutely,omitempty"`
+	Hourly         []OneCallHourlyData      `json:"hourly,omitempty"`
+	Daily          []OneCallDailyData       `json:"daily,omitempty"`
+	Alerts         []OneCallAlertData       `json:"alerts,omitempty"`
+	Data           []OneCallTimeMachineData `json:"data,omitempty"`
 
 	Unit     string
 	Lang     string
 	Key      string
 	Excludes string
 	*Settings
+}
+
+type OneCallTimeMachineData struct {
+	Dt         int       `json:"dt"`
+	Sunrise    int       `json:"sunrise"`
+	Sunset     int       `json:"sunset"`
+	Temp       float64   `json:"temp"`
+	FeelsLike  float64   `json:"feels_like"`
+	Pressure   int       `json:"pressure"`
+	Humidity   int       `json:"humidity"`
+	DewPoint   float64   `json:"dew_point"`
+	Clouds     int       `json:"clouds"`
+	UVI        float64   `json:"uvi"`
+	Visibility int       `json:"visibility"`
+	WindSpeed  float64   `json:"wind_speed"`
+	WindGust   float64   `json:"wind_gust,omitempty"`
+	WindDeg    float64   `json:"wind_deg"`
+	Weather    []Weather `json:"weather"`
 }
 
 type OneCallCurrentData struct {
@@ -161,7 +181,19 @@ func NewOneCall(unit, lang, key string, excludes []string, options ...Option) (*
 // OneCallByCoordinates will provide the onecall weather with the
 // provided location coordinates.
 func (w *OneCallData) OneCallByCoordinates(location *Coordinates) error {
-	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(onecallURL, "appid=%s&lat=%f&lon=%f&units=%s&lang=%s&exclude=%s"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang, w.Excludes))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(onecallURL, "?appid=%s&lat=%f&lon=%f&units=%s&lang=%s&exclude=%s"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang, w.Excludes))
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	return json.NewDecoder(response.Body).Decode(&w)
+}
+
+// OneCallTimeMachine will provide the onecall timemachine weather with the
+// provided location coordinates and unix timestamp
+func (w *OneCallData) OneCallTimeMachine(location *Coordinates, datetime time.Time) error {
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(onecallURL, "timemachine?appid=%s&lat=%f&lon=%f&units=%s&lang=%s&dt=%d"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang, datetime.Unix()))
 	if err != nil {
 		return err
 	}
