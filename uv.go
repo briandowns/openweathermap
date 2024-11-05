@@ -106,33 +106,33 @@ type UVIndexInfo struct {
 // UVData contains data in regards to UV index ranges, rankings, and steps for protection
 var UVData = []UVIndexInfo{
 	{
-		UVIndex: []float64{0, 2.9},
-		MGC:     "Green",
-		Risk:    "Low",
+		UVIndex:               []float64{0, 2.9},
+		MGC:                   "Green",
+		Risk:                  "Low",
 		RecommendedProtection: "Wear sunglasses on bright days; use sunscreen if there is snow on the ground, which reflects UV radiation, or if you have particularly fair skin.",
 	},
 	{
-		UVIndex: []float64{3, 5.9},
-		MGC:     "Yellow",
-		Risk:    "Moderate",
+		UVIndex:               []float64{3, 5.9},
+		MGC:                   "Yellow",
+		Risk:                  "Moderate",
 		RecommendedProtection: "Take precautions, such as covering up, if you will be outside. Stay in shade near midday when the sun is strongest.",
 	},
 	{
-		UVIndex: []float64{6, 7.9},
-		MGC:     "Orange",
-		Risk:    "High",
+		UVIndex:               []float64{6, 7.9},
+		MGC:                   "Orange",
+		Risk:                  "High",
 		RecommendedProtection: "Cover the body with sun protective clothing, use SPF 30+ sunscreen, wear a hat, reduce time in the sun within three hours of solar noon, and wear sunglasses.",
 	},
 	{
-		UVIndex: []float64{8, 10.9},
-		MGC:     "Red",
-		Risk:    "Very high",
+		UVIndex:               []float64{8, 10.9},
+		MGC:                   "Red",
+		Risk:                  "Very high",
 		RecommendedProtection: "Wear SPF 30+ sunscreen, a shirt, sunglasses, and a wide-brimmed hat. Do not stay in the sun for too long.",
 	},
 	{
-		UVIndex: []float64{11},
-		MGC:     "Violet",
-		Risk:    "Extreme",
+		UVIndex:               []float64{11},
+		MGC:                   "Violet",
+		Risk:                  "Extreme",
 		RecommendedProtection: "Take all precautions: Wear SPF 30+ sunscreen, a long-sleeved shirt and trousers, sunglasses, and a very broad hat. Avoid the sun within three hours of solar noon.",
 	},
 }

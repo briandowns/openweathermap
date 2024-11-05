@@ -68,7 +68,7 @@ type HistoricalWeatherData struct {
 }
 
 // NewHistorical returns a new HistoricalWeatherData pointer with
-//the supplied arguments.
+// the supplied arguments.
 func NewHistorical(unit, key string, options ...Option) (*HistoricalWeatherData, error) {
 	h := &HistoricalWeatherData{
 		Settings: NewSettings(),
