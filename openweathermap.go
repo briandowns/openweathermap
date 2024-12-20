@@ -35,7 +35,7 @@ var (
 var DataUnits = map[string]string{"C": "metric", "F": "imperial", "K": "internal"}
 var (
 	baseURL        = "https://api.openweathermap.org/data/2.5/weather?%s"
-	onecallURL     = "https://api.openweathermap.org/data/3.0/onecall/%s"
+	onecallURL     = "https://api.openweathermap.org/data/3.0/onecall%s"
 	iconURL        = "https://openweathermap.org/img/w/%s"
 	groupURL       = "http://api.openweathermap.org/data/2.5/group?%s"
 	stationURL     = "https://api.openweathermap.org/data/2.5/station?id=%d"

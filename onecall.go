@@ -193,7 +193,7 @@ func (w *OneCallData) OneCallByCoordinates(location *Coordinates) error {
 // OneCallTimeMachine will provide the onecall timemachine weather with the
 // provided location coordinates and unix timestamp
 func (w *OneCallData) OneCallTimeMachine(location *Coordinates, datetime time.Time) error {
-	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(onecallURL, "timemachine?appid=%s&lat=%f&lon=%f&units=%s&lang=%s&dt=%d"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang, datetime.Unix()))
+	response, err := w.client.Get(fmt.Sprintf(fmt.Sprintf(onecallURL, "/timemachine?appid=%s&lat=%f&lon=%f&units=%s&lang=%s&dt=%d"), w.Key, location.Latitude, location.Longitude, w.Unit, w.Lang, datetime.Unix()))
 	if err != nil {
 		return err
 	}
